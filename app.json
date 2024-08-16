@@ -2,6 +2,7 @@
   "expo": {
     "name": "LearnerPortal",
     "slug": "LearnerPortal",
+    "scheme": "LearnerPortal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,10 +19,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kamzen.LearnerPortal"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e72b1239-0af9-4ba6-a744-02525b533ff3"
+      }
     }
   }
 }
