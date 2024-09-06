@@ -13,12 +13,16 @@ const DashBoardTabs = () => {
         tabBarStyle: { paddingBottom: 5 },
         tabBarLabelStyle: {
           color: theme.colors.primary,
-          fontWeight: "bold"
+          fontWeight: "bold",
+          textAlign: "center"
         },
 
         tabBarIconStyle: {
           color: theme.colors.primary,
           backgroundColor: theme.colors.primary
+        },
+        headerStyle: {
+          borderWidth: 3
         }
       }}
     >
@@ -38,12 +42,16 @@ const DashBoardTabs = () => {
           title: "Profile",
           headerTitle: "Profile",
           headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: theme.colors.primary
+            borderBottomWidth: 1
+            // backgrounColor: theme.colors.primary
           },
           headerTitleStyle: {
-            color: "#FFFFFF",
-            fontSize: 20
+            // color: "#FFFFFF",
+            fontSize: 20,
+            // borderWidth: 3,
+            width: "100%",
+            alignSelf: "center"
+            // flex: 1
           }
         }}
       />
