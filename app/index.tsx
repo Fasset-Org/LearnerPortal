@@ -56,7 +56,7 @@ const Home = () => {
         achieve more in your career, please register and complete your profile.
       </Text>
       <View style={styles.btnContainer}>
-        <TouchableOpacity onPress={() => router.push(`/auth/login`)}>
+        <TouchableOpacity onPress={() => router.push(`/(auth)/login`)}>
           <Button
             title="LOGIN"
             icon={
@@ -67,7 +67,7 @@ const Home = () => {
                 style={styles.icon}
               />
             }
-            onPress={() => router.push(`/auth/login`)}
+            onPress={() => router.push(`/(auth)/login`)}
             iconPosition="right"
             color="primary"
             buttonStyle={{ backgroundColor: theme.colors.primary }}
@@ -93,7 +93,7 @@ const Home = () => {
               borderWidth: 1
             }}
             titleStyle={{ color: theme.colors.secondary }}
-            onPress={() => router.push(`/auth/register`)}
+            onPress={() => router.push(`/(auth)/register`)}
           />
         </TouchableOpacity>
 
