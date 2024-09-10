@@ -23,7 +23,7 @@ const EditUserInfoOverlay: React.FunctionComponent<
     <View>
       <Icon
         name="pencil-square-o"
-        size={30}
+        size={20}
         type="font-awesome"
         style={styles.iconStyle}
         color="#FFFFFF"
