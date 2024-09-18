@@ -23,7 +23,12 @@ const DashBoardTabs = () => {
         },
         headerStyle: {
           borderWidth: 3
-        }
+        },
+
+        headerTitleStyle: {
+          color: theme.colors.primary
+        },
+        tabBarInactiveTintColor: theme.colors.primary
       }}
     >
       <Tabs.Screen
@@ -43,15 +48,6 @@ const DashBoardTabs = () => {
           headerTitle: "Profile",
           headerStyle: {
             borderBottomWidth: 1
-            // backgrounColor: theme.colors.primary
-          },
-          headerTitleStyle: {
-            // color: "#FFFFFF",
-            fontSize: 20,
-            // borderWidth: 3,
-            width: "100%",
-            alignSelf: "center"
-            // flex: 1
           }
         }}
       />
@@ -75,7 +71,7 @@ const DashBoardTabs = () => {
               <Icon name="pencil-square-o" size={20} type="font-awesome" />
             );
           },
-          title: "Skills",
+          title: "Skills & Attachments",
           headerStyle: { borderBottomWidth: 1 }
         }}
       />
