@@ -13,6 +13,192 @@ import themeLight from "../../Theme";
 import AddEditBasicEducationOverlay from "../../components/AddEditBasicEducationOverlay";
 
 const Certificate = () => {
+  const data = [
+    {
+      title: "Professional Skills",
+      iconName: "cog",
+      iconType: "font-awesome",
+      list: [
+        {
+          skill: "HTML & CSS",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "JavaScript",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "Vue JS",
+          skillLevel: "Intermediate"
+        },
+        {
+          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
+          skillLevel: "Intermediate"
+        }
+      ],
+      renderItem: (item: any) => {
+        return (
+          <View style={styles.cardHead}>
+            <View style={styles.listItem}>
+              <Text style={styles.bullet}>{"\u2022"}</Text>
+              <Text style={styles.itemText}>
+                {item.course} {" - "} {item.year}
+              </Text>
+            </View>
+            <AddEditBasicEducationOverlay />
+          </View>
+        );
+      }
+    },
+
+    {
+      title: "Certifications",
+      iconName: "file-alt",
+      iconType: "font-awesome-5",
+      list: [
+        {
+          skill: "HTML & CSS",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "JavaScript",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "Vue JS",
+          skillLevel: "Intermediate"
+        },
+        {
+          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
+          skillLevel: "Intermediate"
+        }
+      ],
+      renderItem: (item: any) => {
+        return (
+          <View style={styles.cardHead}>
+            <View style={styles.listItem}>
+              <Text style={styles.bullet}>{"\u2022"}</Text>
+              <Text style={styles.itemText}>
+                {item.course} {" - "} {item.year}
+              </Text>
+            </View>
+            <AddEditBasicEducationOverlay />
+          </View>
+        );
+      }
+    },
+
+    {
+      title: "Certifications",
+      iconName: "file-alt",
+      iconType: "font-awesome-5",
+      list: [
+        {
+          skill: "HTML & CSS",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "JavaScript",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "Vue JS",
+          skillLevel: "Intermediate"
+        },
+        {
+          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
+          skillLevel: "Intermediate"
+        }
+      ],
+      renderItem: (item: any) => {
+        return (
+          <View style={styles.cardHead}>
+            <View style={styles.listItem}>
+              <Text style={styles.bullet}>{"\u2022"}</Text>
+              <Text style={styles.itemText}>
+                {item.course} {" - "} {item.year}
+              </Text>
+            </View>
+            <AddEditBasicEducationOverlay />
+          </View>
+        );
+      }
+    },
+
+    {
+      title: "Certifications",
+      iconName: "file-alt",
+      iconType: "font-awesome-5",
+      list: [
+        {
+          skill: "HTML & CSS",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "JavaScript",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "Vue JS",
+          skillLevel: "Intermediate"
+        },
+        {
+          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
+          skillLevel: "Intermediate"
+        }
+      ],
+      renderItem: (item: any) => {
+        return (
+          <View style={styles.cardHead}>
+            <View style={styles.listItem}>
+              <Text style={styles.bullet}>{"\u2022"}</Text>
+              <Text style={styles.itemText}>
+                {item.course} {" - "} {item.year}
+              </Text>
+            </View>
+            <AddEditBasicEducationOverlay />
+          </View>
+        );
+      }
+    },
+    {
+      title: "Certifications",
+      iconName: "file-alt",
+      iconType: "font-awesome-5",
+      list: [
+        {
+          skill: "HTML & CSS",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "JavaScript",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "Vue JS",
+          skillLevel: "Intermediate"
+        },
+        {
+          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
+          skillLevel: "Intermediate"
+        }
+      ],
+      renderItem: (item: any) => {
+        return (
+          <View style={styles.cardHead}>
+            <View style={styles.listItem}>
+              <Text style={styles.bullet}>{"\u2022"}</Text>
+              <Text style={styles.itemText}>
+                {item.course} {" - "} {item.year}
+              </Text>
+            </View>
+            <AddEditBasicEducationOverlay />
+          </View>
+        );
+      }
+    }
+  ];
+
   const professionalSkills: any = [
     {
       skill: "HTML & CSS",
@@ -68,166 +254,197 @@ const Certificate = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {/* Basic Education */}
-        <Card containerStyle={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <Icon
-              name="cog"
-              type="font-awesome"
-              size={30}
-              color={themeLight.lightColors?.primary}
-            />
-            <Text style={[styles.cardHeaderText, styles.wrapText]}>
-              Professional Skills
-            </Text>
-          </View>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => {
+          return (
+            <Card containerStyle={styles.cardContainer}>
+              <View style={styles.cardHeader}>
+                <Icon
+                  name={item.iconName}
+                  type={item.iconType}
+                  size={30}
+                  color={themeLight.lightColors?.primary}
+                />
+                <Text style={[styles.cardHeaderText, styles.wrapText]}>
+                  {item.title}
+                </Text>
+              </View>
 
-          <FlatList
-            data={professionalSkills}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.cardHead}>
-                  <View style={styles.listItem}>
-                    <Text style={styles.bullet}>{"\u2022"}</Text>
-                    <Text style={styles.itemText}>
-                      {item.skill} {" - "} {item.skillLevel}
-                    </Text>
-                  </View>
-                  <AddEditBasicEducationOverlay />
-                </View>
-              );
-            }}
-            // keyExtractor={(item) => item}
-          />
-        </Card>
-
-        {/* Tertiary Education */}
-
-        <Card containerStyle={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <Icon
-              name="file-alt"
-              type="font-awesome-5"
-              size={30}
-              color={themeLight.lightColors?.primary}
-            />
-            <Text style={[styles.cardHeaderText, styles.wrapText]}>
-              Certifications
-            </Text>
-          </View>
-
-          <FlatList
-            data={certifications}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.cardHead}>
-                  <View style={styles.listItem}>
-                    <Text style={styles.bullet}>{"\u2022"}</Text>
-                    <Text style={styles.itemText}>
-                      {item.course} {" - "} {item.year}
-                    </Text>
-                  </View>
-                  <AddEditBasicEducationOverlay />
-                </View>
-              );
-            }}
-            // keyExtractor={(item) => item}
-          />
-        </Card>
-
-        {/* Attachments */}
-
-        <Card containerStyle={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <Icon
-              name="attach-file"
-              // type="font-awesome"
-              size={30}
-              color={themeLight.lightColors?.primary}
-              style={styles.icon}
-            />
-            <Text style={[styles.cardHeaderText, styles.wrapText]}>
-              Attachments
-            </Text>
-          </View>
-
-          <FlatList
-            data={tertiaryEducationList}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.cardHead}>
-                  <TouchableOpacity>
-                    <Card containerStyle={styles.downloadCardContainer}>
-                      <View style={styles.row}>
-                        <Icon
-                          name="file-pdf"
-                          type="font-awesome-5"
-                          size={30}
-                          color={themeLight.lightColors?.error}
-                        />
-                        <Text>Download Matric</Text>
-                        <Icon
-                          name="pencil-square-o"
-                          size={30}
-                          type="font-awesome"
-                          color={themeLight.lightColors?.primary}
-                        />
+              <FlatList
+                data={item.list}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={styles.cardHead}>
+                      <View style={styles.listItem}>
+                        <Text style={styles.bullet}>{"\u2022"}</Text>
+                        <Text style={styles.itemText}>
+                          {item.skill} {" - "} {item.skillLevel}
+                        </Text>
                       </View>
-                    </Card>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            // keyExtractor={(item) => item}
-          />
-        </Card>
+                      <AddEditBasicEducationOverlay />
+                    </View>
+                  );
+                }}
+              />
+            </Card>
+          );
+        }}
+      />
 
-        <Card containerStyle={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <Icon
-              name="attach-file"
-              // type="font-awesome"
-              size={30}
-              color={themeLight.lightColors?.primary}
-              style={styles.icon}
-            />
-            <Text style={[styles.cardHeaderText, styles.wrapText]}>
-              Attachments
-            </Text>
-          </View>
-
-          <FlatList
-            data={tertiaryEducationList}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.cardHead}>
-                  <TouchableOpacity>
-                    <Card containerStyle={styles.downloadCardContainer}>
-                      <View style={styles.row}>
-                        <Icon
-                          name="file-pdf"
-                          type="font-awesome-5"
-                          size={30}
-                          color={themeLight.lightColors?.error}
-                        />
-                        <Text>Download Matric</Text>
-                        <Icon
-                          name="pencil-square-o"
-                          size={30}
-                          type="font-awesome"
-                          color={themeLight.lightColors?.primary}
-                        />
-                      </View>
-                    </Card>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            // keyExtractor={(item) => item}
+      {/* <Card containerStyle={styles.cardContainer}>
+        <View style={styles.cardHeader}>
+          <Icon
+            name="cog"
+            type="font-awesome"
+            size={30}
+            color={themeLight.lightColors?.primary}
           />
-        </Card>
-      </ScrollView>
+          <Text style={[styles.cardHeaderText, styles.wrapText]}>
+            Professional Skills
+          </Text>
+        </View>
+
+        <FlatList
+          data={professionalSkills}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.cardHead}>
+                <View style={styles.listItem}>
+                  <Text style={styles.bullet}>{"\u2022"}</Text>
+                  <Text style={styles.itemText}>
+                    {item.skill} {" - "} {item.skillLevel}
+                  </Text>
+                </View>
+                <AddEditBasicEducationOverlay />
+              </View>
+            );
+          }}
+        />
+      </Card> */}
+
+      {/* <Card containerStyle={styles.cardContainer}>
+        <View style={styles.cardHeader}>
+          <Icon
+            name="file-alt"
+            type="font-awesome-5"
+            size={30}
+            color={themeLight.lightColors?.primary}
+          />
+          <Text style={[styles.cardHeaderText, styles.wrapText]}>
+            Certifications
+          </Text>
+        </View>
+
+        <FlatList
+          data={certifications}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.cardHead}>
+                <View style={styles.listItem}>
+                  <Text style={styles.bullet}>{"\u2022"}</Text>
+                  <Text style={styles.itemText}>
+                    {item.course} {" - "} {item.year}
+                  </Text>
+                </View>
+                <AddEditBasicEducationOverlay />
+              </View>
+            );
+          }}
+        />
+      </Card> */}
+
+      {/* Attachments */}
+
+      {/* <Card containerStyle={styles.cardContainer}>
+        <View style={styles.cardHeader}>
+          <Icon
+            name="attach-file"
+            // type="font-awesome"
+            size={30}
+            color={themeLight.lightColors?.primary}
+            style={styles.icon}
+          />
+          <Text style={[styles.cardHeaderText, styles.wrapText]}>
+            Attachments
+          </Text>
+        </View>
+
+        <FlatList
+          data={tertiaryEducationList}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.cardHead}>
+                <TouchableOpacity>
+                  <Card containerStyle={styles.downloadCardContainer}>
+                    <View style={styles.row}>
+                      <Icon
+                        name="file-pdf"
+                        type="font-awesome-5"
+                        size={30}
+                        color={themeLight.lightColors?.error}
+                      />
+                      <Text>Download Matric</Text>
+                      <Icon
+                        name="pencil-square-o"
+                        size={30}
+                        type="font-awesome"
+                        color={themeLight.lightColors?.primary}
+                      />
+                    </View>
+                  </Card>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          // keyExtractor={(item) => item}
+        />
+      </Card> */}
+
+      {/* <Card containerStyle={styles.cardContainer}>
+        <View style={styles.cardHeader}>
+          <Icon
+            name="attach-file"
+            // type="font-awesome"
+            size={30}
+            color={themeLight.lightColors?.primary}
+            style={styles.icon}
+          />
+          <Text style={[styles.cardHeaderText, styles.wrapText]}>
+            Attachments
+          </Text>
+        </View>
+
+        <FlatList
+          data={tertiaryEducationList}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.cardHead}>
+                <TouchableOpacity>
+                  <Card containerStyle={styles.downloadCardContainer}>
+                    <View style={styles.row}>
+                      <Icon
+                        name="file-pdf"
+                        type="font-awesome-5"
+                        size={30}
+                        color={themeLight.lightColors?.error}
+                      />
+                      <Text>Download Matric</Text>
+                      <Icon
+                        name="pencil-square-o"
+                        size={30}
+                        type="font-awesome"
+                        color={themeLight.lightColors?.primary}
+                      />
+                    </View>
+                  </Card>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          // keyExtractor={(item) => item}
+        />
+      </Card> */}
     </SafeAreaView>
   );
 };
