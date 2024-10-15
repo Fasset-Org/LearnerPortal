@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Image,
-  Modal,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
