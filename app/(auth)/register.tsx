@@ -16,7 +16,6 @@ import SelectInputWrapper from "../../components/FormComponents/SelectInputWrapp
 import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
-import { AxiosResponse } from "axios";
 import { useRouter } from "expo-router";
 
 interface FormData {
