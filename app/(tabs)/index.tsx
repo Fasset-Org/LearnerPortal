@@ -1,11 +1,16 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import React from "react";
-import { Card, Icon } from "@rneui/themed";
+import { Card } from "@rneui/themed";
 import themeLight from "../../Theme";
 import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
+import { getItem } from "expo-secure-store";
 
 const TabRootLayout = () => {
+  const token = getItem("userToken");
+
+  console.log(token);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
