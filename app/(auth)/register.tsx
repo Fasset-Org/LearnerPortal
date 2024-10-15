@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -15,6 +16,8 @@ import SelectInputWrapper from "../../components/FormComponents/SelectInputWrapp
 import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
+import { AxiosResponse } from "axios";
+import { useRouter } from "expo-router";
 
 interface FormData {
   email: string;
@@ -30,14 +33,16 @@ interface FormData {
 const Register = () => {
   const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
 
   const { mutate, data, error, isError, isSuccess, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.registerUser(formData);
     },
     onSuccess: (data) => {
-      setIsVisible(true);
-      console.log(data);
+      setTimeout(() => {
+        router.push(`/(auth)/login`);
+      }, 3000);
     },
     onError: (err: AxiosError) => {
       setIsVisible(true);
@@ -53,7 +58,37 @@ const Register = () => {
     <ScrollView>
       {isPending && (
         <Dialog isVisible={true} onBackdropPress={() => {}}>
-          <Dialog.Loading />
+          <ActivityIndicator size="large" />
+        </Dialog>
+      )}
+
+      {isSuccess && (
+        <Dialog
+          isVisible={true}
+          overlayStyle={{
+            alignItems: "center",
+            justifyContent: "center",
+            rowGap: 20
+          }}
+        >
+          <TouchableOpacity onPress={() => {}}>
+            <Icon
+              name="check"
+              type="material"
+              iconStyle={{
+                fontSize: 50,
+                height: 50,
+                width: 50,
+                color: theme.colors.success,
+                borderWidth: 1,
+                borderColor: theme.colors.success,
+                borderRadius: 25
+              }}
+            />
+          </TouchableOpacity>
+          <Text style={{ color: theme.colors.success, fontWeight: "bold" }}>
+            {(data as any).message}
+          </Text>
         </Dialog>
       )}
 
@@ -100,23 +135,6 @@ const Register = () => {
               />
             </Button>
           </View>
-          {/* <View
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end"
-            }}
-          >
-            <Button size="lg" type="outline">
-              Close
-              <Icon
-                name="close"
-                type="material"
-                iconStyle={{ marginLeft: 10, color: theme.colors.primary }}
-              />
-            </Button>
-          </View> */}
         </Dialog>
       )}
 
@@ -140,7 +158,8 @@ const Register = () => {
             rsaId: "",
             confirmPassword: "",
             identificationNumber: "",
-            passportNumber: ""
+            passportNumber: "",
+            userType: "student"
           }}
           validationSchema={Yup.object({
             email: Yup.string()
