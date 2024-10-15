@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -17,6 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
 import { useRouter } from "expo-router";
+import LoadingPopup from "../../components/LoadingPopup";
 
 interface FormData {
   email: string;
@@ -56,9 +58,28 @@ const Register = () => {
   return (
     <ScrollView>
       {isPending && (
-        <Dialog isVisible={true} onBackdropPress={() => {}}>
-          <ActivityIndicator size="large" />
-        </Dialog>
+        <LoadingPopup visible={isPending} />
+        // <Modal
+        //   transparent={true}
+        //   animationType="fade"
+        //   visible={isPending}
+        //   // onRequestClose={toggleLoading}
+        // >
+        //   <View
+        //     style={{
+        //       flex: 1,
+        //       backgroundColor: "rgba(0, 0, 0, 0.5)",
+        //       justifyContent: "center",
+        //       alignItems: "center"
+        //     }}
+        //   >
+        //     <View
+        //       style={{ backgroundColor: "#fff", padding: 20, borderRadius: 10 }}
+        //     >
+        //       <ActivityIndicator size="large" color="#007bff" />
+        //     </View>
+        //   </View>
+        // </Modal>
       )}
 
       {isSuccess && (
