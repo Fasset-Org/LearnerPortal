@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React, { createContext, ReactNode, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
