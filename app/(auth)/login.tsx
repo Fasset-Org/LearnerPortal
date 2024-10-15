@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -18,6 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
 import * as SecureStore from "expo-secure-store";
+import LoadingPopup from "../../components/LoadingPopup";
 
 interface FormData {
   email: string;
@@ -35,9 +35,7 @@ const Login = () => {
     },
     onSuccess: (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
-      setTimeout(() => {
-        router.push(`/(tabs)`);
-      }, 3000);
+      router.push(`/(tabs)`);
     },
     onError: (err: AxiosError) => {
       setIsVisible(true);
@@ -47,13 +45,9 @@ const Login = () => {
 
   return (
     <ScrollView>
-      {isPending && (
-        <Dialog isVisible={true} onBackdropPress={() => {}}>
-          <ActivityIndicator size="large" />
-        </Dialog>
-      )}
+      {isPending && <LoadingPopup visible={isPending} />}
 
-      {isSuccess && (
+      {/* {isSuccess && (
         <Dialog
           isVisible={true}
           overlayStyle={{
@@ -81,7 +75,7 @@ const Login = () => {
             {(data as any).message}
           </Text>
         </Dialog>
-      )}
+      )} */}
 
       {isError && (
         <Dialog
