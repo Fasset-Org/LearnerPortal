@@ -1,21 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View
 } from "react-native";
 import { Formik } from "formik";
 import TextInputWrapper from "../../components/FormComponents/TextInputWrapper";
 import * as Yup from "yup";
-import { Button, Icon, useTheme } from "@rneui/themed";
+import { Button, Dialog, Icon, Text, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
 import SelectInputWrapper from "../../components/FormComponents/SelectInputWrapper";
 import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 
 interface FormData {
   email: string;
@@ -30,31 +29,97 @@ interface FormData {
 
 const Register = () => {
   const { theme } = useTheme();
+  const [isVisible, setIsVisible] = useState(false);
 
-  const { mutate, data, error, isError, isSuccess } = useMutation<
-    AxiosResponse<any>,
-    AxiosError,
-    FormData
-  >({
+  const { mutate, data, error, isError, isSuccess, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.registerUser(formData);
     },
     onSuccess: (data) => {
+      setIsVisible(true);
       console.log(data);
     },
-    onError: (err: unknown) => {
-      const error = err as AxiosError;
-
-      console.log(JSON.stringify(error.response.data));
+    onError: (err: AxiosError) => {
+      setIsVisible(true);
+      console.log("Error", error.response.data);
     }
   });
 
-  if (error) {
-    console.log("Err", error);
-  }
+  // if (error) {
+  //   console.log("Err", error.response.data);
+  // }
 
   return (
     <ScrollView>
+      {isPending && (
+        <Dialog isVisible={true} onBackdropPress={() => {}}>
+          <Dialog.Loading />
+        </Dialog>
+      )}
+
+      {isError && (
+        <Dialog
+          isVisible={isVisible}
+          onBackdropPress={() => {}}
+          overlayStyle={{
+            alignItems: "center",
+            justifyContent: "center",
+            rowGap: 20
+          }}
+        >
+          <TouchableOpacity onPress={() => {}}>
+            <Icon
+              name="close"
+              type="material"
+              iconStyle={{
+                fontSize: 50,
+                height: 50,
+                width: 50,
+                color: theme.colors.error,
+                borderWidth: 1,
+                borderColor: theme.colors.error,
+                borderRadius: 25
+              }}
+            />
+          </TouchableOpacity>
+
+          <View style={{ display: "flex", rowGap: 20 }}>
+            <Text style={{ color: theme.colors.error }}>
+              {error?.response?.data?.message || "Something went wrong"}
+            </Text>
+            <Button
+              size="lg"
+              type="outline"
+              onPress={() => setIsVisible(false)}
+            >
+              Close
+              <Icon
+                name="close"
+                type="material"
+                iconStyle={{ marginLeft: 10, color: theme.colors.primary }}
+              />
+            </Button>
+          </View>
+          {/* <View
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end"
+            }}
+          >
+            <Button size="lg" type="outline">
+              Close
+              <Icon
+                name="close"
+                type="material"
+                iconStyle={{ marginLeft: 10, color: theme.colors.primary }}
+              />
+            </Button>
+          </View> */}
+        </Dialog>
+      )}
+
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
