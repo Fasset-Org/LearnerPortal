@@ -5,13 +5,27 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Icon, useTheme } from "@rneui/themed";
 import { useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import StudentQuery from "./xhr/student";
 
 const Home = () => {
   const { theme } = useTheme();
   const router = useRouter();
+
+  const userInfoQuery = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  useEffect(() => {
+    if (userInfoQuery?.data) {
+      return router.push(`/(tabs)`);
+    }
+  }, [userInfoQuery?.data]);
+
   const list = [
     "Investment entities and trusts and company secretary services",
     "Stockbroking and financial markets.",
