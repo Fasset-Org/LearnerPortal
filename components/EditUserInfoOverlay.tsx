@@ -1,23 +1,85 @@
 import React, { useState } from "react";
 import { Button, Overlay, Icon, useTheme } from "@rneui/themed";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import themeLight from "../Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
 import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 
-type EditUserInfoOverlay = {};
+type EditUserInfoOverlay = {
+  userInfo: any;
+};
 
-const EditUserInfoOverlay: React.FunctionComponent<
-  EditUserInfoOverlay
-> = () => {
+const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
+  userInfo
+}: any) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  const careerStatusOptions = [
+    {
+      value: "",
+      label: "None"
+    },
+    {
+      value: "I obtained a matric certificate",
+      label: "I obtained a matric certificate"
+    },
+    {
+      value: "I obtained a matric certificate with university exemption",
+      label: "I obtained a matric certificate with university exemption"
+    },
+    {
+      value: "I am currently registered at a tertiary institution",
+      label: "I am currently registered at a tertiary institution"
+    },
+    {
+      value: "I have no formal employment",
+      label: "I have no formal employment"
+    },
+    {
+      value: "I currently have a part-time job / internship",
+      label: "I currently have a part-time job / internship"
+    },
+    {
+      value: "I currently have a full-time, salaried job",
+      label: "I currently have a full-time, salaried job"
+    }
+  ];
+
+  const raceOptions = [
+    {
+      value: "",
+      label: "None"
+    },
+    {
+      value: "Black",
+      label: "Black"
+    },
+    {
+      value: "White",
+      label: "White"
+    },
+    {
+      value: "Coloured",
+      label: "Coloured"
+    },
+    {
+      value: "Indian",
+      label: "Indian"
+    }
+  ];
 
   return (
     <View>
@@ -44,88 +106,197 @@ const EditUserInfoOverlay: React.FunctionComponent<
             onPress={toggleOverlay}
           />
         </View>
-        <View style={{ padding: 10 }}>
-          <Formik
-            initialValues={{
-              email: "",
-              password: "",
-              firstName: "",
-              lastName: "",
-              rsaId: ""
-            }}
-            validationSchema={Yup.object({
-              firstName: Yup.string().required("FirstName required"),
-              lastName: Yup.string().required("LastName required"),
-              email: Yup.string()
-                .email("Invalid email address")
-                .required("Email required"),
-              password: Yup.string()
-                .min(8, "Password must be at least 8 characters")
-                .required("Password required"),
-              rsaId: Yup.string().required("Please select")
-            })}
-            onSubmit={(values) => console.log(values)}
-            // Optionally add validationSchema here
-          >
-            {({ handleSubmit }) => (
-              <View style={styles.innerContainer}>
-                <TextInputWrapper
-                  name="firstName"
-                  label="First Name"
-                  secureTextEntry={false}
-                />
-                <TextInputWrapper
-                  name="middleName"
-                  label="Middle Name"
-                  secureTextEntry={false}
-                />
-                <TextInputWrapper
-                  name="lastName"
-                  label="Last Name"
-                  secureTextEntry={false}
-                />
-                <SelectInputWrapper
-                  name="rsaId"
-                  label="Do you have RSA ID?"
-                  options={[
-                    { value: "", label: "Do you have RSA ID?" },
-                    { value: "Yes", label: "Yes" },
-                    { value: "No", label: "No" }
-                  ]}
-                />
-                <TextInputWrapper
-                  name="password"
-                  label="Password"
-                  secureTextEntry={true}
-                />
-                <TouchableOpacity style={styles.button}>
-                  <Button
-                    title="REGISTER"
-                    icon={
-                      <Icon
-                        name="pencil-square-o"
-                        size={20}
-                        color={theme.colors.secondary}
-                        type="font-awesome"
-                      />
-                    }
-                    iconPosition="right"
-                    type="outline"
-                    buttonStyle={{
-                      borderColor: theme.colors.secondary,
-                      borderWidth: 1
-                    }}
-                    titleStyle={{
-                      color: theme.colors.secondary,
-                      marginRight: 10
-                    }}
-                    onPress={() => handleSubmit()}
+        <ScrollView>
+          <View style={{ padding: 10 }}>
+            <Formik
+              initialValues={{
+                id: userInfo?.id || "",
+                firstName: userInfo?.firstName || "",
+                middleName: userInfo?.middleName || "",
+                lastName: userInfo?.lastName || "",
+                identificationNumber:
+                  userInfo?.studentInformation?.identificationNumber || "",
+                rsaId: userInfo?.studentInformation?.rsaId || "",
+                passportNumber:
+                  userInfo?.studentInformation?.passportNumber || "",
+                disbility: userInfo?.studentInformation?.disbility || "",
+                careerStatus: userInfo?.studentInformation?.careerStatus || "",
+                mobileNumber: userInfo?.studentInformation?.mobileNumber || "",
+                race: userInfo?.studentInformation?.race || ""
+              }}
+              validationSchema={Yup.object().shape({
+                firstName: Yup.string().required("FirstName required"),
+                lastName: Yup.string().required("LastName required"),
+                careerStatus: Yup.string().required("Career status required"),
+                mobileNumber: Yup.string().required("Mobile number required"),
+                race: Yup.string().required("Race is required"),
+                disbility: Yup.string().required(
+                  "Disability status is required"
+                ),
+                rsaId: Yup.string().required("Please select"),
+                identificationNumber: Yup.string().when("rsaId", {
+                  is: "Yes",
+                  then: () =>
+                    Yup.string()
+                      .required("ID number required")
+                      .test(
+                        "rsaId",
+                        "Please provide valid Identification Number",
+                        function (num) {
+                          let idNumber = num?.toString();
+                          var correct = true;
+                          if (
+                            idNumber?.length !== 13 ||
+                            !!isNaN(parseFloat(num))
+                          ) {
+                            correct = false;
+                          }
+                          var tempDate = new Date(
+                            Number(idNumber?.substring(0, 2)),
+                            Number(idNumber?.substring(2, 4)) - 1,
+                            Number(idNumber?.substring(4, 6))
+                          );
+                          if (tempDate instanceof Date) {
+                            correct = true;
+                          } else {
+                            correct = false;
+                          }
+                          var tempTotal = 0;
+                          var checkSum = 0;
+                          var multiplier = 1;
+
+                          for (var i = 0; i < 13; ++i) {
+                            tempTotal =
+                              parseInt(idNumber?.charAt(i)) * multiplier;
+                            if (tempTotal > 9) {
+                              tempTotal =
+                                parseInt(tempTotal.toString().charAt(0)) +
+                                parseInt(tempTotal.toString().charAt(1));
+                            }
+                            checkSum = checkSum + tempTotal;
+                            multiplier = multiplier % 2 === 0 ? 1 : 2;
+                          }
+                          if (checkSum % 10 !== 0) {
+                            correct = false;
+                          }
+                          if (correct) {
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        }
+                      )
+                }),
+                passportNumber: Yup.string().when("rsaId", {
+                  is: "No",
+                  then: () => Yup.string().required("Passport number required")
+                })
+              })}
+              onSubmit={(values) => console.log(values)}
+              // Optionally add validationSchema here
+            >
+              {({ handleSubmit, values }) => (
+                <View style={styles.innerContainer}>
+                  <TextInputWrapper
+                    name="firstName"
+                    label="First Name"
+                    secureTextEntry={false}
                   />
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-        </View>
+                  <TextInputWrapper
+                    name="middleName"
+                    label="Middle Name"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="lastName"
+                    label="Last Name"
+                    secureTextEntry={false}
+                  />
+                  <SelectInputWrapper
+                    name="rsaId"
+                    label="Do you have RSA ID?"
+                    options={[
+                      { value: "", label: "Do you have RSA ID?" },
+                      { value: "Yes", label: "Yes" },
+                      { value: "No", label: "No" }
+                    ]}
+                  />
+
+                  {values.rsaId === "Yes" && (
+                    <TextInputWrapper
+                      name="identificationNumber"
+                      label="Identification Number"
+                      secureTextEntry={false}
+                    />
+                  )}
+
+                  {values.rsaId === "No" && (
+                    <TextInputWrapper
+                      name="passportNumber"
+                      label="Passport Number"
+                      secureTextEntry={false}
+                    />
+                  )}
+
+                  <SelectInputWrapper
+                    name="disbility"
+                    label="Disability"
+                    options={[
+                      { value: "", label: "Disability?" },
+                      { value: "None", label: "None" },
+                      { value: "Yes", label: "Yes" }
+                    ]}
+                  />
+
+                  <SelectInputWrapper
+                    name="careerStatus"
+                    label="Career Status"
+                    options={careerStatusOptions}
+                  />
+
+                  <SelectInputWrapper
+                    name="race"
+                    label="Race"
+                    options={raceOptions}
+                  />
+
+                  <TextInputWrapper
+                    name="mobileNumber"
+                    label="Mobile Number"
+                    secureTextEntry={false}
+                  />
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleSubmit()}
+                  >
+                    <Button
+                      title="UPDATE"
+                      icon={
+                        <Icon
+                          name="pencil-square-o"
+                          size={20}
+                          color={theme.colors.secondary}
+                          type="font-awesome"
+                        />
+                      }
+                      iconPosition="right"
+                      type="outline"
+                      buttonStyle={{
+                        borderColor: theme.colors.secondary,
+                        borderWidth: 1
+                      }}
+                      titleStyle={{
+                        color: theme.colors.secondary,
+                        marginRight: 10
+                      }}
+                      onPress={() => handleSubmit()}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+          </View>
+        </ScrollView>
       </Overlay>
     </View>
   );
