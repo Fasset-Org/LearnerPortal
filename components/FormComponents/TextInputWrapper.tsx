@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { useField } from "formik";
 import { Input } from "@rneui/base";
 import { useTheme } from "@rneui/themed";
-import themeLight from "../../Theme";
 
 type PropType = {
   name: string;
