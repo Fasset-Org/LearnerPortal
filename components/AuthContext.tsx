@@ -4,34 +4,41 @@ import StudentQuery from "../app/xhr/student";
 import SplashScreen from "./SplashScreen";
 import ErrorComponent from "./ErrorComponent";
 import { AxiosError } from "axios";
+import { router } from "expo-router";
 
-const AuthContext = createContext<unknown>(null);
+interface ProviderProps {
+  isAuth: boolean;
+  userInfo: Object;
+}
+
+export const AuthContext = createContext<ProviderProps>({
+  isAuth: false,
+  userInfo: {}
+});
 
 interface Props {
   children: ReactNode;
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const [isAuth, setIsAuth] = useState<boolean>();
-
   const { data, error, isPending, isError } = useQuery({
     queryKey: ["userInfo"],
     queryFn: () => StudentQuery.getUserInfo()
   });
 
-  console.log(data as any);
+  const userData = data as any;
 
-  if (data) {
-    setIsAuth(true);
-  }
+  console.log(userData);
 
-  if (
-    isError &&
-    ((error as AxiosError).response.status !== 401 ||
-      (error as AxiosError).response.status !== 500)
-  ) {
-    console.log((error as AxiosError).response);
-    return <ErrorComponent />;
+  const err = error as AxiosError;
+
+  if (isError && err?.response?.status !== 401) {
+    return (
+      <ErrorComponent
+        title={err?.name}
+        errMessage={err?.response?.data?.message}
+      />
+    );
   }
 
   if (isPending) {
@@ -39,7 +46,11 @@ const AuthProvider = ({ children }: Props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuth }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ isAuth: userData?.success, userInfo: userData?.user }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
 
