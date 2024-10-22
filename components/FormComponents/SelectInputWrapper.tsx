@@ -46,7 +46,7 @@ const SelectInputWrapper = ({ name, label, options }: PropType) => {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginBottom: 15,
+    // marginBottom: 15,
     padding: 10
   },
   label: {
