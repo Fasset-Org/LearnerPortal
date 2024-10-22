@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -13,11 +13,12 @@ import * as Yup from "yup";
 import { Button, Dialog, Icon, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
 import { useRouter } from "expo-router";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
 import * as SecureStore from "expo-secure-store";
 import LoadingPopup from "../../components/LoadingPopup";
+import StudentQuery from "../xhr/student";
 
 interface FormData {
   email: string;
@@ -43,8 +44,22 @@ const Login = () => {
     }
   });
 
+  const userInfoQuery = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  console.log(userInfoQuery);
+
+  useEffect(() => {
+    if (userInfoQuery?.data) {
+      console.log(userInfoQuery?.data);
+      return router.push(`/(tabs)`);
+    }
+  }, [userInfoQuery?.data]);
+
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }}>
       {isPending && <LoadingPopup visible={isPending} />}
 
       {/* {isSuccess && (
