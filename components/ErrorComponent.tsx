@@ -2,7 +2,12 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { Button } from "@rneui/themed";
 
-export default function ErrorComponent() {
+interface Props {
+  title?: string;
+  errMessage?: string;
+}
+
+export default function ErrorComponent({ title, errMessage }: Props) {
   const onRetry = () => {};
   return (
     <View
@@ -27,7 +32,7 @@ export default function ErrorComponent() {
           marginBottom: 10
         }}
       >
-        Something went wrong.
+        {title || "Something went wrong."}
       </Text>
       <Text
         style={{
@@ -37,7 +42,8 @@ export default function ErrorComponent() {
           marginBottom: 20
         }}
       >
-        Please try again or contact support if the problem persists.
+        {errMessage ||
+          "Please try again or contact support if the problem persists."}
       </Text>
       <Button title="Retry" onPress={onRetry} />
     </View>
