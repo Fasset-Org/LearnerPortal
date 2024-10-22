@@ -1,15 +1,21 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "@rneui/themed";
 import themeLight from "../../Theme";
 import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
-import { getItem } from "expo-secure-store";
+import { useQuery } from "@tanstack/react-query";
+import StudentQuery from "../xhr/student";
 
 const TabRootLayout = () => {
-  const token = getItem("userToken");
+  const userInfoQuery = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
 
-  console.log(token);
+  const userData = (userInfoQuery?.data as any).user;
+
+  console.log(userData);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,7 +33,7 @@ const TabRootLayout = () => {
                 style={styles.iconStyle}
                 color="#FFFFFF"
               /> */}
-              <EditUserInfoOverlay />
+              <EditUserInfoOverlay userInfo={userData} />
             </View>
           </View>
 
@@ -40,7 +46,10 @@ const TabRootLayout = () => {
                 Full Name
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>Tiyisela Themba Makamu</Text>
+              <Text style={styles.wrapText}>
+                {userData?.firstName} {userData?.middleName}{" "}
+                {userData?.lastName}
+              </Text>
             </View>
 
             <View style={styles.row}>
@@ -48,14 +57,16 @@ const TabRootLayout = () => {
                 ID Number
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>9804046210080</Text>
+              <Text style={styles.wrapText}>
+                {userData?.studentInformation?.identificationNumber}
+              </Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.boldText}>
                 Email
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>kamzen1994@gmail.com</Text>
+              <Text style={styles.wrapText}>{userData?.email}</Text>
             </View>
 
             <View style={styles.row}>
@@ -63,7 +74,9 @@ const TabRootLayout = () => {
                 Contact
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>+27 797126016</Text>
+              <Text style={styles.wrapText}>
+                {userData?.studentInformation?.mobileNumber}
+              </Text>
             </View>
 
             <View style={styles.row}>
@@ -92,57 +105,65 @@ const TabRootLayout = () => {
                 style={styles.iconStyle}
                 color="#FFFFFF"
               /> */}
-              <EditUserAddressOverlay />
+              <EditUserAddressOverlay
+                studentAddress={userData?.studentAddress}
+              />
             </View>
           </View>
 
           <View style={styles.cardDetail}>
-            <View style={styles.row}>
-              <Text style={styles.boldText}>Street Number/Name &nbsp;:</Text>
-              <Text style={styles.wrapText}>1386, Mthimunye Street</Text>
-            </View>
+            {userData?.studentAddress && (
+              <>
+                <View style={styles.row}>
+                  <Text style={styles.boldText}>
+                    Street Number/Name &nbsp;:
+                  </Text>
+                  <Text style={styles.wrapText}>1386, Mthimunye Street</Text>
+                </View>
 
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
-                Suburb/Town
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-              </Text>
-              <Text style={styles.wrapText}>Ga-Rankuwa Unit 23</Text>
-            </View>
+                <View style={styles.row}>
+                  <Text style={styles.boldText}>
+                    Suburb/Town
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  </Text>
+                  <Text style={styles.wrapText}>Ga-Rankuwa Unit 23</Text>
+                </View>
 
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
-                City
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-              </Text>
-              <Text style={styles.wrapText}>Ga-Rankuwa</Text>
-            </View>
+                <View style={styles.row}>
+                  <Text style={styles.boldText}>
+                    City
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  </Text>
+                  <Text style={styles.wrapText}>Ga-Rankuwa</Text>
+                </View>
 
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
-                Province
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-              </Text>
-              <Text style={styles.wrapText}>Gauteng</Text>
-            </View>
+                <View style={styles.row}>
+                  <Text style={styles.boldText}>
+                    Province
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  </Text>
+                  <Text style={styles.wrapText}>Gauteng</Text>
+                </View>
 
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
-                Postal Code
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-              </Text>
-              <Text style={styles.wrapText}>0208</Text>
-            </View>
+                <View style={styles.row}>
+                  <Text style={styles.boldText}>
+                    Postal Code
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  </Text>
+                  <Text style={styles.wrapText}>0208</Text>
+                </View>
 
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
-                Manicipality
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-              </Text>
-              <Text style={styles.wrapText}>
-                City of Tshwane Metropolitan Municipality
-              </Text>
-            </View>
+                <View style={styles.row}>
+                  <Text style={styles.boldText}>
+                    Manicipality
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  </Text>
+                  <Text style={styles.wrapText}>
+                    City of Tshwane Metropolitan Municipality
+                  </Text>
+                </View>
+              </>
+            )}
 
             <Text style={styles.dangerText}>
               Please note that your address will determine where you will be
