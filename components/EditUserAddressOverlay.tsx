@@ -1,14 +1,26 @@
 import React, { useState } from "react";
-import { Button, Overlay, Icon } from "@rneui/themed";
-import { View, Text, StyleSheet } from "react-native";
+import { Button, Overlay, Icon, useTheme } from "@rneui/themed";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import themeLight from "../Theme";
+import TextInputWrapper from "./FormComponents/TextInputWrapper";
+import { Formik } from "formik";
+import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 
-type EditUserAddressOverlay = {};
+type EditUserAddressOverlay = {
+  studentAddress: any;
+};
 
 const EditUserAddressOverlay: React.FunctionComponent<
   EditUserAddressOverlay
-> = () => {
+> = ({ studentAddress }) => {
   const [visible, setVisible] = useState(false);
+  const { theme } = useTheme();
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -16,21 +28,37 @@ const EditUserAddressOverlay: React.FunctionComponent<
 
   return (
     <View>
-      <Icon
-        name="pencil-square-o"
-        size={20}
-        type="font-awesome"
-        style={styles.iconStyle}
-        color="#FFFFFF"
-        onPress={toggleOverlay}
-      />
+      {!studentAddress ? (
+        <Icon
+          name="add"
+          type="material"
+          size={20}
+          style={styles.iconStyle}
+          color="#FFFFFF"
+          onPress={toggleOverlay}
+        />
+      ) : (
+        <Icon
+          name="pencil-square-o"
+          size={20}
+          type="font-awesome"
+          style={styles.iconStyle}
+          color="#FFFFFF"
+          onPress={toggleOverlay}
+        />
+      )}
+
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
         overlayStyle={styles.fullScreenOverlay}
       >
         <View style={styles.overlayHeader}>
-          <Text style={styles.textPrimary}>Edit Address Information</Text>
+          <Text style={styles.textPrimary}>
+            {studentAddress
+              ? "Edit Address Information"
+              : "Add Address Information"}
+          </Text>
           <Icon
             name="close"
             type="material"
@@ -39,22 +67,89 @@ const EditUserAddressOverlay: React.FunctionComponent<
             onPress={toggleOverlay}
           />
         </View>
-        <Text style={styles.textSecondary}>
-          Welcome to React Native Elements
-        </Text>
-        <Button
-          icon={
-            <Icon
-              name="wrench"
-              type="font-awesome"
-              color="white"
-              size={25}
-              iconStyle={{ marginRight: 10 }}
-            />
-          }
-          title="Start Building"
-          onPress={toggleOverlay}
-        />
+
+        <ScrollView>
+          <View style={{ padding: 10 }}>
+            <Formik
+              initialValues={{}}
+              validationSchema={{}}
+              onSubmit={(values) => console.log(values)}
+              // Optionally add validationSchema here
+            >
+              {({ handleSubmit, values }) => (
+                <View style={styles.innerContainer}>
+                  <TextInputWrapper
+                    name="firstName"
+                    label="First Name"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="middleName"
+                    label="Middle Name"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="lastName"
+                    label="Last Name"
+                    secureTextEntry={false}
+                  />
+                  <SelectInputWrapper
+                    name="rsaId"
+                    label="Do you have RSA ID?"
+                    options={[
+                      { value: "", label: "Do you have RSA ID?" },
+                      { value: "Yes", label: "Yes" },
+                      { value: "No", label: "No" }
+                    ]}
+                  />
+
+                  <SelectInputWrapper
+                    name="disbility"
+                    label="Disability"
+                    options={[
+                      { value: "", label: "Disability?" },
+                      { value: "None", label: "None" },
+                      { value: "Yes", label: "Yes" }
+                    ]}
+                  />
+
+                  <TextInputWrapper
+                    name="mobileNumber"
+                    label="Mobile Number"
+                    secureTextEntry={false}
+                  />
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleSubmit()}
+                  >
+                    <Button
+                      title="UPDATE"
+                      icon={
+                        <Icon
+                          name="pencil-square-o"
+                          size={20}
+                          color={theme.colors.secondary}
+                          type="font-awesome"
+                        />
+                      }
+                      iconPosition="right"
+                      type="outline"
+                      buttonStyle={{
+                        borderColor: theme.colors.secondary,
+                        borderWidth: 1
+                      }}
+                      titleStyle={{
+                        color: theme.colors.secondary,
+                        marginRight: 10
+                      }}
+                      onPress={() => handleSubmit()}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+          </View>
+        </ScrollView>
       </Overlay>
     </View>
   );
@@ -92,6 +187,9 @@ const styles = StyleSheet.create({
     height: "100%", // Full height
     marginTop: 0, // No margin
     padding: 0 // No padding
+  },
+  innerContainer: {
+    rowGap: 0
   }
 });
 
