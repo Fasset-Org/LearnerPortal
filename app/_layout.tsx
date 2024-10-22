@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Stack } from "expo-router";
 import CustomHeaderTitle from "../components/CustomHeaderTitle";
 import { ThemeProvider, useTheme } from "@rneui/themed";
@@ -13,32 +13,30 @@ const RootLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={themeLight}>
-        <AuthProvider>
-          <Stack>
-            <Stack.Screen
-              name="index"
-              options={{
-                headerStyle: {
-                  backgroundColor: themeLight.lightColors?.primary
-                },
-                headerTitleStyle: { color: "#FFFFFF" },
-                headerTitle: () => <CustomHeaderTitle />
-              }}
-            />
-            <Stack.Screen
-              name="(tabs)"
-              options={{
-                headerShown: false
-              }}
-            />
-            <Stack.Screen
-              name="(auth)"
-              options={{
-                headerShown: false
-              }}
-            />
-          </Stack>
-        </AuthProvider>
+        <Stack>
+          <Stack.Screen
+            name="index"
+            options={{
+              headerStyle: {
+                backgroundColor: themeLight.lightColors?.primary
+              },
+              headerTitleStyle: { color: "#FFFFFF" },
+              headerTitle: () => <CustomHeaderTitle />
+            }}
+          />
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen
+            name="(auth)"
+            options={{
+              headerShown: false
+            }}
+          />
+        </Stack>
       </ThemeProvider>
     </QueryClientProvider>
   );
