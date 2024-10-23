@@ -5,6 +5,7 @@ import { Icon, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
 import { useQuery } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
+import { ActivityIndicator } from "react-native-paper";
 
 const DashBoardTabs = () => {
   const { theme } = useTheme();
@@ -14,12 +15,14 @@ const DashBoardTabs = () => {
     queryFn: () => StudentQuery.getUserInfo()
   });
 
-  useEffect(() => {
-    if (!userInfoQuery?.data) {
-      console.log(userInfoQuery?.data);
-      return router.push(`/(auth)/login`);
-    }
-  }, [userInfoQuery?.data]);
+  if (!userInfoQuery?.data) {
+    console.log(userInfoQuery?.data);
+    return router.replace(`/(auth)/login`);
+  }
+
+  if (userInfoQuery.isPending) {
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <Tabs
