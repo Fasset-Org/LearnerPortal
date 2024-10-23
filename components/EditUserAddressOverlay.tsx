@@ -10,7 +10,9 @@ import {
 import themeLight from "../Theme";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
 import { Formik } from "formik";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
+import * as Yup from "yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../app/xhr/student";
 
 type EditUserAddressOverlay = {
   studentAddress: any;
@@ -21,10 +23,19 @@ const EditUserAddressOverlay: React.FunctionComponent<
 > = ({ studentAddress }) => {
   const [visible, setVisible] = useState(false);
   const { theme } = useTheme();
+  const queryClient = useQueryClient();
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  const { data, isPending, isError, error } = useMutation({
+    mutationFn: (formData: any) => StudentQuery.addAddresInfo(formData),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+    },
+    onError: (err) => console.log(err)
+  });
 
   return (
     <View>
@@ -71,80 +82,128 @@ const EditUserAddressOverlay: React.FunctionComponent<
         <ScrollView>
           <View style={{ padding: 10 }}>
             <Formik
-              initialValues={{}}
-              validationSchema={{}}
+              initialValues={{
+                id: studentAddress?.id,
+                streetNumber: studentAddress?.streetNumber || "",
+                streetName: studentAddress?.streetName || "",
+                suburb: studentAddress?.suburb || "",
+                manicipality: studentAddress?.manicipality || "",
+                city: studentAddress?.city || "",
+                province: studentAddress?.province || "",
+                country: studentAddress?.country || "",
+                postalCode: studentAddress?.postalCode || ""
+              }}
+              validationSchema={Yup.object().shape({
+                manicipality: Yup.string().required("Manicipality is required"),
+                city: Yup.string().required("City is required"),
+                province: Yup.string().required("Province is required"),
+                country: Yup.string().required("Country is required"),
+                postalCode: Yup.string().required("Postal Code is required")
+              })}
               onSubmit={(values) => console.log(values)}
               // Optionally add validationSchema here
             >
               {({ handleSubmit, values }) => (
                 <View style={styles.innerContainer}>
                   <TextInputWrapper
-                    name="firstName"
-                    label="First Name"
+                    name="streetNumber"
+                    label="Street Number"
                     secureTextEntry={false}
                   />
                   <TextInputWrapper
-                    name="middleName"
-                    label="Middle Name"
+                    name="streetName"
+                    label="Street Name"
                     secureTextEntry={false}
                   />
                   <TextInputWrapper
-                    name="lastName"
-                    label="Last Name"
+                    name="suburb"
+                    label="Suburb"
                     secureTextEntry={false}
-                  />
-                  <SelectInputWrapper
-                    name="rsaId"
-                    label="Do you have RSA ID?"
-                    options={[
-                      { value: "", label: "Do you have RSA ID?" },
-                      { value: "Yes", label: "Yes" },
-                      { value: "No", label: "No" }
-                    ]}
-                  />
-
-                  <SelectInputWrapper
-                    name="disbility"
-                    label="Disability"
-                    options={[
-                      { value: "", label: "Disability?" },
-                      { value: "None", label: "None" },
-                      { value: "Yes", label: "Yes" }
-                    ]}
                   />
 
                   <TextInputWrapper
-                    name="mobileNumber"
-                    label="Mobile Number"
+                    name="manicipality"
+                    label="Manicipality"
                     secureTextEntry={false}
                   />
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => handleSubmit()}
-                  >
-                    <Button
-                      title="UPDATE"
-                      icon={
-                        <Icon
-                          name="pencil-square-o"
-                          size={20}
-                          color={theme.colors.secondary}
-                          type="font-awesome"
-                        />
-                      }
-                      iconPosition="right"
-                      type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
+
+                  <TextInputWrapper
+                    name="city"
+                    label="City"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="province"
+                    label="Province"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="country"
+                    label="Country"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="postalCode"
+                    label="Postal Code"
+                    secureTextEntry={false}
+                  />
+                  {studentAddress ? (
+                    <TouchableOpacity
+                      style={styles.button}
                       onPress={() => handleSubmit()}
-                    />
-                  </TouchableOpacity>
+                    >
+                      <Button
+                        title="UPDATE"
+                        icon={
+                          <Icon
+                            name="pencil-square-o"
+                            size={20}
+                            color={theme.colors.secondary}
+                            type="font-awesome"
+                          />
+                        }
+                        iconPosition="right"
+                        type="outline"
+                        buttonStyle={{
+                          borderColor: theme.colors.secondary,
+                          borderWidth: 1
+                        }}
+                        titleStyle={{
+                          color: theme.colors.secondary,
+                          marginRight: 10
+                        }}
+                        onPress={() => handleSubmit()}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => handleSubmit()}
+                    >
+                      <Button
+                        title="SAVE"
+                        // icon={
+                        //   <Icon
+                        //     name="add"
+                        //     size={20}
+                        //     color={theme.colors.secondary}
+                        //     type="material"
+                        //   />
+                        // }
+                        iconPosition="right"
+                        type="solid"
+                        buttonStyle={{
+                          borderColor: theme.colors.primary,
+                          borderWidth: 1
+                        }}
+                        titleStyle={{
+                          // color: theme.colors.secondary,
+                          marginRight: 10
+                        }}
+                        onPress={() => handleSubmit()}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </View>
               )}
             </Formik>
