@@ -13,9 +13,7 @@ const TabRootLayout = () => {
     queryFn: () => StudentQuery.getUserInfo()
   });
 
-  const userData = (userInfoQuery?.data as any).user;
-
-  console.log(userData);
+  const userData = (userInfoQuery?.data as any)?.user;
 
   return (
     <SafeAreaView style={styles.container}>
