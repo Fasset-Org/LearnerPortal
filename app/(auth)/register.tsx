@@ -17,6 +17,8 @@ import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
 import { useRouter } from "expo-router";
 import LoadingPopup from "../../components/LoadingPopup";
+import { ActivityIndicator } from "react-native-paper";
+import { showToast } from "../../utils/showToast";
 
 interface FormData {
   email: string;
@@ -31,131 +33,25 @@ interface FormData {
 
 const Register = () => {
   const { theme } = useTheme();
-  const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
-  const { mutate, data, error, isError, isSuccess, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.registerUser(formData);
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
       setTimeout(() => {
         router.push(`/(auth)/login`);
-      }, 3000);
+      }, 2000);
     },
     onError: (err: AxiosError) => {
-      setIsVisible(true);
-      console.log("Error", error.response.data);
+      showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
-  // if (error) {
-  //   console.log("Err", error.response.data);
-  // }
-
   return (
     <ScrollView>
-      {isPending && (
-        <LoadingPopup visible={isPending} />
-        // <Modal
-        //   transparent={true}
-        //   animationType="fade"
-        //   visible={isPending}
-        //   // onRequestClose={toggleLoading}
-        // >
-        //   <View
-        //     style={{
-        //       flex: 1,
-        //       backgroundColor: "rgba(0, 0, 0, 0.5)",
-        //       justifyContent: "center",
-        //       alignItems: "center"
-        //     }}
-        //   >
-        //     <View
-        //       style={{ backgroundColor: "#fff", padding: 20, borderRadius: 10 }}
-        //     >
-        //       <ActivityIndicator size="large" color="#007bff" />
-        //     </View>
-        //   </View>
-        // </Modal>
-      )}
-
-      {isSuccess && (
-        <Dialog
-          isVisible={true}
-          overlayStyle={{
-            alignItems: "center",
-            justifyContent: "center",
-            rowGap: 20
-          }}
-        >
-          <TouchableOpacity onPress={() => {}}>
-            <Icon
-              name="check"
-              type="material"
-              iconStyle={{
-                fontSize: 50,
-                height: 50,
-                width: 50,
-                color: theme.colors.success,
-                borderWidth: 1,
-                borderColor: theme.colors.success,
-                borderRadius: 25
-              }}
-            />
-          </TouchableOpacity>
-          <Text style={{ color: theme.colors.success, fontWeight: "bold" }}>
-            {(data as any).message}
-          </Text>
-        </Dialog>
-      )}
-
-      {isError && (
-        <Dialog
-          isVisible={isVisible}
-          onBackdropPress={() => {}}
-          overlayStyle={{
-            alignItems: "center",
-            justifyContent: "center",
-            rowGap: 20
-          }}
-        >
-          <TouchableOpacity onPress={() => {}}>
-            <Icon
-              name="close"
-              type="material"
-              iconStyle={{
-                fontSize: 50,
-                height: 50,
-                width: 50,
-                color: theme.colors.error,
-                borderWidth: 1,
-                borderColor: theme.colors.error,
-                borderRadius: 25
-              }}
-            />
-          </TouchableOpacity>
-
-          <View style={{ display: "flex", rowGap: 20 }}>
-            <Text style={{ color: theme.colors.error }}>
-              {error?.response?.data?.message || "Something went wrong"}
-            </Text>
-            <Button
-              size="lg"
-              type="outline"
-              onPress={() => setIsVisible(false)}
-            >
-              Close
-              <Icon
-                name="close"
-                type="material"
-                iconStyle={{ marginLeft: 10, color: theme.colors.primary }}
-              />
-            </Button>
-          </View>
-        </Dialog>
-      )}
-
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
@@ -309,30 +205,34 @@ const Register = () => {
                   secureTextEntry={true}
                 />
 
-                <TouchableOpacity style={styles.button}>
-                  <Button
-                    title="REGISTER"
-                    icon={
-                      <Icon
-                        name="pencil-square-o"
-                        size={20}
-                        color={theme.colors.secondary}
-                        type="font-awesome"
-                      />
-                    }
-                    iconPosition="right"
-                    type="outline"
-                    buttonStyle={{
-                      borderColor: theme.colors.secondary,
-                      borderWidth: 1
-                    }}
-                    titleStyle={{
-                      color: theme.colors.secondary,
-                      marginRight: 10
-                    }}
-                    onPress={() => handleSubmit()}
-                  />
-                </TouchableOpacity>
+                {isPending ? (
+                  <ActivityIndicator size="large" />
+                ) : (
+                  <TouchableOpacity style={styles.button}>
+                    <Button
+                      title="REGISTER"
+                      icon={
+                        <Icon
+                          name="pencil-square-o"
+                          size={20}
+                          color={theme.colors.secondary}
+                          type="font-awesome"
+                        />
+                      }
+                      iconPosition="right"
+                      type="outline"
+                      buttonStyle={{
+                        borderColor: theme.colors.secondary,
+                        borderWidth: 1
+                      }}
+                      titleStyle={{
+                        color: theme.colors.secondary,
+                        marginRight: 10
+                      }}
+                      onPress={() => handleSubmit()}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             );
           }}
