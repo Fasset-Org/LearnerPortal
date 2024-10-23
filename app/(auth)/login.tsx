@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -19,6 +19,9 @@ import { AxiosError } from "axios";
 import * as SecureStore from "expo-secure-store";
 import LoadingPopup from "../../components/LoadingPopup";
 import StudentQuery from "../xhr/student";
+import Toast, { ToastRef } from "react-native-toast-message";
+import { showToast } from "../../utils/showToast";
+import { ActivityIndicator } from "react-native-paper";
 
 interface FormData {
   email: string;
@@ -29,6 +32,7 @@ const Login = () => {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const { theme } = useTheme();
+  const toastRef = useRef<ToastRef>(null);
 
   const { mutate, data, error, isError, isSuccess, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
@@ -36,11 +40,13 @@ const Login = () => {
     },
     onSuccess: (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
-      router.push(`/(tabs)`);
+      showToast("success", "Success", data?.message);
+      setTimeout(() => {
+        router.replace(`/(tabs)`);
+      }, 2000);
     },
     onError: (err: AxiosError) => {
-      setIsVisible(true);
-      console.log("Error", error.response.data);
+      showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
@@ -49,153 +55,81 @@ const Login = () => {
     queryFn: () => StudentQuery.getUserInfo()
   });
 
-  console.log(userInfoQuery);
-
   useEffect(() => {
     if (userInfoQuery?.data) {
       console.log(userInfoQuery?.data);
-      return router.push(`/(tabs)`);
+      return router.replace(`/(tabs)`);
     }
   }, [userInfoQuery?.data]);
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      {isPending && <LoadingPopup visible={isPending} />}
-
-      {/* {isSuccess && (
-        <Dialog
-          isVisible={true}
-          overlayStyle={{
-            alignItems: "center",
-            justifyContent: "center",
-            rowGap: 20
-          }}
-        >
-          <TouchableOpacity onPress={() => {}}>
-            <Icon
-              name="check"
-              type="material"
-              iconStyle={{
-                fontSize: 50,
-                height: 50,
-                width: 50,
-                color: theme.colors.success,
-                borderWidth: 1,
-                borderColor: theme.colors.success,
-                borderRadius: 25
-              }}
+    <>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require(`../../assets/images/blueLogo-transparentBg.png`)}
+              style={styles.image}
             />
-          </TouchableOpacity>
-          <Text style={{ color: theme.colors.success, fontWeight: "bold" }}>
-            {(data as any).message}
-          </Text>
-        </Dialog>
-      )} */}
-
-      {isError && (
-        <Dialog
-          isVisible={isVisible}
-          onBackdropPress={() => {}}
-          overlayStyle={{
-            alignItems: "center",
-            justifyContent: "center",
-            rowGap: 20
-          }}
-        >
-          <TouchableOpacity onPress={() => {}}>
-            <Icon
-              name="close"
-              type="material"
-              iconStyle={{
-                fontSize: 50,
-                height: 50,
-                width: 50,
-                color: theme.colors.error,
-                borderWidth: 1,
-                borderColor: theme.colors.error,
-                borderRadius: 25
-              }}
-            />
-          </TouchableOpacity>
-
-          <View style={{ display: "flex", rowGap: 20 }}>
-            <Text style={{ color: theme.colors.error }}>
-              {error?.response?.data?.message || "Something went wrong"}
-            </Text>
-            <Button
-              size="lg"
-              type="outline"
-              onPress={() => setIsVisible(false)}
-            >
-              Close
-              <Icon
-                name="close"
-                type="material"
-                iconStyle={{ marginLeft: 10, color: theme.colors.primary }}
-              />
-            </Button>
           </View>
-        </Dialog>
-      )}
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={require(`../../assets/images/blueLogo-transparentBg.png`)}
-            style={styles.image}
-          />
-        </View>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subTitle}>
-          Login in to continue to Learner Portal
-        </Text>
-        <Formik
-          initialValues={{
-            email: "",
-            password: ""
-          }}
-          validationSchema={Yup.object({
-            email: Yup.string()
-              .email("Invalid email address")
-              .required("Email required"),
-            password: Yup.string()
-              .min(8, "Password must be at least 8 characters")
-              .required("Password required")
-          })}
-          onSubmit={(values: FormData) => {
-            mutate(values);
-          }}
-          // Optionally add validationSchema here
-        >
-          {({ handleSubmit }) => (
-            <View style={styles.innerContainer}>
-              <TextInputWrapper
-                name="email"
-                label="Email"
-                secureTextEntry={false}
-              />
-              <TextInputWrapper
-                name="password"
-                label="Password"
-                secureTextEntry={true}
-              />
-              <TouchableOpacity style={styles.button}>
-                <Button
-                  title="LOGIN"
-                  icon={<Icon name="login" size={20} color="#FFFFFF" />}
-                  iconPosition="right"
-                  color="primary"
-                  onPress={() => handleSubmit()}
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subTitle}>
+            Login in to continue to Learner Portal
+          </Text>
+          <Formik
+            initialValues={{
+              email: "",
+              password: ""
+            }}
+            validationSchema={Yup.object({
+              email: Yup.string()
+                .email("Invalid email address")
+                .required("Email required"),
+              password: Yup.string()
+                .min(8, "Password must be at least 8 characters")
+                .required("Password required")
+            })}
+            onSubmit={(values: FormData) => {
+              mutate(values);
+            }}
+            // Optionally add validationSchema here
+          >
+            {({ handleSubmit }) => (
+              <View style={styles.innerContainer}>
+                <TextInputWrapper
+                  name="email"
+                  label="Email"
+                  secureTextEntry={false}
                 />
-              </TouchableOpacity>
+                <TextInputWrapper
+                  name="password"
+                  label="Password"
+                  secureTextEntry={true}
+                />
+                {isPending ? (
+                  <ActivityIndicator size="large" />
+                ) : (
+                  <TouchableOpacity style={styles.button}>
+                    <Button
+                      title="LOGIN"
+                      icon={<Icon name="login" size={20} color="#FFFFFF" />}
+                      iconPosition="right"
+                      color="primary"
+                      onPress={() => handleSubmit()}
+                    />
+                  </TouchableOpacity>
+                )}
 
-              <TouchableOpacity>
-                <Text style={styles.forgotText}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
-      </View>
-    </ScrollView>
+                <TouchableOpacity>
+                  <Text style={styles.forgotText}>Forgot Password?</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+        </View>
+      </ScrollView>
+      <Toast />
+    </>
   );
 };
 
