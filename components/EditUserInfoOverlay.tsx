@@ -192,7 +192,7 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                   then: () => Yup.string().required("Passport number required")
                 })
               })}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => {}}
               // Optionally add validationSchema here
             >
               {({ handleSubmit, values }) => (
