@@ -12,6 +12,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
 import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../app/xhr/student";
+import { showToast } from "../utils/showToast";
+import { ActivityIndicator } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
 type EditUserInfoOverlay = {
   userInfo: any;
@@ -22,10 +27,22 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
 }: any) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
+  const queryClient: any = useQueryClient();
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  const editBadicInfoMutation = useMutation({
+    mutationFn: (formData: any) => StudentQuery.editBasicInfo(formData),
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
+    },
+    onError: (err: any) => {
+      showToast("success", "Success", err?.response?.data?.message);
+    }
+  });
 
   const careerStatusOptions = [
     {
@@ -192,8 +209,9 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                   then: () => Yup.string().required("Passport number required")
                 })
               })}
-              onSubmit={(values) => {}}
-              // Optionally add validationSchema here
+              onSubmit={(values) => {
+                editBadicInfoMutation.mutate(values);
+              }}
             >
               {({ handleSubmit, values }) => (
                 <View style={styles.innerContainer}>
@@ -265,38 +283,43 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                     label="Mobile Number"
                     secureTextEntry={false}
                   />
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => handleSubmit()}
-                  >
-                    <Button
-                      title="UPDATE"
-                      icon={
-                        <Icon
-                          name="pencil-square-o"
-                          size={20}
-                          color={theme.colors.secondary}
-                          type="font-awesome"
-                        />
-                      }
-                      iconPosition="right"
-                      type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
+                  {editBadicInfoMutation.isPending ? (
+                    <ActivityIndicator animating={true} size="large" />
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.button}
                       onPress={() => handleSubmit()}
-                    />
-                  </TouchableOpacity>
+                    >
+                      <Button
+                        title="UPDATE"
+                        icon={
+                          <Icon
+                            name="pencil-square-o"
+                            size={20}
+                            color={theme.colors.secondary}
+                            type="font-awesome"
+                          />
+                        }
+                        iconPosition="right"
+                        type="outline"
+                        buttonStyle={{
+                          borderColor: theme.colors.secondary,
+                          borderWidth: 1
+                        }}
+                        titleStyle={{
+                          color: theme.colors.secondary,
+                          marginRight: 10
+                        }}
+                        onPress={() => handleSubmit()}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </View>
               )}
             </Formik>
           </View>
         </ScrollView>
+        <Toast />
       </Overlay>
     </View>
   );
