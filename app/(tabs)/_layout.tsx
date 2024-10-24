@@ -12,16 +12,21 @@ const DashBoardTabs = () => {
 
   const userInfoQuery = useQuery({
     queryKey: ["userInfo"],
-    queryFn: () => StudentQuery.getUserInfo()
+    queryFn: () => StudentQuery.getUserInfo(),
+    retry: 3
   });
 
-  if (!userInfoQuery?.data) {
-    console.log(userInfoQuery?.data);
-    return router.replace(`/(auth)/login`);
-  }
+  // console.log("new", userInfoQuery?.data as any);
+
+  // useEffect(() => {
+  //   if (!userInfoQuery?.data) {
+  //     console.log(userInfoQuery?.data);
+  //     return router.replace(`/(auth)/login`);
+  //   }
+  // }, [userInfoQuery?.data]);
 
   if (userInfoQuery.isPending) {
-    return <ActivityIndicator size="large" />;
+    <ActivityIndicator size="large" />;
   }
 
   return (
