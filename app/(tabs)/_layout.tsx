@@ -1,33 +1,11 @@
 import { StyleSheet } from "react-native";
-import React, { useEffect } from "react";
-import { router, Tabs } from "expo-router";
+import React from "react";
+import { Tabs } from "expo-router";
 import { Icon, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
-import { useQuery } from "@tanstack/react-query";
-import StudentQuery from "../xhr/student";
-import { ActivityIndicator } from "react-native-paper";
 
 const DashBoardTabs = () => {
   const { theme } = useTheme();
-
-  const userInfoQuery = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () => StudentQuery.getUserInfo(),
-    retry: 3
-  });
-
-  // console.log("new", userInfoQuery?.data as any);
-
-  // useEffect(() => {
-  //   if (!userInfoQuery?.data) {
-  //     console.log(userInfoQuery?.data);
-  //     return router.replace(`/(auth)/login`);
-  //   }
-  // }, [userInfoQuery?.data]);
-
-  if (userInfoQuery.isPending) {
-    <ActivityIndicator size="large" />;
-  }
 
   return (
     <Tabs
