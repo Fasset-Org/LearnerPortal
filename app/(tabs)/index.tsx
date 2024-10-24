@@ -1,19 +1,12 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Card } from "@rneui/themed";
 import themeLight from "../../Theme";
 import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
-import { useQuery } from "@tanstack/react-query";
-import StudentQuery from "../xhr/student";
-
+import { AuthContext } from "../../components/AuthContext";
 const TabRootLayout = () => {
-  const userInfoQuery = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () => StudentQuery.getUserInfo()
-  });
-
-  const userData = (userInfoQuery?.data as any)?.user;
+  let { userInfo } = useContext(AuthContext);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,7 +24,7 @@ const TabRootLayout = () => {
                 style={styles.iconStyle}
                 color="#FFFFFF"
               /> */}
-              <EditUserInfoOverlay userInfo={userData} />
+              <EditUserInfoOverlay userInfo={userInfo} />
             </View>
           </View>
 
@@ -45,8 +38,8 @@ const TabRootLayout = () => {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
               <Text style={styles.wrapText}>
-                {userData?.firstName} {userData?.middleName}{" "}
-                {userData?.lastName}
+                {userInfo?.firstName} {userInfo?.middleName}{" "}
+                {userInfo?.lastName}
               </Text>
             </View>
 
@@ -56,7 +49,7 @@ const TabRootLayout = () => {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
               <Text style={styles.wrapText}>
-                {userData?.studentInformation?.identificationNumber}
+                {userInfo?.studentInformation?.identificationNumber}
               </Text>
             </View>
             <View style={styles.row}>
@@ -64,7 +57,7 @@ const TabRootLayout = () => {
                 Email
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>{userData?.email}</Text>
+              <Text style={styles.wrapText}>{userInfo?.email}</Text>
             </View>
 
             <View style={styles.row}>
@@ -73,7 +66,7 @@ const TabRootLayout = () => {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
               <Text style={styles.wrapText}>
-                {userData?.studentInformation?.mobileNumber}
+                {userInfo?.studentInformation?.mobileNumber}
               </Text>
             </View>
 
@@ -104,13 +97,13 @@ const TabRootLayout = () => {
                 color="#FFFFFF"
               /> */}
               <EditUserAddressOverlay
-                studentAddress={userData?.studentAddress}
+                studentAddress={userInfo?.studentAddress}
               />
             </View>
           </View>
 
           <View style={styles.cardDetail}>
-            {userData?.studentAddress && (
+            {userInfo?.studentAddress && (
               <>
                 <View style={styles.row}>
                   <Text style={styles.boldText}>
