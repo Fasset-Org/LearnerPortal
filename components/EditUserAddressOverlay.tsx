@@ -13,6 +13,9 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
+import { showToast } from "../utils/showToast";
+import { ActivityIndicator } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
 type EditUserAddressOverlay = {
   studentAddress: any;
@@ -29,12 +32,24 @@ const EditUserAddressOverlay: React.FunctionComponent<
     setVisible(!visible);
   };
 
-  const { data, isPending, isError, error } = useMutation({
+  const addAddressMutation = useMutation({
     mutationFn: (formData: any) => StudentQuery.addAddresInfo(formData),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
     },
-    onError: (err) => console.log(err)
+    onError: (err: any) => {
+      showToast("success", "Success", err?.response?.data?.message);
+    }
+  });
+
+  const editAddressMutation = useMutation({
+    mutationFn: (formData) => StudentQuery.editAddressInfo(formData),
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
+    },
+    onError: (err: any) => {
+      showToast("error", "Error", err?.response?.data?.message);
+    }
   });
 
   return (
@@ -100,8 +115,13 @@ const EditUserAddressOverlay: React.FunctionComponent<
                 country: Yup.string().required("Country is required"),
                 postalCode: Yup.string().required("Postal Code is required")
               })}
-              onSubmit={(values) => console.log(values)}
-              // Optionally add validationSchema here
+              onSubmit={(values: any) => {
+                if (studentAddress) {
+                  editAddressMutation.mutate(values);
+                } else {
+                  addAddressMutation.mutate(values);
+                }
+              }}
             >
               {({ handleSubmit, values }) => (
                 <View style={styles.innerContainer}>
@@ -148,67 +168,80 @@ const EditUserAddressOverlay: React.FunctionComponent<
                     secureTextEntry={false}
                   />
                   {studentAddress ? (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => handleSubmit()}
-                    >
-                      <Button
-                        title="UPDATE"
-                        icon={
-                          <Icon
-                            name="pencil-square-o"
-                            size={20}
-                            color={theme.colors.secondary}
-                            type="font-awesome"
+                    <>
+                      {editAddressMutation.isPending ? (
+                        <ActivityIndicator size="large" />
+                      ) : (
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={() => handleSubmit()}
+                        >
+                          <Button
+                            title="UPDATE"
+                            icon={
+                              <Icon
+                                name="pencil-square-o"
+                                size={20}
+                                color={theme.colors.secondary}
+                                type="font-awesome"
+                              />
+                            }
+                            iconPosition="right"
+                            type="outline"
+                            buttonStyle={{
+                              borderColor: theme.colors.secondary,
+                              borderWidth: 1
+                            }}
+                            titleStyle={{
+                              color: theme.colors.secondary,
+                              marginRight: 10
+                            }}
+                            onPress={() => handleSubmit()}
                           />
-                        }
-                        iconPosition="right"
-                        type="outline"
-                        buttonStyle={{
-                          borderColor: theme.colors.secondary,
-                          borderWidth: 1
-                        }}
-                        titleStyle={{
-                          color: theme.colors.secondary,
-                          marginRight: 10
-                        }}
-                        onPress={() => handleSubmit()}
-                      />
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                      )}
+                    </>
                   ) : (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => handleSubmit()}
-                    >
-                      <Button
-                        title="SAVE"
-                        // icon={
-                        //   <Icon
-                        //     name="add"
-                        //     size={20}
-                        //     color={theme.colors.secondary}
-                        //     type="material"
-                        //   />
-                        // }
-                        iconPosition="right"
-                        type="solid"
-                        buttonStyle={{
-                          borderColor: theme.colors.primary,
-                          borderWidth: 1
-                        }}
-                        titleStyle={{
-                          // color: theme.colors.secondary,
-                          marginRight: 10
-                        }}
-                        onPress={() => handleSubmit()}
-                      />
-                    </TouchableOpacity>
+                    <>
+                      {addAddressMutation.isPending ? (
+                        <ActivityIndicator size="large" />
+                      ) : (
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={() => handleSubmit()}
+                        >
+                          <Button
+                            title="SAVE"
+                            // icon={
+                            //   <Icon
+                            //     name="add"
+                            //     size={20}
+                            //     color={theme.colors.secondary}
+                            //     type="material"
+                            //   />
+                            // }
+                            iconPosition="right"
+                            type="solid"
+                            buttonStyle={{
+                              borderColor: theme.colors.primary,
+                              borderWidth: 1
+                            }}
+                            titleStyle={{
+                              // color: theme.colors.secondary,
+                              marginRight: 10
+                            }}
+                            onPress={() => handleSubmit()}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </>
                   )}
                 </View>
               )}
             </Formik>
           </View>
         </ScrollView>
+        <Toast />
       </Overlay>
     </View>
   );
