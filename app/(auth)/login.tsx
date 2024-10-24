@@ -22,6 +22,7 @@ import StudentQuery from "../xhr/student";
 import Toast, { ToastRef } from "react-native-toast-message";
 import { showToast } from "../../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface FormData {
   email: string;
@@ -38,8 +39,8 @@ const Login = () => {
     mutationFn: (formData: FormData) => {
       return AuthQuery.loginUser(formData);
     },
-    onSuccess: (data: any) => {
-      SecureStore.setItem("userToken", data?.user?.token);
+    onSuccess: async (data: any) => {
+      await AsyncStorage.setItem("userToken", data?.user?.token);
       showToast("success", "Success", data?.message);
       setTimeout(() => {
         router.replace(`/(tabs)`);
