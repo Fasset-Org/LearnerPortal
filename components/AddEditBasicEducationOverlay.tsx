@@ -7,11 +7,13 @@ import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
 import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 
-type AddEditBasicEducationOverlay = {};
+type AddEditBasicEducationOverlay = {
+  education?: any;
+};
 
 const AddEditBasicEducationOverlay: React.FunctionComponent<
   AddEditBasicEducationOverlay
-> = () => {
+> = ({ education }) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
 
@@ -21,21 +23,34 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
 
   return (
     <View>
-      <Icon
-        name="pencil-square-o"
-        size={20}
-        type="font-awesome"
-        // style={styles.iconStyle}
-        color={themeLight.lightColors?.primary}
-        onPress={toggleOverlay}
-      />
+      {education ? (
+        <Icon
+          name="pencil-square-o"
+          size={20}
+          type="font-awesome"
+          // style={styles.iconStyle}
+          color={themeLight.lightColors?.primary}
+          onPress={toggleOverlay}
+        />
+      ) : (
+        <Icon
+          name="add"
+          size={20}
+          type="material"
+          // style={styles.iconStyle}
+          color={themeLight.lightColors?.white}
+          onPress={toggleOverlay}
+        />
+      )}
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
         overlayStyle={styles.fullScreenOverlay}
       >
         <View style={styles.overlayHeader}>
-          <Text style={styles.textPrimary}>Edit Basic Information</Text>
+          <Text style={styles.textPrimary}>
+            {education ? "Edit Basic Education" : "Add Basic Information"}
+          </Text>
           <Icon
             name="close"
             type="material"
@@ -47,22 +62,16 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
         <View style={{ padding: 10 }}>
           <Formik
             initialValues={{
-              email: "",
-              password: "",
-              firstName: "",
-              lastName: "",
-              rsaId: ""
+              grade: "",
+              school: "",
+              city: "",
+              province: ""
             }}
             validationSchema={Yup.object({
-              firstName: Yup.string().required("FirstName required"),
-              lastName: Yup.string().required("LastName required"),
-              email: Yup.string()
-                .email("Invalid email address")
-                .required("Email required"),
-              password: Yup.string()
-                .min(8, "Password must be at least 8 characters")
-                .required("Password required"),
-              rsaId: Yup.string().required("Please select")
+              grade: Yup.string().required("Grade required"),
+              school: Yup.string().required("School required"),
+              city: Yup.string().required("City required"),
+              province: Yup.string().required("Province required")
             })}
             onSubmit={(values) => {}}
             // Optionally add validationSchema here
@@ -70,37 +79,29 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
             {({ handleSubmit }) => (
               <View style={styles.innerContainer}>
                 <TextInputWrapper
-                  name="firstName"
-                  label="First Name"
+                  name="grade"
+                  label="Highest Grade Passed"
                   secureTextEntry={false}
                 />
                 <TextInputWrapper
-                  name="middleName"
-                  label="Middle Name"
+                  name="school"
+                  label="High School Name"
                   secureTextEntry={false}
                 />
                 <TextInputWrapper
-                  name="lastName"
-                  label="Last Name"
+                  name="city"
+                  label="High School City"
                   secureTextEntry={false}
                 />
-                <SelectInputWrapper
-                  name="rsaId"
-                  label="Do you have RSA ID?"
-                  options={[
-                    { value: "", label: "Do you have RSA ID?" },
-                    { value: "Yes", label: "Yes" },
-                    { value: "No", label: "No" }
-                  ]}
-                />
+
                 <TextInputWrapper
-                  name="password"
-                  label="Password"
+                  name="province"
+                  label="High School Province"
                   secureTextEntry={true}
                 />
                 <TouchableOpacity style={styles.button}>
                   <Button
-                    title="REGISTER"
+                    title="SAVE"
                     icon={
                       <Icon
                         name="pencil-square-o"
