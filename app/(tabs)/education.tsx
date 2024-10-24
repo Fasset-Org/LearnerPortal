@@ -37,16 +37,33 @@ const Education = () => {
     <SafeAreaView style={styles.container}>
       {/* Basic Education */}
       <Card containerStyle={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <Icon
-            name="book-open"
-            type="font-awesome-5"
-            size={30}
-            color={themeLight.lightColors?.primary}
-          />
-          <Text style={[styles.cardHeaderText, styles.wrapText]}>
-            Basic Education
-          </Text>
+        <View style={styles.cardHead}>
+          <View style={styles.cardHeader}>
+            <Icon
+              name="book-open"
+              size={30}
+              color={themeLight.lightColors?.primary}
+              type="font-awesome-5"
+            />
+            <Text style={[styles.cardHeaderText, styles.wrapText]}>
+              Basic Education
+            </Text>
+          </View>
+          <View
+            style={{
+              height: 40,
+              width: 40,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: "lightgray",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: themeLight.lightColors?.primary
+            }}
+          >
+            <AddEditBasicEducationOverlay />
+          </View>
         </View>
 
         <View style={styles.cardHead}>
@@ -85,6 +102,21 @@ const Education = () => {
               Tertiary Education
             </Text>
           </View>
+          <View
+            style={{
+              height: 40,
+              width: 40,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: "lightgray",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: themeLight.lightColors?.primary
+            }}
+          >
+            <AddEditBasicEducationOverlay />
+          </View>
         </View>
 
         <FlatList
@@ -109,86 +141,6 @@ const Education = () => {
           // keyExtractor={(item) => item}
         />
       </Card>
-
-      {/* <View style={styles.container}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardHeaderText}>Basic Education</Text>
-          <View style={styles.iconContainer}>
-            <Icon
-              name="pencil-square-o"
-              size={20}
-              type="font-awesome"
-              style={styles.iconStyle}
-              color="#FFFFFF"
-            />
-          </View>
-        </View>
-
-        <View style={styles.cardDetail}>
-          <View style={styles.cardDetailAvatar}>
-            <Text style={styles.cardDetailAvatarTitle}>TM</Text>
-          </View>
-          <Text>Tiyisela Themba Makamu</Text>
-          <View style={styles.row}>
-            <Text style={styles.boldText}>ID Number:</Text>
-            <Text>9804046210080</Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.boldText}>Email:</Text>
-            <Text>kamzen1994@gmail.com</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Text style={styles.boldText}>Contact:</Text>
-            <Text>+27 797126016</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Text style={styles.boldText}>Occupation:</Text>
-            <Text>I obtained a matric certificate</Text>
-          </View>
-        </View>
-        <Card.Divider />
-        <View style={styles.cardHeader}>
-          <View>
-            <Text style={styles.cardHeaderText}>Tertiary Education</Text>
-          </View>
-          <View style={styles.iconContainer}>
-            <Icon
-              name="pencil-square-o"
-              size={20}
-              type="font-awesome"
-              style={styles.iconStyle}
-              color="#FFFFFF"
-            />
-          </View>
-        </View>
-
-        <View style={styles.cardDetail}>
-          <Text>1386, Mthimunye Street</Text>
-          <View style={styles.row}>
-            <Text>Ga-Rankuwa Unit 23</Text>
-          </View>
-          <View style={styles.row}>
-            <Text>Ga-Rankuwa</Text>
-          </View>
-          <View style={styles.row}>
-            <Text>Gauteng</Text>
-          </View>
-          <View style={styles.row}>
-            <Text>0208</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Text>City of Tshwane Metropolitan Municipality</Text>
-          </View>
-
-          <Text style={styles.dangerText}>
-            Please note that your address will determine where you will be
-            placed.
-          </Text>
-        </View>
-      </View> */}
     </SafeAreaView>
   );
 };
