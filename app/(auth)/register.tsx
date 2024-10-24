@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -15,11 +15,12 @@ import SelectInputWrapper from "../../components/FormComponents/SelectInputWrapp
 import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "expo-router";
-import LoadingPopup from "../../components/LoadingPopup";
+import { Redirect, useRouter } from "expo-router";
+import LoadingPopup from "../../components/LoadingComponent";
 import { ActivityIndicator } from "react-native-paper";
 import { showToast } from "../../utils/showToast";
 import Toast from "react-native-toast-message";
+import { AuthContext } from "../../components/AuthContext";
 
 interface FormData {
   email: string;
@@ -36,6 +37,8 @@ const Register = () => {
   const { theme } = useTheme();
   const router = useRouter();
 
+  const { isAuth } = useContext(AuthContext);
+
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.registerUser(formData);
@@ -50,6 +53,10 @@ const Register = () => {
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
+
+  if (isAuth) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
     <>
@@ -149,13 +156,11 @@ const Register = () => {
               })
             })}
             onSubmit={(values: FormData) => {
-              // console.log(values);
               mutate(values);
             }}
             enableReinitialize
           >
             {({ handleSubmit, values, errors }) => {
-              // console.log(errors, values);
               return (
                 <View style={styles.innerContainer}>
                   <TextInputWrapper
