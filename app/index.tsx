@@ -5,29 +5,22 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Button, Icon, useTheme } from "@rneui/themed";
 import { useRouter } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
-import StudentQuery from "./xhr/student";
+import { AuthContext } from "../components/AuthContext";
 import SplashScreen from "../components/SplashScreen";
 
 const Home = () => {
   const { theme } = useTheme();
   const router = useRouter();
 
-  const userInfoQuery = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () => StudentQuery.getUserInfo()
-  });
+  const { error, isAuth, isError, isPending, userInfo } =
+    useContext(AuthContext);
 
-  console.log(userInfoQuery);
-
-  useEffect(() => {
-    if (userInfoQuery?.data) {
-      return router.replace(`/(tabs)`);
-    }
-  }, [userInfoQuery?.data]);
+  if (isPending) {
+    return <SplashScreen loading={isPending} />;
+  }
 
   const list = [
     "Investment entities and trusts and company secretary services",
@@ -38,10 +31,6 @@ const Home = () => {
     "The South African Revenue Service; the national and provincial treasuries",
     "And other activities auxiliary to financial intermediation, such as debt collection."
   ];
-
-  if (userInfoQuery.isPending) {
-    return <SplashScreen loading={userInfoQuery.isPending} />;
-  }
 
   return (
     <View style={styles.mainContainer}>
