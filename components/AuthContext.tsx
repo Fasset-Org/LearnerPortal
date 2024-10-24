@@ -1,8 +1,8 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { ProviderProps } from "../utils/contants";
-import { AxiosError } from "axios";
+import { Redirect } from "expo-router";
 
 export const AuthContext = createContext<ProviderProps>({
   isAuth: false,
@@ -27,10 +27,12 @@ const AuthProvider = ({ children }: Props) => {
 
   const err = userQueryInfo?.error as any;
 
+  console.log(userQueryInfo);
+
   return (
     <AuthContext.Provider
       value={{
-        isAuth: userData?.success,
+        isAuth: userData?.user ? true : false,
         userInfo: userData?.user,
         isPending: userQueryInfo?.isPending,
         isError: userQueryInfo?.isError,
