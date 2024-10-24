@@ -64,7 +64,7 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
                 .required("Password required"),
               rsaId: Yup.string().required("Please select")
             })}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={(values) => {}}
             // Optionally add validationSchema here
           >
             {({ handleSubmit }) => (
