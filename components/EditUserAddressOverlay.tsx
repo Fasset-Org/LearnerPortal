@@ -26,7 +26,7 @@ const EditUserAddressOverlay: React.FunctionComponent<
 > = ({ studentAddress }) => {
   const [visible, setVisible] = useState(false);
   const { theme } = useTheme();
-  const queryClient = useQueryClient();
+  const queryClient: any = useQueryClient();
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -36,6 +36,7 @@ const EditUserAddressOverlay: React.FunctionComponent<
     mutationFn: (formData: any) => StudentQuery.addAddresInfo(formData),
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
       showToast("success", "Success", err?.response?.data?.message);
@@ -46,8 +47,10 @@ const EditUserAddressOverlay: React.FunctionComponent<
     mutationFn: (formData) => StudentQuery.editAddressInfo(formData),
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
+      console.log(err as any);
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
