@@ -5,55 +5,100 @@ import themeLight from "../../Theme";
 import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
 import { AuthContext } from "../../components/AuthContext";
+import { Icon } from "@rneui/base";
 const TabRootLayout = () => {
   let { userInfo } = useContext(AuthContext);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <Card containerStyle={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <Text style={[styles.cardHeaderText, styles.wrapText]}>
-              Personal Information
-            </Text>
-            <View style={styles.iconContainer}>
-              {/* <Icon
-                name="pencil-square-o"
-                size={20}
+    <SafeAreaView
+      style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 10, padding: 10 }}
+    >
+      <View
+        style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 10, padding: 10 }}
+      >
+        <Card containerStyle={{ borderRadius: 10, margin: 0 }}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 10
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                columnGap: 10
+              }}
+            >
+              <Icon
+                name="user"
+                size={30}
                 type="font-awesome"
-                style={styles.iconStyle}
-                color="#FFFFFF"
-              /> */}
+                // style={styles.iconStyle}
+                color={themeLight.lightColors?.primary}
+              />
+              <Text style={[styles.cardHeaderText, styles.wrapText]}>
+                Personal Information
+              </Text>
+            </View>
+            <View
+              style={{
+                height: 40,
+                width: 40,
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: "lightgray",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: themeLight.lightColors?.primary
+              }}
+            >
               <EditUserInfoOverlay userInfo={userInfo} />
             </View>
           </View>
 
-          <View style={styles.cardDetail}>
-            {/* <View style={styles.cardDetailAvatar}>
-              <Text style={styles.cardDetailAvatarTitle}>TM</Text>
-            </View> */}
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              rowGap: 10
+            }}
+          >
+            <View
+              style={{ display: "flex", flexDirection: "row", columnGap: 10 }}
+            >
+              <Text style={{ fontWeight: "bold" }}>
                 Full Name
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>
+              <Text style={{ flexShrink: 1 }}>
                 {userInfo?.firstName} {userInfo?.middleName}{" "}
                 {userInfo?.lastName}
               </Text>
             </View>
 
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
+            <View
+              style={{ display: "flex", flexDirection: "row", columnGap: 10 }}
+            >
+              <Text style={{ fontWeight: "bold" }}>
                 ID Number
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
-              <Text style={styles.wrapText}>
+              <Text style={{ flexShrink: 1 }}>
                 {userInfo?.studentInformation?.identificationNumber}
               </Text>
             </View>
-            <View style={styles.row}>
-              <Text style={styles.boldText}>
+            <View
+              style={{ display: "flex", flexDirection: "row", columnGap: 10 }}
+            >
+              <Text style={{ fontWeight: "bold" }}>
                 Email
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
@@ -76,26 +121,54 @@ const TabRootLayout = () => {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
               </Text>
               <Text style={styles.wrapText}>
-                I obtained a matric certificate
+                {userInfo?.studentInformation?.careerStatus}
               </Text>
             </View>
           </View>
         </Card>
         <Card containerStyle={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 10
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                columnGap: 10
+              }}
+            >
+              <Icon
+                name="map-marker"
+                size={30}
+                type="font-awesome"
+                // style={styles.iconStyle}
+                color={themeLight.lightColors?.primary}
+              />
               <Text style={[styles.cardHeaderText, styles.wrapText]}>
                 Address Information
               </Text>
             </View>
-            <View style={styles.iconContainer}>
-              {/* <Icon
-                name="pencil-square-o"
-                size={20}
-                type="font-awesome"
-                style={styles.iconStyle}
-                color="#FFFFFF"
-              /> */}
+            <View
+              style={{
+                height: 40,
+                width: 40,
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: "lightgray",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: themeLight.lightColors?.primary
+              }}
+            >
               <EditUserAddressOverlay
                 studentAddress={userInfo?.studentAddress}
               />
@@ -109,7 +182,10 @@ const TabRootLayout = () => {
                   <Text style={styles.boldText}>
                     Street Number/Name &nbsp;:
                   </Text>
-                  <Text style={styles.wrapText}>1386, Mthimunye Street</Text>
+                  <Text style={styles.wrapText}>
+                    {userInfo?.studentAddress?.streetNumber},{" "}
+                    {userInfo?.studentAddress?.streetName}
+                  </Text>
                 </View>
 
                 <View style={styles.row}>
@@ -117,7 +193,9 @@ const TabRootLayout = () => {
                     Suburb/Town
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                   </Text>
-                  <Text style={styles.wrapText}>Ga-Rankuwa Unit 23</Text>
+                  <Text style={styles.wrapText}>
+                    {userInfo?.studentAddress?.suburb}
+                  </Text>
                 </View>
 
                 <View style={styles.row}>
@@ -125,7 +203,9 @@ const TabRootLayout = () => {
                     City
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                   </Text>
-                  <Text style={styles.wrapText}>Ga-Rankuwa</Text>
+                  <Text style={styles.wrapText}>
+                    {userInfo?.studentAddress?.city}
+                  </Text>
                 </View>
 
                 <View style={styles.row}>
@@ -133,7 +213,9 @@ const TabRootLayout = () => {
                     Province
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                   </Text>
-                  <Text style={styles.wrapText}>Gauteng</Text>
+                  <Text style={styles.wrapText}>
+                    {userInfo?.studentAddress?.province}
+                  </Text>
                 </View>
 
                 <View style={styles.row}>
@@ -141,7 +223,9 @@ const TabRootLayout = () => {
                     Postal Code
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                   </Text>
-                  <Text style={styles.wrapText}>0208</Text>
+                  <Text style={styles.wrapText}>
+                    {userInfo?.studentAddress?.postalCode}
+                  </Text>
                 </View>
 
                 <View style={styles.row}>
@@ -150,7 +234,7 @@ const TabRootLayout = () => {
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                   </Text>
                   <Text style={styles.wrapText}>
-                    City of Tshwane Metropolitan Municipality
+                    {userInfo?.studentAddress?.manicipality}
                   </Text>
                 </View>
               </>
