@@ -21,6 +21,8 @@ const Home = () => {
     queryFn: () => StudentQuery.getUserInfo()
   });
 
+  console.log(userInfoQuery);
+
   useEffect(() => {
     if (userInfoQuery?.data) {
       return router.replace(`/(tabs)`);
