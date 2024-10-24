@@ -12,7 +12,7 @@ import TextInputWrapper from "../../components/FormComponents/TextInputWrapper";
 import * as Yup from "yup";
 import { Button, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
 
@@ -21,7 +21,7 @@ import { showToast } from "../../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import { AuthContext } from "../../components/AuthContext";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 
 interface FormData {
   email: string;
@@ -30,6 +30,8 @@ interface FormData {
 
 const Login = () => {
   const { isAuth } = useContext(AuthContext);
+  const router = useRouter();
+  const queryClient: any = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
@@ -38,9 +40,10 @@ const Login = () => {
     onSuccess: async (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
       showToast("success", "Success", data?.message);
-      // setTimeout(() => {
-      //   router.replace(`/(tabs)`);
-      // }, 2000);
+      queryClient.invalidateQueries(["userInfo"]);
+      setTimeout(() => {
+        router.replace(`/(tabs)`);
+      }, 2000);
     },
     onError: (err: AxiosError) => {
       showToast("error", "Error", err?.response?.data?.message);
