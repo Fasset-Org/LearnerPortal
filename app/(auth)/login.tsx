@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import {
   Image,
   ScrollView,
@@ -10,19 +10,18 @@ import {
 import { Formik } from "formik";
 import TextInputWrapper from "../../components/FormComponents/TextInputWrapper";
 import * as Yup from "yup";
-import { Button, Dialog, Icon, useTheme } from "@rneui/themed";
+import { Button, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
-import { useRouter } from "expo-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
-import * as SecureStore from "expo-secure-store";
-import LoadingPopup from "../../components/LoadingPopup";
-import StudentQuery from "../xhr/student";
-import Toast, { ToastRef } from "react-native-toast-message";
+
+import Toast from "react-native-toast-message";
 import { showToast } from "../../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+import { AuthContext } from "../../components/AuthContext";
+import { Redirect } from "expo-router";
 
 interface FormData {
   email: string;
@@ -30,38 +29,27 @@ interface FormData {
 }
 
 const Login = () => {
-  const router = useRouter();
-  const [isVisible, setIsVisible] = useState(false);
-  const { theme } = useTheme();
-  const toastRef = useRef<ToastRef>(null);
+  const { isAuth } = useContext(AuthContext);
 
-  const { mutate, data, error, isError, isSuccess, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.loginUser(formData);
     },
     onSuccess: async (data: any) => {
-      await AsyncStorage.setItem("userToken", data?.user?.token);
+      SecureStore.setItem("userToken", data?.user?.token);
       showToast("success", "Success", data?.message);
-      setTimeout(() => {
-        router.replace(`/(tabs)`);
-      }, 2000);
+      // setTimeout(() => {
+      //   router.replace(`/(tabs)`);
+      // }, 2000);
     },
     onError: (err: AxiosError) => {
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
-  const userInfoQuery = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () => StudentQuery.getUserInfo()
-  });
-
-  useEffect(() => {
-    if (userInfoQuery?.data) {
-      console.log(userInfoQuery?.data);
-      return router.replace(`/(tabs)`);
-    }
-  }, [userInfoQuery?.data]);
+  if (isAuth) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
     <>
