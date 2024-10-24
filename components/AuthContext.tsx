@@ -1,19 +1,16 @@
 import React, { createContext, ReactNode, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
-import SplashScreen from "./SplashScreen";
-import ErrorComponent from "./ErrorComponent";
+import { ProviderProps } from "../utils/contants";
 import { AxiosError } from "axios";
-import { router } from "expo-router";
-
-interface ProviderProps {
-  isAuth: boolean;
-  userInfo: Object;
-}
 
 export const AuthContext = createContext<ProviderProps>({
   isAuth: false,
-  userInfo: {}
+  userInfo: null,
+  isPending: false,
+  isError: false,
+  error: null,
+  query: null
 });
 
 interface Props {
@@ -21,33 +18,25 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const { data, error, isPending, isError } = useQuery({
+  const userQueryInfo: any = useQuery({
     queryKey: ["userInfo"],
     queryFn: () => StudentQuery.getUserInfo()
   });
 
-  const userData = data as any;
+  const userData = userQueryInfo?.data as any;
 
-  console.log(userData);
-
-  const err = error as AxiosError;
-
-  if (isError && err?.response?.status !== 401) {
-    return (
-      <ErrorComponent
-        title={err?.name}
-        errMessage={err?.response?.data?.message}
-      />
-    );
-  }
-
-  if (isPending) {
-    return <SplashScreen loading={isPending} />;
-  }
+  const err = userQueryInfo?.error as any;
 
   return (
     <AuthContext.Provider
-      value={{ isAuth: userData?.success, userInfo: userData?.user }}
+      value={{
+        isAuth: userData?.success,
+        userInfo: userData?.user,
+        isPending: userQueryInfo?.isPending,
+        isError: userQueryInfo?.isError,
+        error: err,
+        query: userQueryInfo
+      }}
     >
       {children}
     </AuthContext.Provider>
