@@ -44,6 +44,46 @@ const StudentQuery = {
     );
 
     return resp?.data;
+  },
+
+  addTertiaryEducation: async (formData: any) => {
+    const resp = await axiosInstance.post(
+      `/student/addTertiaryEducation`,
+      formData
+    );
+
+    return resp?.data;
+  },
+
+  editTertiaryEducation: async (formData: any) => {
+    const resp = await axiosInstance.put(
+      `/student/editTertiaryEducation/${formData.tertiaryEducationId}`,
+      formData
+    );
+
+    return resp?.data;
+  },
+  addProfessionalSkill: async (formData: any) => {
+    const resp = await axiosInstance.post(
+      "/student/addProfessionalSkill",
+      formData
+    );
+
+    return resp?.data;
+  },
+
+  deleteProfessionalSkill: async (id: string) => {
+    const resp = await axiosInstance.delete(
+      `/student/deleteProfessionalSkill/${id}`
+    );
+
+    return resp?.data;
+  },
+
+  getAllProgrammes: async () => {
+    const resp = await axiosInstance.get(`/student/getAllProgrammes`);
+
+    return resp?.data;
   }
 };
 
