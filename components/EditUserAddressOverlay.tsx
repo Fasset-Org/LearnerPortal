@@ -50,7 +50,6 @@ const EditUserAddressOverlay: React.FunctionComponent<
       queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
-      console.log(err as any);
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
