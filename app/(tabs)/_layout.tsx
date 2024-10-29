@@ -83,7 +83,8 @@ const DashBoardTabs = () => {
             return <Icon name="profile" size={20} type="antdesign" />;
           },
           title: "Programmes",
-          headerStyle: { borderBottomWidth: 1 }
+          headerStyle: { borderBottomWidth: 1 },
+          headerTitle: "Learner Interventions"
         }}
       />
     </Tabs>
