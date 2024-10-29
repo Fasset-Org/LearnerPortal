@@ -7,12 +7,17 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
 import AddEditBasicEducationOverlay from "../../components/AddEditBasicEducationOverlay";
+import AddEditProfessionalSkillOverlay from "../../components/AddEditProfessionalSkillOverlay";
+import AddEditCertificationOverlay from "../../components/AddEditCertificationOverlay";
+import AddEditAttachmentOverlay from "../../components/AddEditAttachmentOverlay";
+import { AuthContext } from "../../components/AuthContext";
 
 const Certificate = () => {
+  const { userInfo } = useContext(AuthContext);
   const data = [
     {
       title: "Professional Skills",
@@ -36,6 +41,50 @@ const Certificate = () => {
           skillLevel: "Intermediate"
         }
       ],
+      Overlay: <AddEditProfessionalSkillOverlay />,
+      renderItem: (item: any) => {
+        return (
+          <>
+            {userInfo?.skills?.length > 0 ? (
+              <View style={styles.cardHead}>
+                <View style={styles.listItem}>
+                  <Text style={styles.bullet}>{"\u2022"}</Text>
+                  <Text style={styles.itemText}>
+                    {item.course} {" - "} {item.year}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <></>
+            )}
+          </>
+        );
+      }
+    },
+
+    {
+      title: "Certifications",
+      iconName: "certificate",
+      iconType: "font-awesome",
+      list: [
+        {
+          skill: "HTML & CSS",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "JavaScript",
+          skillLevel: "Expert"
+        },
+        {
+          skill: "Vue JS",
+          skillLevel: "Intermediate"
+        },
+        {
+          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
+          skillLevel: "Intermediate"
+        }
+      ],
+      Overlay: <AddEditCertificationOverlay />,
       renderItem: (item: any) => {
         return (
           <View style={styles.cardHead}>
@@ -52,7 +101,7 @@ const Certificate = () => {
     },
 
     {
-      title: "Certifications",
+      title: "Attachments",
       iconName: "file-alt",
       iconType: "font-awesome-5",
       list: [
@@ -73,116 +122,7 @@ const Certificate = () => {
           skillLevel: "Intermediate"
         }
       ],
-      renderItem: (item: any) => {
-        return (
-          <View style={styles.cardHead}>
-            <View style={styles.listItem}>
-              <Text style={styles.bullet}>{"\u2022"}</Text>
-              <Text style={styles.itemText}>
-                {item.course} {" - "} {item.year}
-              </Text>
-            </View>
-            <AddEditBasicEducationOverlay />
-          </View>
-        );
-      }
-    },
-
-    {
-      title: "Certifications",
-      iconName: "file-alt",
-      iconType: "font-awesome-5",
-      list: [
-        {
-          skill: "HTML & CSS",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "JavaScript",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "Vue JS",
-          skillLevel: "Intermediate"
-        },
-        {
-          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-          skillLevel: "Intermediate"
-        }
-      ],
-      renderItem: (item: any) => {
-        return (
-          <View style={styles.cardHead}>
-            <View style={styles.listItem}>
-              <Text style={styles.bullet}>{"\u2022"}</Text>
-              <Text style={styles.itemText}>
-                {item.course} {" - "} {item.year}
-              </Text>
-            </View>
-            <AddEditBasicEducationOverlay />
-          </View>
-        );
-      }
-    },
-
-    {
-      title: "Certifications",
-      iconName: "file-alt",
-      iconType: "font-awesome-5",
-      list: [
-        {
-          skill: "HTML & CSS",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "JavaScript",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "Vue JS",
-          skillLevel: "Intermediate"
-        },
-        {
-          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-          skillLevel: "Intermediate"
-        }
-      ],
-      renderItem: (item: any) => {
-        return (
-          <View style={styles.cardHead}>
-            <View style={styles.listItem}>
-              <Text style={styles.bullet}>{"\u2022"}</Text>
-              <Text style={styles.itemText}>
-                {item.course} {" - "} {item.year}
-              </Text>
-            </View>
-            <AddEditBasicEducationOverlay />
-          </View>
-        );
-      }
-    },
-    {
-      title: "Certifications",
-      iconName: "file-alt",
-      iconType: "font-awesome-5",
-      list: [
-        {
-          skill: "HTML & CSS",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "JavaScript",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "Vue JS",
-          skillLevel: "Intermediate"
-        },
-        {
-          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-          skillLevel: "Intermediate"
-        }
-      ],
+      Overlay: <AddEditAttachmentOverlay />,
       renderItem: (item: any) => {
         return (
           <View style={styles.cardHead}>
@@ -259,16 +199,50 @@ const Certificate = () => {
         renderItem={({ item }) => {
           return (
             <Card containerStyle={styles.cardContainer}>
-              <View style={styles.cardHeader}>
-                <Icon
-                  name={item.iconName}
-                  type={item.iconType}
-                  size={30}
-                  color={themeLight.lightColors?.primary}
-                />
-                <Text style={[styles.cardHeaderText, styles.wrapText]}>
-                  {item.title}
-                </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 10
+                }}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    columnGap: 10
+                  }}
+                >
+                  <Icon
+                    name={item.iconName}
+                    type={item.iconType}
+                    size={30}
+                    color={themeLight.lightColors?.primary}
+                  />
+                  <Text style={[styles.cardHeaderText, styles.wrapText]}>
+                    {item.title}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor: "lightgray",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: themeLight.lightColors?.primary
+                  }}
+                >
+                  {item.Overlay}
+                  {/* <EditUserInfoOverlay userInfo={userInfo} /> */}
+                </View>
               </View>
 
               <FlatList
