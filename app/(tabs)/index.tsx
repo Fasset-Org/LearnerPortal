@@ -6,6 +6,7 @@ import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
 import { AuthContext } from "../../components/AuthContext";
 import { Icon } from "@rneui/base";
+
 const TabRootLayout = () => {
   const { userInfo } = useContext(AuthContext);
 
