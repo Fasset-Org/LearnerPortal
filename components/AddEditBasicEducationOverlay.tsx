@@ -60,7 +60,6 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
       queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
-      console.log(err?.response);
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
