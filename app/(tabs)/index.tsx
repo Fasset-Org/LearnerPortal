@@ -7,7 +7,7 @@ import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
 import { AuthContext } from "../../components/AuthContext";
 import { Icon } from "@rneui/base";
 const TabRootLayout = () => {
-  let { userInfo } = useContext(AuthContext);
+  const { userInfo } = useContext(AuthContext);
 
   return (
     <SafeAreaView
