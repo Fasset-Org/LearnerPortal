@@ -1,10 +1,15 @@
 import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
 import AddEditBasicEducationOverlay from "../../components/AddEditBasicEducationOverlay";
+import { AuthContext } from "../../components/AuthContext";
+import Alert from "../../components/Alert";
+import AddEditTertiaryEducationOverlay from "../../components/AddEditTertiaryEducationOverlay";
 
 const Education = () => {
+  const { userInfo } = useContext(AuthContext);
+
   const list: any = [
     {
       school: "Rantailane Secondary School",
@@ -66,25 +71,32 @@ const Education = () => {
           </View>
         </View>
 
-        <View style={styles.cardHead}>
-          <FlatList
-            data={list}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.listItem}>
-                  <Text style={styles.bullet}>{"\u2022"}</Text>
-                  <Text style={styles.itemText}>
-                    {item.school} {" - "} {"Grade " + item.grade}
-                    {" - "} {item.city}
-                    {" - "} {item.province}
-                  </Text>
-                </View>
-              );
-            }}
-            // keyExtractor={(item) => item}
-          />
-          <AddEditBasicEducationOverlay />
-        </View>
+        {userInfo?.basicEducation ? (
+          <View style={styles.cardHead}>
+            <FlatList
+              data={list}
+              renderItem={({ item }) => {
+                return (
+                  <View style={styles.listItem}>
+                    <Text style={styles.bullet}>{"\u2022"}</Text>
+                    <Text style={styles.itemText}>
+                      {userInfo?.basicEducation?.school} {" - "}{" "}
+                      {"Grade " + userInfo?.basicEducation?.grade}
+                      {" - "} {userInfo?.basicEducation?.city}
+                      {" - "} {userInfo?.basicEducation?.province}
+                    </Text>
+                  </View>
+                );
+              }}
+              // keyExtractor={(item) => item}
+            />
+            <AddEditBasicEducationOverlay
+              education={userInfo?.basicEducation}
+            />
+          </View>
+        ) : (
+          <Alert message="Basic education is required" type="error" />
+        )}
       </Card>
 
       {/* Tertiary Education */}
@@ -115,7 +127,7 @@ const Education = () => {
               backgroundColor: themeLight.lightColors?.primary
             }}
           >
-            <AddEditBasicEducationOverlay />
+            <AddEditTertiaryEducationOverlay />
           </View>
         </View>
 
