@@ -39,11 +39,11 @@ const Login = () => {
     },
     onSuccess: async (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
-      showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
-      setTimeout(() => {
-        router.replace(`/(tabs)`);
-      }, 2000);
+      queryClient.refetchQueries(["userInfo"]);
+      showToast("success", "Success", data?.message);
+
+      router.replace(`/(tabs)`);
     },
     onError: (err: AxiosError) => {
       showToast("error", "Error", err?.response?.data?.message);
