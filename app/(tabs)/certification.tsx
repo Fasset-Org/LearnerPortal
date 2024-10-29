@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  ScrollView
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import React, { useContext } from "react";
 import { Card, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
@@ -18,31 +10,15 @@ import { AuthContext } from "../../components/AuthContext";
 
 const Certificate = () => {
   const { userInfo } = useContext(AuthContext);
+  console.log("Certificate", userInfo?.skills);
   const data = [
     {
       title: "Professional Skills",
       iconName: "cog",
       iconType: "font-awesome",
-      list: [
-        {
-          skill: "HTML & CSS",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "JavaScript",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "Vue JS",
-          skillLevel: "Intermediate"
-        },
-        {
-          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-          skillLevel: "Intermediate"
-        }
-      ],
-      Overlay: <AddEditProfessionalSkillOverlay />,
-      renderItem: (item: any) => {
+      list: userInfo?.skills || [],
+      Overlay: <AddEditProfessionalSkillOverlay userId={userInfo?.id} />,
+      renderItem: ({ item }: any) => {
         return (
           <>
             {userInfo?.skills?.length > 0 ? (
@@ -50,7 +26,7 @@ const Certificate = () => {
                 <View style={styles.listItem}>
                   <Text style={styles.bullet}>{"\u2022"}</Text>
                   <Text style={styles.itemText}>
-                    {item.course} {" - "} {item.year}
+                    {item.skill} {" - "} {item.skillLevel}
                   </Text>
                 </View>
               </View>
@@ -85,16 +61,15 @@ const Certificate = () => {
         }
       ],
       Overlay: <AddEditCertificationOverlay />,
-      renderItem: (item: any) => {
+      renderItem: ({ item }: any) => {
         return (
           <View style={styles.cardHead}>
             <View style={styles.listItem}>
               <Text style={styles.bullet}>{"\u2022"}</Text>
               <Text style={styles.itemText}>
-                {item.course} {" - "} {item.year}
+                {item.skill} {" - "} {item.skillLevel}
               </Text>
             </View>
-            <AddEditBasicEducationOverlay />
           </View>
         );
       }
@@ -123,13 +98,13 @@ const Certificate = () => {
         }
       ],
       Overlay: <AddEditAttachmentOverlay />,
-      renderItem: (item: any) => {
+      renderItem: ({ item }: any) => {
         return (
           <View style={styles.cardHead}>
             <View style={styles.listItem}>
               <Text style={styles.bullet}>{"\u2022"}</Text>
               <Text style={styles.itemText}>
-                {item.course} {" - "} {item.year}
+                {item.skill} {" - "} {item.skillLevel}
               </Text>
             </View>
             <AddEditBasicEducationOverlay />
@@ -247,17 +222,11 @@ const Certificate = () => {
 
               <FlatList
                 data={item.list}
-                renderItem={({ item }) => {
+                renderItem={({ item: innerItem }) => {
                   return (
-                    <View style={styles.cardHead}>
-                      <View style={styles.listItem}>
-                        <Text style={styles.bullet}>{"\u2022"}</Text>
-                        <Text style={styles.itemText}>
-                          {item.skill} {" - "} {item.skillLevel}
-                        </Text>
-                      </View>
-                      <AddEditBasicEducationOverlay />
-                    </View>
+                    <>
+                      <item.renderItem item={innerItem} />
+                    </>
                   );
                 }}
               />
@@ -265,160 +234,6 @@ const Certificate = () => {
           );
         }}
       />
-
-      {/* <Card containerStyle={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <Icon
-            name="cog"
-            type="font-awesome"
-            size={30}
-            color={themeLight.lightColors?.primary}
-          />
-          <Text style={[styles.cardHeaderText, styles.wrapText]}>
-            Professional Skills
-          </Text>
-        </View>
-
-        <FlatList
-          data={professionalSkills}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.cardHead}>
-                <View style={styles.listItem}>
-                  <Text style={styles.bullet}>{"\u2022"}</Text>
-                  <Text style={styles.itemText}>
-                    {item.skill} {" - "} {item.skillLevel}
-                  </Text>
-                </View>
-                <AddEditBasicEducationOverlay />
-              </View>
-            );
-          }}
-        />
-      </Card> */}
-
-      {/* <Card containerStyle={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <Icon
-            name="file-alt"
-            type="font-awesome-5"
-            size={30}
-            color={themeLight.lightColors?.primary}
-          />
-          <Text style={[styles.cardHeaderText, styles.wrapText]}>
-            Certifications
-          </Text>
-        </View>
-
-        <FlatList
-          data={certifications}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.cardHead}>
-                <View style={styles.listItem}>
-                  <Text style={styles.bullet}>{"\u2022"}</Text>
-                  <Text style={styles.itemText}>
-                    {item.course} {" - "} {item.year}
-                  </Text>
-                </View>
-                <AddEditBasicEducationOverlay />
-              </View>
-            );
-          }}
-        />
-      </Card> */}
-
-      {/* Attachments */}
-
-      {/* <Card containerStyle={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <Icon
-            name="attach-file"
-            // type="font-awesome"
-            size={30}
-            color={themeLight.lightColors?.primary}
-            style={styles.icon}
-          />
-          <Text style={[styles.cardHeaderText, styles.wrapText]}>
-            Attachments
-          </Text>
-        </View>
-
-        <FlatList
-          data={tertiaryEducationList}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.cardHead}>
-                <TouchableOpacity>
-                  <Card containerStyle={styles.downloadCardContainer}>
-                    <View style={styles.row}>
-                      <Icon
-                        name="file-pdf"
-                        type="font-awesome-5"
-                        size={30}
-                        color={themeLight.lightColors?.error}
-                      />
-                      <Text>Download Matric</Text>
-                      <Icon
-                        name="pencil-square-o"
-                        size={30}
-                        type="font-awesome"
-                        color={themeLight.lightColors?.primary}
-                      />
-                    </View>
-                  </Card>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-          // keyExtractor={(item) => item}
-        />
-      </Card> */}
-
-      {/* <Card containerStyle={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <Icon
-            name="attach-file"
-            // type="font-awesome"
-            size={30}
-            color={themeLight.lightColors?.primary}
-            style={styles.icon}
-          />
-          <Text style={[styles.cardHeaderText, styles.wrapText]}>
-            Attachments
-          </Text>
-        </View>
-
-        <FlatList
-          data={tertiaryEducationList}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.cardHead}>
-                <TouchableOpacity>
-                  <Card containerStyle={styles.downloadCardContainer}>
-                    <View style={styles.row}>
-                      <Icon
-                        name="file-pdf"
-                        type="font-awesome-5"
-                        size={30}
-                        color={themeLight.lightColors?.error}
-                      />
-                      <Text>Download Matric</Text>
-                      <Icon
-                        name="pencil-square-o"
-                        size={30}
-                        type="font-awesome"
-                        color={themeLight.lightColors?.primary}
-                      />
-                    </View>
-                  </Card>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-          // keyExtractor={(item) => item}
-        />
-      </Card> */}
     </SafeAreaView>
   );
 };
