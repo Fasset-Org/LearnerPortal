@@ -128,31 +128,38 @@ const Education = () => {
               backgroundColor: themeLight.lightColors?.primary
             }}
           >
-            <AddEditTertiaryEducationOverlay />
+            <AddEditTertiaryEducationOverlay userId={userInfo?.id} />
           </View>
         </View>
 
-        <FlatList
-          data={tertiaryEducationList}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.cardHead}>
-                <View style={styles.listItem}>
-                  <Text style={styles.bullet}>{"\u2022"}</Text>
-                  <Text style={styles.itemText}>
-                    {item.institution} {"\u2022"} {item.educationLevel}
-                    {" in "} {item.fieldOfStufy}
-                    {"  \u2022"} {item.startYear}
-                    {" - "} {item.endYear}
-                    {"  \u2022"} {item.status}
-                  </Text>
+        {userInfo?.tertiaryEducation ? (
+          <FlatList
+            data={userInfo?.tertiaryEducation}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={styles.cardHead}>
+                  <View style={styles.listItem}>
+                    <Text style={styles.bullet}>{"\u2022"}</Text>
+                    <Text style={styles.itemText}>
+                      {item.institution} {"\u2022"} {item.educationLevel}
+                      {" in "} {item.fieldOfStufy}
+                      {"  \u2022"} {item.startYear}
+                      {" - "} {item.endYear}
+                      {"  \u2022"} {item.status}
+                    </Text>
+                  </View>
+                  <AddEditTertiaryEducationOverlay
+                    education={userInfo?.tertiaryEducation[index]}
+                    userId={userInfo?.id}
+                  />
                 </View>
-                <AddEditBasicEducationOverlay />
-              </View>
-            );
-          }}
-          // keyExtractor={(item) => item}
-        />
+              );
+            }}
+            // keyExtractor={(item) => item}
+          />
+        ) : (
+          <Alert message="Tertiary education is optional" type="info" />
+        )}
       </Card>
     </SafeAreaView>
   );
