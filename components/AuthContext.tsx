@@ -2,7 +2,7 @@ import React, { createContext, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { ProviderProps } from "../utils/contants";
-import { Redirect } from "expo-router";
+import { useFocusEffect } from "expo-router";
 
 export const AuthContext = createContext<ProviderProps>({
   isAuth: false,
@@ -27,7 +27,13 @@ const AuthProvider = ({ children }: Props) => {
 
   const err = userQueryInfo?.error as any;
 
-  console.log(userQueryInfo);
+  const isAuth = Boolean(userQueryInfo.data?.user);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      userQueryInfo.refetch(); // Refetch on focus
+    }, [isAuth])
+  );
 
   return (
     <AuthContext.Provider
