@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button, Overlay, Icon, useTheme } from "@rneui/themed";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import themeLight from "../Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -9,14 +15,17 @@ import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
+import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-toast-message";
 
 type AddEditBasicEducationOverlay = {
   education?: any;
+  userId?: string | any;
 };
 
 const AddEditBasicEducationOverlay: React.FunctionComponent<
   AddEditBasicEducationOverlay
-> = ({ education }) => {
+> = ({ education, userId }) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
   const queryClient: any = useQueryClient();
@@ -51,7 +60,8 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
       queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
-      showToast("success", "Success", err?.response?.data?.message);
+      console.log(err?.response);
+      showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
@@ -62,7 +72,7 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
       queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
-      showToast("success", "Success", err?.response?.data?.message);
+      showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
@@ -111,10 +121,12 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
         <View style={{ padding: 10 }}>
           <Formik
             initialValues={{
-              grade: "",
-              school: "",
-              city: "",
-              province: ""
+              userId: userId || "",
+              educationId: education?.id || "",
+              grade: education?.grade || "",
+              school: education?.school || "",
+              city: education?.city || "",
+              province: education?.province || ""
             }}
             validationSchema={Yup.object({
               grade: Yup.string().required("Grade required"),
@@ -151,45 +163,58 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
                 <TextInputWrapper
                   name="province"
                   label="High School Province"
-                  secureTextEntry={true}
+                  secureTextEntry={false}
                 />
                 {education ? (
-                  <TouchableOpacity style={styles.button}>
-                    <Button
-                      title="UPDATE"
-                      type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
-                      onPress={() => handleSubmit()}
-                    />
-                  </TouchableOpacity>
+                  <>
+                    {editBasicEducationMutation.isPending ? (
+                      <ActivityIndicator size="large" animating={true} />
+                    ) : (
+                      <TouchableOpacity style={styles.button}>
+                        <Button
+                          title="UPDATE"
+                          type="outline"
+                          buttonStyle={{
+                            borderColor: theme.colors.secondary,
+                            borderWidth: 1
+                          }}
+                          titleStyle={{
+                            color: theme.colors.secondary,
+                            marginRight: 10
+                          }}
+                          onPress={() => handleSubmit()}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
-                  <TouchableOpacity style={styles.button}>
-                    <Button
-                      title="SAVE"
-                      type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
-                      onPress={() => handleSubmit()}
-                    />
-                  </TouchableOpacity>
+                  <>
+                    {addBasicEducationMutation.isPending ? (
+                      <ActivityIndicator size="large" animating={true} />
+                    ) : (
+                      <TouchableOpacity style={styles.button}>
+                        <Button
+                          title="SAVE"
+                          type="outline"
+                          buttonStyle={{
+                            borderColor: theme.colors.secondary,
+                            borderWidth: 1
+                          }}
+                          titleStyle={{
+                            color: theme.colors.secondary,
+                            marginRight: 10
+                          }}
+                          onPress={() => handleSubmit()}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 )}
               </View>
             )}
           </Formik>
         </View>
+        <Toast />
       </Overlay>
     </View>
   );
