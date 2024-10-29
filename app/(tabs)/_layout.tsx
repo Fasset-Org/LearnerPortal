@@ -1,18 +1,11 @@
 import { StyleSheet } from "react-native";
-import React, { useContext } from "react";
-import { Redirect, Tabs } from "expo-router";
+import React from "react";
+import { Tabs } from "expo-router";
 import { Icon, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
-import { AuthContext } from "../../components/AuthContext";
 
 const DashBoardTabs = () => {
   const { theme } = useTheme();
-
-  // const { isAuth, error } = useContext(AuthContext);
-
-  // if (!isAuth && error?.status === 401) {
-  //   return <Redirect href="/(auth)/login" />;
-  // }
 
   return (
     <Tabs
