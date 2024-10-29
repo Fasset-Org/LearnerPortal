@@ -5,15 +5,171 @@ import themeLight from "../Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../app/xhr/student";
+import { showToast } from "../utils/showToast";
+import YearPicker from "./FormComponents/YearPicker";
 import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 
-type AddEditTertiaryEducationOverlay = {};
+type AddEditTertiaryEducationOverlay = {
+  education?: any;
+};
 
 const AddEditTertiaryEducationOverlay: React.FunctionComponent<
   AddEditTertiaryEducationOverlay
-> = () => {
+> = ({ education }) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
+  const queryClient: any = useQueryClient();
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
+
+  const addBasicEducationMutation = useMutation({
+    mutationFn: (formData: any) => StudentQuery.addBasicEducation(formData),
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
+    },
+    onError: (err: any) => {
+      showToast("success", "Success", err?.response?.data?.message);
+    }
+  });
+
+  const editBasicEducationMutation = useMutation({
+    mutationFn: (formData: any) => StudentQuery.editBasicEducation(formData),
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
+    },
+    onError: (err: any) => {
+      showToast("success", "Success", err?.response?.data?.message);
+    }
+  });
+
+  const qualificationLevelOptions = [
+    {
+      value: "National Certificate",
+      label: "National Certificate"
+    },
+    {
+      value: "National Diploma",
+      label: "National Diploma"
+    },
+    {
+      value: "National First Degree (Min 360",
+      label: "National First Degree (Min 360"
+    },
+    {
+      value: "Post-doctoral Degree",
+      label: "Post-doctoral Degree"
+    },
+    {
+      value: "Doctoral Degree",
+      label: "Doctoral Degree"
+    },
+    {
+      value: "Masters Degree",
+      label: "Masters Degree"
+    },
+    {
+      value: "Professional Qualification",
+      label: "Professional Qualification"
+    },
+    {
+      value: "Honours Degree",
+      label: "Honours Degree"
+    },
+    {
+      value: "National Higher Diploma",
+      label: "National Higher Diploma"
+    },
+    {
+      value: "National Masters Diploma",
+      label: "National Masters Diploma"
+    },
+    {
+      value: "National Higher Certificate",
+      label: "National Higher Certificate"
+    },
+    {
+      value: "Further Diploma",
+      label: "Further Diploma"
+    },
+    {
+      value: "Post Graduate Diploma",
+      label: "Post Graduate Diploma"
+    },
+    {
+      value: "Senior Certificate",
+      label: "Senior Certificate"
+    },
+    {
+      value: "Qual at Nat Sen Cert level",
+      label: "Qual at Nat Sen Cert level"
+    },
+    {
+      value: "Apprenticeship / Trade Cert",
+      label: "Apprenticeship / Trade Cert"
+    },
+    {
+      value: "Post Grad B Degree (phasing out) e.g. B Ed",
+      label: "Post Grad B Degree (phasing out) e.g. B Ed"
+    },
+    {
+      value: "Post Diploma Diploma (phasing out)",
+      label: "Post Diploma Diploma (phasing out)"
+    },
+    {
+      value: "Post-basic Diploma [mainly applies to Nursing]",
+      label: "Post-basic Diploma [mainly applies to Nursing]"
+    },
+    {
+      value: "Further Ed and Training Cert (FETC)",
+      label: "Further Ed and Training Cert (FETC)"
+    },
+    {
+      value: "National First Degree (Min 480)",
+      label: "National First Degree (Min 480)"
+    },
+    {
+      value: "Schl below SenC: (not full qualification)",
+      label: "Schl below SenC: (not full qualification)"
+    },
+    {
+      value: "Advanced Certificate",
+      label: "Advanced Certificate"
+    },
+    {
+      value: "Advanced Diploma",
+      label: "Advanced Diploma"
+    },
+    {
+      value: "Higher Certificate",
+      label: "Higher Certificate"
+    },
+    {
+      value: "Occupational Certificate",
+      label: "Occupational Certificate"
+    }
+  ];
+
+  const completionStatus = [
+    {
+      value: "",
+      label: "Please select status"
+    },
+    {
+      value: "In Progress",
+      label: "In Progress"
+    },
+    {
+      value: "Pending",
+      label: "Pending"
+    },
+    {
+      value: "Completed",
+      label: "Completed"
+    }
+  ];
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -21,21 +177,34 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
 
   return (
     <View>
-      <Icon
-        name="pencil-square-o"
-        size={20}
-        type="font-awesome"
-        // style={styles.iconStyle}
-        color={themeLight.lightColors?.primary}
-        onPress={toggleOverlay}
-      />
+      {education ? (
+        <Icon
+          name="pencil-square-o"
+          size={20}
+          type="font-awesome"
+          // style={styles.iconStyle}
+          color={themeLight.lightColors?.primary}
+          onPress={toggleOverlay}
+        />
+      ) : (
+        <Icon
+          name="add"
+          size={20}
+          type="material"
+          // style={styles.iconStyle}
+          color={themeLight.lightColors?.white}
+          onPress={toggleOverlay}
+        />
+      )}
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
         overlayStyle={styles.fullScreenOverlay}
       >
         <View style={styles.overlayHeader}>
-          <Text style={styles.textPrimary}>Edit Basic Information</Text>
+          <Text style={styles.textPrimary}>
+            {education ? "Edit Tertiary Education" : "Add Tertiary Education"}
+          </Text>
           <Icon
             name="close"
             type="material"
@@ -47,81 +216,110 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
         <View style={{ padding: 10 }}>
           <Formik
             initialValues={{
-              email: "",
-              password: "",
-              firstName: "",
-              lastName: "",
-              rsaId: ""
+              userId: education?.userId || "",
+              tertiaryEducationId: education?.id || "",
+              educationLevel: education?.educationLevel || "",
+              fieldOfStudy: education?.fieldOfStudy || "",
+              institution: education?.institution || "",
+              startYear: education?.startYear || "",
+              endYear: education?.endYear || "",
+              status: education?.status || ""
             }}
             validationSchema={Yup.object({
-              firstName: Yup.string().required("FirstName required"),
-              lastName: Yup.string().required("LastName required"),
-              email: Yup.string()
-                .email("Invalid email address")
-                .required("Email required"),
-              password: Yup.string()
-                .min(8, "Password must be at least 8 characters")
-                .required("Password required"),
-              rsaId: Yup.string().required("Please select")
+              educationLevel: Yup.string().required(
+                "Qualification level required"
+              ),
+              fieldOfStudy: Yup.string().required(
+                "Field of study name required"
+              ),
+              institution: Yup.string().required("Institution required"),
+              startYear: Yup.string().required("Year started required"),
+              status: Yup.string().required("Status required"),
+              endYear: Yup.string().when("status", {
+                is: "Completed",
+                then: (schema) => Yup.date().required("Year completed Required")
+              })
             })}
             onSubmit={(values) => {}}
-            // Optionally add validationSchema here
           >
-            {({ handleSubmit }) => (
+            {({ handleSubmit, setFieldValue, values }) => (
               <View style={styles.innerContainer}>
+                {/* <YearPicker
+                  selectedYear={selectedYear}
+                  onSelectYear={(year) => {
+                    setSelectedYear(year);
+                    setFieldValue("year", year);
+                  }}
+                /> */}
                 <TextInputWrapper
-                  name="firstName"
-                  label="First Name"
+                  name="educationLevel"
+                  label="Education Level"
                   secureTextEntry={false}
                 />
                 <TextInputWrapper
-                  name="middleName"
-                  label="Middle Name"
+                  name="fieldOfStudy"
+                  label="FIeld Of Study"
                   secureTextEntry={false}
                 />
                 <TextInputWrapper
-                  name="lastName"
-                  label="Last Name"
+                  name="institution"
+                  label="Institution"
                   secureTextEntry={false}
                 />
-                <SelectInputWrapper
-                  name="rsaId"
-                  label="Do you have RSA ID?"
-                  options={[
-                    { value: "", label: "Do you have RSA ID?" },
-                    { value: "Yes", label: "Yes" },
-                    { value: "No", label: "No" }
-                  ]}
-                />
+
                 <TextInputWrapper
-                  name="password"
-                  label="Password"
+                  name="startYear"
+                  label="Start Year"
                   secureTextEntry={true}
                 />
-                <TouchableOpacity style={styles.button}>
-                  <Button
-                    title="REGISTER"
-                    icon={
-                      <Icon
-                        name="pencil-square-o"
-                        size={20}
-                        color={theme.colors.secondary}
-                        type="font-awesome"
-                      />
-                    }
-                    iconPosition="right"
-                    type="outline"
-                    buttonStyle={{
-                      borderColor: theme.colors.secondary,
-                      borderWidth: 1
-                    }}
-                    titleStyle={{
-                      color: theme.colors.secondary,
-                      marginRight: 10
-                    }}
-                    onPress={() => handleSubmit()}
+
+                <SelectInputWrapper
+                  name="status"
+                  label="Status"
+                  options={completionStatus}
+                />
+
+                {values.status === "Completed" && (
+                  <TextInputWrapper
+                    name="endYear"
+                    label="End Year"
+                    secureTextEntry={true}
                   />
-                </TouchableOpacity>
+                )}
+
+                {education ? (
+                  <TouchableOpacity style={styles.button}>
+                    <Button
+                      title="UPDATE"
+                      type="outline"
+                      buttonStyle={{
+                        borderColor: theme.colors.secondary,
+                        borderWidth: 1
+                      }}
+                      titleStyle={{
+                        color: theme.colors.secondary,
+                        marginRight: 10
+                      }}
+                      onPress={() => handleSubmit()}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity style={styles.button}>
+                    <Button
+                      title="SAVE"
+                      type="outline"
+                      buttonStyle={{
+                        borderColor: theme.colors.secondary,
+                        borderWidth: 1
+                      }}
+                      titleStyle={{
+                        color: theme.colors.secondary,
+                        marginRight: 10
+                      }}
+                      onPress={() => handleSubmit()}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             )}
           </Formik>
