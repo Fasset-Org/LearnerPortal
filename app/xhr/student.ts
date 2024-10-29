@@ -80,6 +80,16 @@ const StudentQuery = {
     return resp?.data;
   },
 
+  addCertification: async (formData: any) => {
+    console.log(formData);
+    const resp = await axiosInstance.post(
+      `/student/addCertification`,
+      formData
+    );
+
+    return resp?.data;
+  },
+
   getAllProgrammes: async () => {
     const resp = await axiosInstance.get(`/student/getAllProgrammes`);
 
