@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button, Overlay, Icon, useTheme } from "@rneui/themed";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import themeLight from "../Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -10,32 +16,36 @@ import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import YearPicker from "./FormComponents/YearPicker";
 import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
+import Toast from "react-native-toast-message";
 
 type AddEditTertiaryEducationOverlay = {
   education?: any;
+  userId?: string | any;
 };
 
 const AddEditTertiaryEducationOverlay: React.FunctionComponent<
   AddEditTertiaryEducationOverlay
-> = ({ education }) => {
+> = ({ education, userId }) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
   const queryClient: any = useQueryClient();
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
-  const addBasicEducationMutation = useMutation({
-    mutationFn: (formData: any) => StudentQuery.addBasicEducation(formData),
+  console.log(education);
+
+  const addTertiaryEducationMutation = useMutation({
+    mutationFn: (formData: any) => StudentQuery.addTertiaryEducation(formData),
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
-      showToast("success", "Success", err?.response?.data?.message);
+      showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
-  const editBasicEducationMutation = useMutation({
-    mutationFn: (formData: any) => StudentQuery.editBasicEducation(formData),
+  const editTertiaryEducationMutation = useMutation({
+    mutationFn: (formData: any) => StudentQuery.editTertiaryEducation(formData),
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
@@ -46,6 +56,10 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
   });
 
   const qualificationLevelOptions = [
+    {
+      value: "",
+      label: "Qualification Level"
+    },
     {
       value: "National Certificate",
       label: "National Certificate"
@@ -216,7 +230,7 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
         <View style={{ padding: 10 }}>
           <Formik
             initialValues={{
-              userId: education?.userId || "",
+              userId: userId || "",
               tertiaryEducationId: education?.id || "",
               educationLevel: education?.educationLevel || "",
               fieldOfStudy: education?.fieldOfStudy || "",
@@ -240,7 +254,14 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
                 then: (schema) => Yup.date().required("Year completed Required")
               })
             })}
-            onSubmit={(values) => {}}
+            enableReinitialize={true}
+            onSubmit={(values) => {
+              if (education) {
+                editTertiaryEducationMutation.mutate(values);
+              } else {
+                addTertiaryEducationMutation.mutate(values);
+              }
+            }}
           >
             {({ handleSubmit, setFieldValue, values }) => (
               <View style={styles.innerContainer}>
@@ -251,10 +272,10 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
                     setFieldValue("year", year);
                   }}
                 /> */}
-                <TextInputWrapper
+                <SelectInputWrapper
                   name="educationLevel"
                   label="Education Level"
-                  secureTextEntry={false}
+                  options={qualificationLevelOptions}
                 />
                 <TextInputWrapper
                   name="fieldOfStudy"
@@ -270,7 +291,7 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
                 <TextInputWrapper
                   name="startYear"
                   label="Start Year"
-                  secureTextEntry={true}
+                  secureTextEntry={false}
                 />
 
                 <SelectInputWrapper
@@ -283,47 +304,60 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
                   <TextInputWrapper
                     name="endYear"
                     label="End Year"
-                    secureTextEntry={true}
+                    secureTextEntry={false}
                   />
                 )}
 
                 {education ? (
-                  <TouchableOpacity style={styles.button}>
-                    <Button
-                      title="UPDATE"
-                      type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
-                      onPress={() => handleSubmit()}
-                    />
-                  </TouchableOpacity>
+                  <>
+                    {editTertiaryEducationMutation.isPending ? (
+                      <ActivityIndicator size="large" animating={true} />
+                    ) : (
+                      <TouchableOpacity style={styles.button}>
+                        <Button
+                          title="UPDATE"
+                          type="outline"
+                          buttonStyle={{
+                            borderColor: theme.colors.secondary,
+                            borderWidth: 1
+                          }}
+                          titleStyle={{
+                            color: theme.colors.secondary,
+                            marginRight: 10
+                          }}
+                          onPress={() => handleSubmit()}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
-                  <TouchableOpacity style={styles.button}>
-                    <Button
-                      title="SAVE"
-                      type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
-                      onPress={() => handleSubmit()}
-                    />
-                  </TouchableOpacity>
+                  <>
+                    {addTertiaryEducationMutation.isPending ? (
+                      <ActivityIndicator size="large" animating={true} />
+                    ) : (
+                      <TouchableOpacity style={styles.button}>
+                        <Button
+                          title="SAVE"
+                          type="outline"
+                          buttonStyle={{
+                            borderColor: theme.colors.secondary,
+                            borderWidth: 1
+                          }}
+                          titleStyle={{
+                            color: theme.colors.secondary,
+                            marginRight: 10
+                          }}
+                          onPress={() => handleSubmit()}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
                 )}
               </View>
             )}
           </Formik>
         </View>
+        <Toast />
       </Overlay>
     </View>
   );
