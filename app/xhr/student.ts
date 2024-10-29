@@ -28,6 +28,22 @@ const StudentQuery = {
     );
 
     return resp?.data;
+  },
+  addBasicEducation: async (formData: any) => {
+    const resp = await axiosInstance.post(
+      "/student/addBasicEducation",
+      formData
+    );
+
+    return resp?.data;
+  },
+  editBasicEducation: async (formData: any) => {
+    const resp = await axiosInstance.put(
+      `/student/editBasicEducation/${formData.educationId}`,
+      formData
+    );
+
+    return resp?.data;
   }
 };
 
