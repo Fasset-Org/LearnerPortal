@@ -39,12 +39,13 @@ const AddEditCertificationOverlay: React.FunctionComponent<
   console.log(education);
 
   const addCertificationMutation = useMutation({
-    mutationFn: (formData: any) => StudentQuery.addProfessionalSkill(formData),
+    mutationFn: (formData: any) => StudentQuery.addCertification(formData),
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
     },
     onError: (err: any) => {
+      console.log("error", err);
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
@@ -53,16 +54,21 @@ const AddEditCertificationOverlay: React.FunctionComponent<
     setVisible(!visible);
   };
 
-  const handleDocumentPick = async () => {
+  const handleDocumentPick = async (setFieldValue: any) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: "*/*", // Allows all file types
         copyToCacheDirectory: false
       });
 
-      console.log(result);
-
-      if (!(result.canceled === true)) {
+      if (!result.canceled) {
+        setFieldValue("certificateFile", {
+          uri: result.assets[0].uri,
+          name: result.assets[0].name,
+          type: result.assets[0].mimeType || "application/octet-stream",
+          size: result.assets[0].size,
+          lastModified: result.assets[0].lastModified
+        });
       } else {
         console.log("Document picking canceled");
       }
@@ -113,60 +119,102 @@ const AddEditCertificationOverlay: React.FunctionComponent<
           <Formik
             initialValues={{
               userId: userId || "",
-              skill: "",
-              skillLevel: ""
+              certificateId: "",
+              course: "",
+              year: "",
+              certificateFile: null
             }}
             validationSchema={Yup.object().shape({
-              skill: Yup.string().required("Please enter skill"),
-              skillLevel: Yup.string().required("Please select skill level")
+              course: Yup.string().required("Course required"),
+              year: Yup.string().required("Year completed required"),
+              certificateFile: Yup.object().required("Please select a file")
             })}
             enableReinitialize={true}
             onSubmit={(values) => {
+              const formData = new FormData();
+              // for (const [key, value] of Object.entries(values)) {
+              //   console.log(key, value);
+              //   formData.append(key, value);
+              // }
+              // console.log(values);
               addCertificationMutation.mutate(values);
             }}
           >
-            {({ handleSubmit, setFieldValue, values }) => (
-              <View style={styles.innerContainer}>
-                <TextInputWrapper
-                  name="course"
-                  label="Course"
-                  secureTextEntry={false}
-                />
-                <TextInputWrapper
-                  name="year"
-                  label="Year"
-                  secureTextEntry={false}
-                />
-                <Text style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-                  Upload Certificate Document
-                </Text>
-                <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-                  <Button title="Select File" onPress={handleDocumentPick} />
-                </View>
-
-                {addCertificationMutation.isPending ? (
-                  <ActivityIndicator size="large" animating={true} />
-                ) : (
-                  <TouchableOpacity style={styles.button}>
+            {({ handleSubmit, setFieldValue, values, getFieldMeta }) => {
+              // console.log(values);
+              return (
+                <View style={styles.innerContainer}>
+                  <TextInputWrapper
+                    name="course"
+                    label="Course"
+                    secureTextEntry={false}
+                  />
+                  <TextInputWrapper
+                    name="year"
+                    label="Year"
+                    secureTextEntry={false}
+                  />
+                  <Text style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+                    Upload Certificate Document
+                  </Text>
+                  {values.certificateFile && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        padding: 10,
+                        columnGap: 10
+                      }}
+                    >
+                      <Text style={{ fontWeight: "bold" }}>File selected:</Text>
+                      <Text>{(values.certificateFile as any).name}</Text>
+                    </View>
+                  )}
+                  <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                     <Button
-                      title="SAVE"
+                      title="Select File"
                       type="outline"
-                      buttonStyle={{
-                        borderColor: theme.colors.secondary,
-                        borderWidth: 1
-                      }}
-                      titleStyle={{
-                        color: theme.colors.secondary,
-                        marginRight: 10
-                      }}
-                      onPress={() => handleSubmit()}
+                      onPress={() => handleDocumentPick(setFieldValue)}
                     />
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+                  </View>
+
+                  {getFieldMeta("certificateFile").touched &&
+                    getFieldMeta("certificateFile").error && (
+                      <Text
+                        style={{
+                          color: theme.colors.error,
+                          fontSize: 12,
+                          paddingHorizontal: 15
+                        }}
+                      >
+                        {getFieldMeta("certificateFile").error}
+                      </Text>
+                    )}
+
+                  {addCertificationMutation.isPending ? (
+                    <ActivityIndicator size="large" animating={true} />
+                  ) : (
+                    <TouchableOpacity style={styles.button}>
+                      <Button
+                        title="SAVE"
+                        type="outline"
+                        buttonStyle={{
+                          borderColor: theme.colors.secondary,
+                          borderWidth: 1
+                        }}
+                        titleStyle={{
+                          color: theme.colors.secondary,
+                          marginRight: 10
+                        }}
+                        onPress={() => handleSubmit()}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              );
+            }}
           </Formik>
         </View>
+
         <Toast />
       </Overlay>
     </View>
