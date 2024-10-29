@@ -67,7 +67,7 @@ const Education = () => {
               backgroundColor: themeLight.lightColors?.primary
             }}
           >
-            <AddEditBasicEducationOverlay />
+            <AddEditBasicEducationOverlay userId={userInfo?.id} />
           </View>
         </View>
 
@@ -92,6 +92,7 @@ const Education = () => {
             />
             <AddEditBasicEducationOverlay
               education={userInfo?.basicEducation}
+              userId={userInfo?.id}
             />
           </View>
         ) : (
