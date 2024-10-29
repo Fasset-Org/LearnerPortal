@@ -18,18 +18,18 @@ import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 import Toast from "react-native-toast-message";
 
 type AddEditProfessionalSkillOverlay = {
-  education?: any;
+  professionlSkill?: any;
   userId?: string | any;
 };
 
 const AddEditProfessionalSkillOverlay: React.FunctionComponent<
   AddEditProfessionalSkillOverlay
-> = ({ education, userId }) => {
+> = ({ professionlSkill, userId }) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
   const queryClient: any = useQueryClient();
 
-  console.log(education);
+  // console.log(education);
 
   const addProfessionalSkillMutation = useMutation({
     mutationFn: (formData: any) => StudentQuery.addProfessionalSkill(formData),
@@ -48,7 +48,7 @@ const AddEditProfessionalSkillOverlay: React.FunctionComponent<
 
   return (
     <View>
-      {education ? (
+      {professionlSkill ? (
         <Icon
           name="pencil-square-o"
           size={20}
@@ -74,7 +74,9 @@ const AddEditProfessionalSkillOverlay: React.FunctionComponent<
       >
         <View style={styles.overlayHeader}>
           <Text style={styles.textPrimary}>
-            {education ? "Edit Professional Skill" : "Add Professional Skill"}
+            {professionlSkill
+              ? "Edit Professional Skill"
+              : "Add Professional Skill"}
           </Text>
           <Icon
             name="close"
@@ -111,6 +113,10 @@ const AddEditProfessionalSkillOverlay: React.FunctionComponent<
                   name="skillLevel"
                   label="Skill Level"
                   options={[
+                    {
+                      value: "",
+                      label: "Select level"
+                    },
                     {
                       value: "Beginner",
                       label: "Beginner"
