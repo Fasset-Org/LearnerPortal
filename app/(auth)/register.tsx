@@ -54,9 +54,9 @@ const Register = () => {
     }
   });
 
-  if (isAuth) {
-    return <Redirect href="/(tabs)" />;
-  }
+  // if (isAuth) {
+  //   return <Redirect href="/(tabs)" />;
+  // }
 
   return (
     <>
