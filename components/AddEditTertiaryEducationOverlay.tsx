@@ -31,8 +31,6 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
   const queryClient: any = useQueryClient();
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
-  console.log(education);
-
   const addTertiaryEducationMutation = useMutation({
     mutationFn: (formData: any) => StudentQuery.addTertiaryEducation(formData),
     onSuccess: (data: any) => {
