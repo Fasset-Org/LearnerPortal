@@ -37,7 +37,7 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
   const [visible, setVisible] = useState(false);
   const queryClient: any = useQueryClient();
 
-  console.log(education);
+  // console.log(education);
 
   const addCertificationMutation = useMutation({
     mutationFn: (formData: any) => StudentQuery.addProfessionalSkill(formData),
@@ -80,7 +80,7 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
         copyToCacheDirectory: false
       });
 
-      console.log(result);
+      // console.log(result);
 
       if (!(result.canceled === true)) {
       } else {
