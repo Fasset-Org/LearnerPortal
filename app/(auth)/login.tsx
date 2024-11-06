@@ -39,8 +39,6 @@ const Login = () => {
     },
     onSuccess: async (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
-      queryClient.invalidateQueries(["userInfo"]);
-      queryClient.refetchQueries(["userInfo"]);
       showToast("success", "Success", data?.message);
 
       router.replace(`/(tabs)`);
