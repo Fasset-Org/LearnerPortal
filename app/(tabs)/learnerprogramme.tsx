@@ -6,12 +6,13 @@ import StudentQuery from "../xhr/student";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "../../components/LoadingComponent";
 import { Button } from "@rneui/themed";
+import ErrorComponent from "../../components/ErrorComponent";
 
 const LearnerProgramme = () => {
   const numbers = Array.from({ length: 10 }, (_, index) => index + 1);
   const { userInfo } = useContext(AuthContext);
 
-  const { data, isLoading }: any = useQuery({
+  const { data, isLoading, isError }: any = useQuery({
     queryKey: ["programmes"],
     queryFn: () => {
       return StudentQuery.getAllProgrammes();
@@ -20,6 +21,10 @@ const LearnerProgramme = () => {
 
   if (isLoading) {
     return <LoadingComponent />;
+  }
+
+  if (isError) {
+    return <ErrorComponent />;
   }
 
   return (
