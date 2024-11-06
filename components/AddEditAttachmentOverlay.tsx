@@ -19,7 +19,7 @@ import * as DocumentPicker from "expo-document-picker";
 import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 
 type AddEditAttachmentOverlay = {
-  education?: any;
+  attachment?: any;
   userId?: string | any;
 };
 
@@ -32,15 +32,15 @@ interface DocumentPickerResult {
 
 const AddEditAttachmentOverlay: React.FunctionComponent<
   AddEditAttachmentOverlay
-> = ({ education, userId }) => {
+> = ({ attachment, userId }) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
   const queryClient: any = useQueryClient();
 
   // console.log(education);
 
-  const addCertificationMutation = useMutation({
-    mutationFn: (formData: any) => StudentQuery.addProfessionalSkill(formData),
+  const addDocumentMutation = useMutation({
+    mutationFn: (formData: any) => StudentQuery.addDocument(formData),
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
@@ -66,6 +66,10 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
     {
       value: "Id Document",
       label: "Id Document"
+    },
+    {
+      value: "Other",
+      label: "Other"
     }
   ];
 
@@ -73,16 +77,21 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
     setVisible(!visible);
   };
 
-  const handleDocumentPick = async () => {
+  const handleDocumentPick = async (setFieldValue: any) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: "*/*", // Allows all file types
         copyToCacheDirectory: false
       });
 
-      // console.log(result);
-
-      if (!(result.canceled === true)) {
+      if (!result.canceled) {
+        setFieldValue("file", {
+          uri: result.assets[0].uri,
+          name: result.assets[0].name,
+          type: result.assets[0].mimeType || "application/octet-stream",
+          size: result.assets[0].size,
+          lastModified: result.assets[0].lastModified
+        });
       } else {
         console.log("Document picking canceled");
       }
@@ -93,7 +102,7 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
 
   return (
     <View>
-      {education ? (
+      {attachment ? (
         <Icon
           name="pencil-square-o"
           size={20}
@@ -119,7 +128,7 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
       >
         <View style={styles.overlayHeader}>
           <Text style={styles.textPrimary}>
-            {education ? "Edit Certification" : "Add Certification"}
+            {attachment ? "Edit Attachment" : "Add Attachment"}
           </Text>
           <Icon
             name="close"
@@ -133,34 +142,95 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
           <Formik
             initialValues={{
               userId: userId || "",
-              skill: "",
-              skillLevel: ""
+              documentName: "",
+              file: null,
+              otherName: ""
             }}
             validationSchema={Yup.object().shape({
-              skill: Yup.string().required("Please enter skill"),
-              skillLevel: Yup.string().required("Please select skill level")
+              documentName: Yup.string().required("Document name required"),
+              otherName: Yup.string().when("documentName", {
+                is: "Other",
+                then: () => Yup.string().required("Document name required")
+              }),
+              file: Yup.object().required("File required")
             })}
             enableReinitialize={true}
-            onSubmit={(values) => {
-              addCertificationMutation.mutate(values);
+            onSubmit={(values: any) => {
+              const formData: any = new FormData();
+
+              formData.append("userId", values.userId);
+
+              if (values?.documentName === "Other") {
+                formData.append("documentName", values.otherName);
+              } else {
+                formData.append("documentName", values.documentName);
+              }
+              if (values.file) {
+                const certFile = values.file as any;
+                formData.append("file", {
+                  uri: certFile.uri,
+                  type: certFile.type,
+                  name: certFile.name
+                });
+
+                // console.log(formData);
+
+                addDocumentMutation.mutate(formData);
+              }
             }}
           >
-            {({ handleSubmit, setFieldValue, values }) => (
+            {({ handleSubmit, setFieldValue, values, getFieldMeta }) => (
               <View style={styles.innerContainer}>
-                <SelectInputWrapper
-                  name="documentName"
-                  label="Document Name"
-                  options={documentOptionsTemplate}
-                />
+                {values.documentName === "Other" ? (
+                  <TextInputWrapper
+                    name="otherName"
+                    label="Document Name"
+                    secureTextEntry={false}
+                  />
+                ) : (
+                  <SelectInputWrapper
+                    name="documentName"
+                    label="Document Name"
+                    options={documentOptionsTemplate}
+                  />
+                )}
+
+                {values.file && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      padding: 10,
+                      columnGap: 10
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold" }}>File selected:</Text>
+                    <Text>{(values.file as any).name}</Text>
+                  </View>
+                )}
 
                 <Text style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                   Upload Document
                 </Text>
                 <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-                  <Button title="Select File" onPress={handleDocumentPick} />
+                  <Button
+                    title="Select File"
+                    onPress={() => handleDocumentPick(setFieldValue)}
+                    type="outline"
+                  />
                 </View>
+                {getFieldMeta("file").touched && getFieldMeta("file").error && (
+                  <Text
+                    style={{
+                      color: theme.colors.error,
+                      fontSize: 12,
+                      paddingHorizontal: 15
+                    }}
+                  >
+                    {getFieldMeta("file").error}
+                  </Text>
+                )}
 
-                {addCertificationMutation.isPending ? (
+                {addDocumentMutation.isPending ? (
                   <ActivityIndicator size="large" animating={true} />
                 ) : (
                   <TouchableOpacity style={styles.button}>
