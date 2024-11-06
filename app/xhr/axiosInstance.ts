@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_API_URL: string = "http://192.168.0.112:8000/api/v1";
+const BASE_API_URL: string = "http://172.16.248.178:8000/api/v1";
 import * as SecureStore from "expo-secure-store";
 
 const token = SecureStore.getItem("userToken");
