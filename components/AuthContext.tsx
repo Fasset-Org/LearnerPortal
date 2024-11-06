@@ -10,7 +10,8 @@ export const AuthContext = createContext<ProviderProps>({
   isPending: false,
   isError: false,
   error: null,
-  query: null
+  query: null,
+  refetchUserInfo: () => {}
 });
 
 interface Props {
@@ -43,7 +44,8 @@ const AuthProvider = ({ children }: Props) => {
         isPending: userQueryInfo?.isPending,
         isError: userQueryInfo?.isError,
         error: err,
-        query: userQueryInfo
+        query: userQueryInfo,
+        refetchUserInfo: userQueryInfo?.refetch
       }}
     >
       {children}
