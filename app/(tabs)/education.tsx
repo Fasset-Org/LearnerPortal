@@ -54,21 +54,24 @@ const Education = () => {
               Basic Education
             </Text>
           </View>
-          <View
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: 20,
-              borderWidth: 1,
-              borderColor: "lightgray",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: themeLight.lightColors?.primary
-            }}
-          >
-            <AddEditBasicEducationOverlay userId={userInfo?.id} />
-          </View>
+
+          {!userInfo?.basicEducation && (
+            <View
+              style={{
+                height: 40,
+                width: 40,
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: "lightgray",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: themeLight.lightColors?.primary
+              }}
+            >
+              <AddEditBasicEducationOverlay userId={userInfo?.id} />
+            </View>
+          )}
         </View>
 
         {userInfo?.basicEducation ? (
