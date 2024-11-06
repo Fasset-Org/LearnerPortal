@@ -1,4 +1,6 @@
 import axiosInstance from "./axiosInstance";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const StudentQuery = {
   getUserInfo: async () => {
@@ -81,10 +83,32 @@ const StudentQuery = {
   },
 
   addCertification: async (formData: any) => {
+    const token = SecureStore.getItem("userToken");
+    const resp = await axios.post(
+      `http://172.16.248.178/api/v1/student/addCertification`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return resp?.data;
+  },
+
+  addDocument: async (formData: any) => {
     console.log(formData);
-    const resp = await axiosInstance.post(
-      `/student/addCertification`,
-      formData
+    const token = SecureStore.getItem("userToken");
+    const resp = await axios.post(
+      `http://172.16.248.178:8000/api/v1/student/addDocument`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
 
     return resp?.data;
