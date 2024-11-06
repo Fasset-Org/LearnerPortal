@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity
+} from "react-native";
 import React, { useContext } from "react";
 import { Card, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
@@ -7,10 +14,12 @@ import AddEditProfessionalSkillOverlay from "../../components/AddEditProfessiona
 import AddEditCertificationOverlay from "../../components/AddEditCertificationOverlay";
 import AddEditAttachmentOverlay from "../../components/AddEditAttachmentOverlay";
 import { AuthContext } from "../../components/AuthContext";
+import DeleteCertificationModal from "../../components/DeleteCertificationModal";
+import DeleteProfessionalSkillModal from "../../components/DeleteProfessionalSkillModal";
+import DeleteDocumentModal from "../../components/DeleteDocumentModal";
 
 const Certificate = () => {
   const { userInfo } = useContext(AuthContext);
-  console.log("Certificate", userInfo?.skills);
   const data = [
     {
       title: "Professional Skills",
@@ -21,18 +30,15 @@ const Certificate = () => {
       renderItem: ({ item }: any) => {
         return (
           <>
-            {userInfo?.skills?.length > 0 ? (
-              <View style={styles.cardHead}>
-                <View style={styles.listItem}>
-                  <Text style={styles.bullet}>{"\u2022"}</Text>
-                  <Text style={styles.itemText}>
-                    {item.skill} {" - "} {item.skillLevel}
-                  </Text>
-                </View>
+            <View style={styles.cardHead}>
+              <View style={styles.listItem}>
+                <Text style={styles.bullet}>{"\u2022"}</Text>
+                <Text style={styles.itemText}>
+                  {item.skill} {" - "} {item.skillLevel}
+                </Text>
               </View>
-            ) : (
-              <></>
-            )}
+              <DeleteProfessionalSkillModal />
+            </View>
           </>
         );
       }
@@ -42,33 +48,61 @@ const Certificate = () => {
       title: "Certifications",
       iconName: "certificate",
       iconType: "font-awesome",
-      list: [
-        {
-          skill: "HTML & CSS",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "JavaScript",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "Vue JS",
-          skillLevel: "Intermediate"
-        },
-        {
-          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-          skillLevel: "Intermediate"
-        }
-      ],
-      Overlay: <AddEditCertificationOverlay />,
+      list: userInfo?.certificates || [],
+      Overlay: <AddEditCertificationOverlay userId={userInfo?.id} />,
       renderItem: ({ item }: any) => {
         return (
-          <View style={styles.cardHead}>
-            <View style={styles.listItem}>
-              <Text style={styles.bullet}>{"\u2022"}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 10,
+              width: "100%"
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 10,
+                flexDirection: "row",
+                alignItems: "center"
+              }}
+            >
+              <Text style={{ fontSize: 24, marginRight: 8 }}>{"\u2022"}</Text>
               <Text style={styles.itemText}>
-                {item.skill} {" - "} {item.skillLevel}
+                {item.course} {" - "} {item.year}
               </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                columnGap: 10,
+                alignItems: "center"
+              }}
+            >
+              <TouchableOpacity>
+                <View
+                  style={{
+                    height: 30,
+                    width: 30,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor: "lightgray",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: themeLight.lightColors?.primary
+                  }}
+                >
+                  <Icon
+                    name="download"
+                    type="material"
+                    size={20}
+                    iconStyle={{ color: "#FFFFFF" }}
+                  />
+                </View>
+              </TouchableOpacity>
+              <DeleteCertificationModal />
             </View>
           </View>
         );
@@ -79,91 +113,49 @@ const Certificate = () => {
       title: "Attachments",
       iconName: "file-alt",
       iconType: "font-awesome-5",
-      list: [
-        {
-          skill: "HTML & CSS",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "JavaScript",
-          skillLevel: "Expert"
-        },
-        {
-          skill: "Vue JS",
-          skillLevel: "Intermediate"
-        },
-        {
-          skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-          skillLevel: "Intermediate"
-        }
-      ],
-      Overlay: <AddEditAttachmentOverlay />,
+      list: userInfo?.attachments,
+      Overlay: <AddEditAttachmentOverlay userId={userInfo?.id} />,
       renderItem: ({ item }: any) => {
         return (
           <View style={styles.cardHead}>
             <View style={styles.listItem}>
               <Text style={styles.bullet}>{"\u2022"}</Text>
-              <Text style={styles.itemText}>
-                {item.skill} {" - "} {item.skillLevel}
-              </Text>
+              <Text style={styles.itemText}>{item.documentName}</Text>
             </View>
-            <AddEditBasicEducationOverlay />
+            <View
+              style={{
+                flexDirection: "row",
+                columnGap: 10,
+                alignItems: "center"
+              }}
+            >
+              <TouchableOpacity>
+                <View
+                  style={{
+                    height: 30,
+                    width: 30,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor: "lightgray",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: themeLight.lightColors?.primary
+                  }}
+                >
+                  <Icon
+                    name="download"
+                    type="material"
+                    size={20}
+                    iconStyle={{ color: "#FFFFFF" }}
+                  />
+                </View>
+              </TouchableOpacity>
+              <DeleteDocumentModal />
+            </View>
           </View>
         );
       }
-    }
-  ];
-
-  const professionalSkills: any = [
-    {
-      skill: "HTML & CSS",
-      skillLevel: "Expert"
-    },
-    {
-      skill: "JavaScript",
-      skillLevel: "Expert"
-    },
-    {
-      skill: "Vue JS",
-      skillLevel: "Intermediate"
-    },
-    {
-      skill: "Microsoft Excel, Word, Access, Power Point, Outlook",
-      skillLevel: "Intermediate"
-    }
-  ];
-
-  const certifications: any = [
-    {
-      course: "AZ-900 Microsoft Azure Fundamental",
-      year: "2020"
-    },
-    {
-      course: "AZ-900 Microsoft Azure Fundamental",
-      year: "2020"
-    },
-    {
-      course: "AZ-900 Microsoft Azure Fundamental",
-      year: "2020"
-    }
-  ];
-
-  const tertiaryEducationList: any = [
-    {
-      educationLevel: "BSc Degree",
-      fieldOfStufy: "Mathematical Science",
-      institution: "Sefako Makgatho Health Sciences University",
-      startYear: 2017,
-      endYear: 2019,
-      status: "Completed"
-    },
-    {
-      educationLevel: "Honours Degree",
-      fieldOfStufy: "Computer Science & Information Technology",
-      institution: "Sefako Makgatho Health Sciences University",
-      startYear: 2020,
-      endYear: 2021,
-      status: "Completed"
     }
   ];
 
