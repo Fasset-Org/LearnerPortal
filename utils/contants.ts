@@ -5,6 +5,7 @@ interface ProviderProps {
   isError: boolean;
   error: any;
   query: any;
+  refetchUserInfo: () => void;
 }
 
 export { ProviderProps };
