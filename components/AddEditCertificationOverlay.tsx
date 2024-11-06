@@ -36,7 +36,7 @@ const AddEditCertificationOverlay: React.FunctionComponent<
   const [visible, setVisible] = useState(false);
   const queryClient: any = useQueryClient();
 
-  console.log(education);
+  // console.log("user id", userId);
 
   const addCertificationMutation = useMutation({
     mutationFn: (formData: any) => StudentQuery.addCertification(formData),
@@ -131,13 +131,21 @@ const AddEditCertificationOverlay: React.FunctionComponent<
             })}
             enableReinitialize={true}
             onSubmit={(values) => {
-              const formData = new FormData();
-              // for (const [key, value] of Object.entries(values)) {
-              //   console.log(key, value);
-              //   formData.append(key, value);
-              // }
-              // console.log(values);
-              addCertificationMutation.mutate(values);
+              const formData: any = new FormData();
+              formData.append("userId", values.userId);
+              formData.append("certificateId", values.certificateId);
+              formData.append("course", values.course);
+              formData.append("year", values.year);
+
+              if (values.certificateFile) {
+                const certFile = values.certificateFile as any;
+                formData.append("certificateFile", {
+                  uri: certFile.uri,
+                  type: certFile.type,
+                  name: certFile.name
+                });
+              }
+              addCertificationMutation.mutate(formData);
             }}
           >
             {({ handleSubmit, setFieldValue, values, getFieldMeta }) => {
