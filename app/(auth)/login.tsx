@@ -40,7 +40,8 @@ const Login = () => {
     onSuccess: async (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
       showToast("success", "Success", data?.message);
-
+      await queryClient.invalidateQueries(["userInfo"]);
+      queryClient.resetQueries(["userInfo"]);
       router.replace(`/(tabs)`);
     },
     onError: (err: AxiosError) => {
@@ -79,7 +80,8 @@ const Login = () => {
                 .min(8, "Password must be at least 8 characters")
                 .required("Password required")
             })}
-            onSubmit={(values: FormData) => {
+            onSubmit={async (values: FormData) => {
+              await queryClient.clear();
               mutate(values);
             }}
             // Optionally add validationSchema here
@@ -109,6 +111,29 @@ const Login = () => {
                     />
                   </TouchableOpacity>
                 )}
+
+                <View style={{ padding: 10 }}>
+                  <Text style={{ fontSize: 14, flexWrap: "nowrap" }}>
+                    By logging in and completing your profile, you agree that
+                    you have read, understood, and accepted that you will be
+                    bound by the terms of use of the
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                      flexWrap: "nowrap"
+                    }}
+                  >
+                    POPI Act No.4 2013
+                  </Text>
+                  <Text style={{ fontSize: 14, flexWrap: "nowrap" }}>
+                    . FASSET endeavors to take all reasonable precautions to
+                    ensure that any information provided is only used for the
+                    purposes for which it has been provided.
+                  </Text>
+                </View>
 
                 <TouchableOpacity>
                   <Text style={styles.forgotText}>Forgot Password?</Text>
