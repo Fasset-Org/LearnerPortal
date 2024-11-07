@@ -136,7 +136,7 @@ const AddEditCertificationOverlay: React.FunctionComponent<
               formData.append("certificateId", values.certificateId);
               formData.append("course", values.course);
               formData.append("year", values.year);
-
+              console.log("HI");
               if (values.certificateFile) {
                 const certFile = values.certificateFile as any;
                 formData.append("certificateFile", {
