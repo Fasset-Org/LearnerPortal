@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import ProgramLayout from "../../components/ProgramLayout";
 import { AuthContext } from "../../components/AuthContext";
 import StudentQuery from "../xhr/student";
@@ -9,8 +9,11 @@ import { Button } from "@rneui/themed";
 import ErrorComponent from "../../components/ErrorComponent";
 
 const LearnerProgramme = () => {
-  const numbers = Array.from({ length: 10 }, (_, index) => index + 1);
   const { userInfo } = useContext(AuthContext);
+
+  const [learnerProgrammes, setLeanerProgrammes] = useState(
+    userInfo?.studentProgrammes.map((p: any) => p.programmes) || []
+  );
 
   const { data, isLoading, isError }: any = useQuery({
     queryKey: ["programmes"],
@@ -34,10 +37,16 @@ const LearnerProgramme = () => {
         renderItem={({ item }) => {
           return (
             <View style={{ marginBottom: 20 }}>
-              <ProgramLayout program={item} />
+              <ProgramLayout
+                program={item}
+                setLeanerProgrammes={setLeanerProgrammes}
+                learnerProgrammes={learnerProgrammes}
+              />
             </View>
           );
         }}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={() => <Button title="Save Programmes" />}
       />
     </View>
   );
