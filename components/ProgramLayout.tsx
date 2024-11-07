@@ -1,13 +1,24 @@
 import { View, Text } from "react-native";
-import React from "react";
-import { Button, CheckBox, useTheme } from "@rneui/themed";
+import React, { useState } from "react";
+import { CheckBox, useTheme } from "@rneui/themed";
 
 interface ProgramLayoutProps {
   program?: any;
+  setLeanerProgrammes?: any;
+  learnerProgrammes?: [];
 }
 
-const ProgramLayout = ({ program }: ProgramLayoutProps) => {
+const ProgramLayout = ({
+  program,
+  setLeanerProgrammes,
+  learnerProgrammes
+}: ProgramLayoutProps) => {
   const { theme } = useTheme();
+  const [checked, setChecked] = useState(() => {
+    return learnerProgrammes?.find((p: any) => p.id === program.id)
+      ? true
+      : false;
+  });
   return (
     <View
       style={{
@@ -36,12 +47,18 @@ const ProgramLayout = ({ program }: ProgramLayoutProps) => {
       <View style={{ width: "100%", padding: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <CheckBox
-            checked={false}
+            checked={checked}
             containerStyle={{
               backgroundColor: "transparent",
               borderWidth: 0,
               margin: 0,
               padding: 0
+            }}
+            onPress={() => {
+              setLeanerProgrammes((prev: []) => {
+                setChecked(!checked);
+                return [...prev, program];
+              });
             }}
           />
           <View style={{ flexShrink: 1 }}>
@@ -54,13 +71,13 @@ const ProgramLayout = ({ program }: ProgramLayoutProps) => {
             </View>
           </View>
         </View>
-        <View style={{ justifyContent: "center", alignItems: "flex-end" }}>
+        {/* <View style={{ justifyContent: "center", alignItems: "flex-end" }}>
           <Button
             title="Save"
             color="primary"
             containerStyle={{ width: 110 }}
           />
-        </View>
+        </View> */}
       </View>
     </View>
   );
