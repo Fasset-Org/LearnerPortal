@@ -3,24 +3,38 @@ import React, { useContext, useState } from "react";
 import ProgramLayout from "../../components/ProgramLayout";
 import { AuthContext } from "../../components/AuthContext";
 import StudentQuery from "../xhr/student";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingComponent from "../../components/LoadingComponent";
 import { Button } from "@rneui/themed";
 import ErrorComponent from "../../components/ErrorComponent";
+import { useFocusEffect } from "expo-router";
 
 const LearnerProgramme = () => {
-  const { userInfo } = useContext(AuthContext);
-
-  const [learnerProgrammes, setLeanerProgrammes] = useState(
-    userInfo?.studentProgrammes.map((p: any) => p.programmes) || []
-  );
-
   const { data, isLoading, isError }: any = useQuery({
     queryKey: ["programmes"],
     queryFn: () => {
       return StudentQuery.getAllProgrammes();
     }
   });
+
+  const queryClient: any = useQueryClient();
+
+  const userInfoQuery: any = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  const userInfo = userInfoQuery?.data?.user;
+
+  const [learnerProgrammes, setLeanerProgrammes] = useState(
+    userInfo?.studentProgrammes.map((p: any) => p.programmes) || []
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      queryClient.invalidateQueries(["programmes", "userInfo"]);
+    }, [])
+  );
 
   if (isLoading) {
     return <LoadingComponent />;
