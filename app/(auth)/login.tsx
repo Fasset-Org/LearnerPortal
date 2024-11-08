@@ -12,7 +12,7 @@ import TextInputWrapper from "../../components/FormComponents/TextInputWrapper";
 import * as Yup from "yup";
 import { Button, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
 import { AxiosError } from "axios";
 
@@ -21,7 +21,9 @@ import { showToast } from "../../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import { AuthContext } from "../../components/AuthContext";
-import { Redirect, useRouter } from "expo-router";
+import { Redirect, useFocusEffect, useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import StudentQuery from "../xhr/student";
 
 interface FormData {
   email: string;
@@ -29,19 +31,31 @@ interface FormData {
 }
 
 const Login = () => {
-  const { isAuth } = useContext(AuthContext);
   const router = useRouter();
   const queryClient: any = useQueryClient();
 
+  const userInfoQuery: any = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  const userInfo = userInfoQuery?.data?.user;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      queryClient.invalidateQueries(["userInfo"]);
+    }, [])
+  );
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.loginUser(formData);
     },
     onSuccess: async (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
+      await AsyncStorage.setItem("token", data?.user?.token);
+      console.log("token from API", data?.user?.token);
       showToast("success", "Success", data?.message);
       await queryClient.invalidateQueries(["userInfo"]);
-      queryClient.resetQueries(["userInfo"]);
       router.replace(`/(tabs)`);
     },
     onError: (err: AxiosError) => {
@@ -49,9 +63,9 @@ const Login = () => {
     }
   });
 
-  if (isAuth) {
-    return <Redirect href="/(tabs)" />;
-  }
+  // if (userInfo) {
+  //   return <Redirect href="/(tabs)" />;
+  // }
 
   return (
     <>
