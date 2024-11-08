@@ -1,11 +1,15 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "./axiosInstance";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
+const getToken = async () => {
+  return await AsyncStorage.getItem("token");
+};
+
 const StudentQuery = {
   getUserInfo: async () => {
     const resp = await axiosInstance.get(`/auth/isUserLoggedIn`);
-
     return resp?.data;
   },
 
@@ -83,14 +87,15 @@ const StudentQuery = {
   },
 
   addCertification: async (formData: any) => {
-    const token = SecureStore.getItem("userToken");
+    // console.log(formData);
+    // const token = SecureStore.getItem("userToken");
     const resp = await axios.post(
-      `http://172.16.248.178/api/v1/student/addCertification`,
+      `http://192.168.0.112:8000/api/v1/student/addCertification`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${await getToken()}`
         }
       }
     );
@@ -98,15 +103,14 @@ const StudentQuery = {
   },
 
   addDocument: async (formData: any) => {
-    console.log(formData);
-    const token = SecureStore.getItem("userToken");
+    // const token = SecureStore.getItem("userToken");
     const resp = await axios.post(
-      `http://172.16.248.178:8000/api/v1/student/addDocument`,
+      `http://192.168.0.112:8000/api/v1/student/addDocument`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${await getToken()}`
         }
       }
     );
