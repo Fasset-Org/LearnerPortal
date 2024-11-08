@@ -6,9 +6,37 @@ import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
 import { AuthContext } from "../../components/AuthContext";
 import { Icon } from "@rneui/base";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../xhr/student";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
 
 const TabRootLayout = () => {
-  const { userInfo } = useContext(AuthContext);
+  const route = useRoute();
+
+  console.log(route);
+
+  const queryClient: any = useQueryClient();
+
+  const userInfoQuery: any = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  const userInfo = userInfoQuery?.data?.user;
+
+  const getToken = async () => {
+    return await AsyncStorage.getItem("token");
+  };
+
+  (async () => console.log(await getToken()))();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      queryClient.invalidateQueries(["userInfo"]);
+    }, [])
+  );
 
   return (
     <SafeAreaView
