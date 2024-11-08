@@ -3,11 +3,14 @@ import React, { useContext, useState } from "react";
 import ProgramLayout from "../../components/ProgramLayout";
 import { AuthContext } from "../../components/AuthContext";
 import StudentQuery from "../xhr/student";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingComponent from "../../components/LoadingComponent";
 import { Button } from "@rneui/themed";
 import ErrorComponent from "../../components/ErrorComponent";
 import { useFocusEffect } from "expo-router";
+import { showToast } from "../../utils/showToast";
+import Toast from "react-native-toast-message";
+import { ActivityIndicator } from "react-native-paper";
 
 const LearnerProgramme = () => {
   const { data, isLoading, isError }: any = useQuery({
@@ -29,6 +32,17 @@ const LearnerProgramme = () => {
   const [learnerProgrammes, setLeanerProgrammes] = useState(
     userInfo?.studentProgrammes.map((p: any) => p.programmes) || []
   );
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (formData) => StudentQuery.saveLearnerProgrammes(formData),
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
+    },
+    onError: (err: any) => {
+      showToast("error", "Error", err?.response?.data?.message);
+    }
+  });
 
   useFocusEffect(
     React.useCallback(() => {
@@ -55,13 +69,24 @@ const LearnerProgramme = () => {
                 program={item}
                 setLeanerProgrammes={setLeanerProgrammes}
                 learnerProgrammes={learnerProgrammes}
+                key={item?.id}
               />
             </View>
           );
         }}
         keyExtractor={(item, index) => index.toString()}
-        ListFooterComponent={() => <Button title="Save Programmes" />}
+        ListFooterComponent={() =>
+          isPending ? (
+            <ActivityIndicator size="large" animating={true} />
+          ) : (
+            <Button
+              title="Save Programmes"
+              onPress={() => mutate(learnerProgrammes)}
+            />
+          )
+        }
       />
+      <Toast />
     </View>
   );
 };
