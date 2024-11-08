@@ -6,10 +6,25 @@ import AddEditBasicEducationOverlay from "../../components/AddEditBasicEducation
 import { AuthContext } from "../../components/AuthContext";
 import Alert from "../../components/Alert";
 import AddEditTertiaryEducationOverlay from "../../components/AddEditTertiaryEducationOverlay";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../xhr/student";
+import { useFocusEffect } from "expo-router";
 
 const Education = () => {
-  const { userInfo } = useContext(AuthContext);
+  const queryClient: any = useQueryClient();
 
+  const userInfoQuery: any = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  const userInfo = userInfoQuery?.data?.user;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      queryClient.invalidateQueries(["userInfo"]);
+    }, [])
+  );
   const list: any = [
     {
       school: "Rantailane Secondary School",
