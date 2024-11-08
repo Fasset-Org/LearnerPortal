@@ -56,8 +56,13 @@ const ProgramLayout = ({
             }}
             onPress={() => {
               setLeanerProgrammes((prev: []) => {
-                setChecked(!checked);
-                return [...prev, program];
+                if (checked) {
+                  setChecked(!checked);
+                  return prev.filter((p: any) => p.id !== program.id);
+                } else {
+                  setChecked(!checked);
+                  return [...prev, program];
+                }
               });
             }}
           />
