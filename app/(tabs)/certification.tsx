@@ -17,9 +17,25 @@ import { AuthContext } from "../../components/AuthContext";
 import DeleteCertificationModal from "../../components/DeleteCertificationModal";
 import DeleteProfessionalSkillModal from "../../components/DeleteProfessionalSkillModal";
 import DeleteDocumentModal from "../../components/DeleteDocumentModal";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../xhr/student";
+import { useFocusEffect } from "expo-router";
 
 const Certificate = () => {
-  const { userInfo } = useContext(AuthContext);
+  const queryClient: any = useQueryClient();
+
+  const userInfoQuery: any = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
+
+  const userInfo = userInfoQuery?.data?.user;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      queryClient.invalidateQueries(["userInfo"]);
+    }, [])
+  );
   const data = [
     {
       title: "Professional Skills",
