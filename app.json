@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "LearnerPortal",
-    "slug": "LearnerPortal",
+    "slug": "learnerportal",
     "scheme": "LearnerPortal",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,6 +11,9 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "cli": {
+      "appVersionSource": "local"
     },
     "ios": {
       "supportsTablet": true
@@ -40,8 +43,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "e72b1239-0af9-4ba6-a744-02525b533ff3"
+        "projectId": "f7f3537d-4b0d-4c83-81d5-ec2bbc0e4337"
       }
-    }
+    },
+    "owner": "kamzen1998"
   }
 }
