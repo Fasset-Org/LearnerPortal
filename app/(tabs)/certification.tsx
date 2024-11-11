@@ -53,7 +53,7 @@ const Certificate = () => {
                   {item.skill} {" - "} {item.skillLevel}
                 </Text>
               </View>
-              <DeleteProfessionalSkillModal />
+              <DeleteProfessionalSkillModal id={item.id} />
             </View>
           </>
         );
@@ -96,7 +96,7 @@ const Certificate = () => {
                 alignItems: "center"
               }}
             >
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
                 <View
                   style={{
                     height: 30,
@@ -117,8 +117,8 @@ const Certificate = () => {
                     iconStyle={{ color: "#FFFFFF" }}
                   />
                 </View>
-              </TouchableOpacity>
-              <DeleteCertificationModal />
+              </TouchableOpacity> */}
+              <DeleteCertificationModal id={item.id} />
             </View>
           </View>
         );
@@ -145,7 +145,7 @@ const Certificate = () => {
                 alignItems: "center"
               }}
             >
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
                 <View
                   style={{
                     height: 30,
@@ -166,8 +166,8 @@ const Certificate = () => {
                     iconStyle={{ color: "#FFFFFF" }}
                   />
                 </View>
-              </TouchableOpacity>
-              <DeleteDocumentModal />
+              </TouchableOpacity> */}
+              {/* <DeleteDocumentModal /> */}
             </View>
           </View>
         );
