@@ -1,20 +1,35 @@
 import React, { useState } from "react";
-import { View, Button, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Dialog } from "@rneui/themed";
 import { Icon } from "@rneui/base";
-import themeLight from "../Theme";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "../app/xhr/student";
+import { showToast } from "../utils/showToast";
+import { ActivityIndicator } from "react-native-paper";
 
-const DeleteCertificationModal = () => {
+const DeleteCertificationModal = ({ id }: { id: string }) => {
   const [visible, setVisible] = useState(false);
+
+  const queryClient: any = useQueryClient();
+
+  const deleteMutatuon = useMutation({
+    mutationFn: (id: string) => StudentQuery.deleteCertification(id),
+    onSuccess: (data: any) => {
+      showToast("success", "Success", data?.message);
+      queryClient.invalidateQueries(["userInfo"]);
+      setVisible(false);
+    },
+    onError: (err: any) => {
+      showToast("error", "Error", err?.response?.data?.message);
+    }
+  });
 
   const toggleModal = () => {
     setVisible(!visible);
   };
 
-  const handleDelete = () => {
-    // Handle delete action here
-    console.log("Item deleted");
-    setVisible(false); // Close the modal after deletion
+  const handleDelete = (id: string) => {
+    deleteMutatuon.mutate(id);
   };
 
   return (
@@ -57,7 +72,15 @@ const DeleteCertificationModal = () => {
         <Text>Are you sure you want to delete this item?</Text>
         <Dialog.Actions>
           <Dialog.Button title="Cancel" onPress={toggleModal} />
-          <Dialog.Button title="Delete" onPress={handleDelete} color="red" />
+          {deleteMutatuon.isPending ? (
+            <ActivityIndicator animating={true} />
+          ) : (
+            <Dialog.Button
+              title="Delete"
+              onPress={() => handleDelete(id)}
+              color="red"
+            />
+          )}
         </Dialog.Actions>
       </Dialog>
       {/* </View> */}
