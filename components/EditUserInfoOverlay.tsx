@@ -38,9 +38,11 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
+      setVisible(!visible);
     },
     onError: (err: any) => {
       showToast("success", "Success", err?.response?.data?.message);
+      setVisible(!visible);
     }
   });
 
@@ -319,7 +321,6 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
             </Formik>
           </View>
         </ScrollView>
-        <Toast />
       </Overlay>
     </View>
   );
