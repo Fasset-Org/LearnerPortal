@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import {
+  Alert,
   Image,
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,7 +16,6 @@ import { Button, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
-import { AxiosError } from "axios";
 
 import Toast from "react-native-toast-message";
 import { showToast } from "../../utils/showToast";
@@ -41,6 +42,15 @@ const Login = () => {
 
   const userInfo = userInfoQuery?.data?.user;
 
+  const openURL = async (url: string) => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Unable to open this URL: ${url}`);
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       queryClient.invalidateQueries(["userInfo"]);
@@ -58,18 +68,18 @@ const Login = () => {
       await queryClient.invalidateQueries(["userInfo"]);
       router.replace(`/(tabs)`);
     },
-    onError: (err: AxiosError) => {
+    onError: (err: any) => {
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
 
-  // if (userInfo) {
-  //   return <Redirect href="/(tabs)" />;
-  // }
+  if (userInfo) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
     <>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <Image
@@ -139,6 +149,11 @@ const Login = () => {
                       textDecorationLine: "underline",
                       flexWrap: "nowrap"
                     }}
+                    onPress={() =>
+                      openURL(
+                        "https://www.learner-portal.fasset.org.za/static/media/FASSET%20POPIA%20POLICY.d44535ef675cac491a34.pdf"
+                      )
+                    }
                   >
                     POPI Act No.4 2013
                   </Text>
@@ -149,7 +164,13 @@ const Login = () => {
                   </Text>
                 </View>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    openURL(
+                      "https://www.learner-portal.fasset.org.za/forgotPassword"
+                    )
+                  }
+                >
                   <Text style={styles.forgotText}>Forgot Password?</Text>
                 </TouchableOpacity>
               </View>
