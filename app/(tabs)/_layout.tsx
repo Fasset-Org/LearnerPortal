@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { Icon, useTheme } from "@rneui/themed";
@@ -28,7 +28,22 @@ const DashBoardTabs = () => {
         headerTitleStyle: {
           color: theme.colors.primary
         },
-        tabBarInactiveTintColor: theme.colors.primary
+        tabBarInactiveTintColor: theme.colors.primary,
+
+        headerRight: () => (
+          <TouchableOpacity>
+            <Icon
+              name="sign-out" // Logout icon name in FontAwesome
+              size={30}
+              type="font-awesome"
+              color={theme.colors.error}
+              style={{ marginRight: 10 }}
+              onPress={() => {
+                // Add your logout functionality here
+              }}
+            />
+          </TouchableOpacity>
+        )
       }}
     >
       <Tabs.Screen
