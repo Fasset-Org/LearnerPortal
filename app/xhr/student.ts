@@ -69,6 +69,13 @@ const StudentQuery = {
 
     return resp?.data;
   },
+  deleteTertiaryEducation: async (id: string) => {
+    const resp = await axiosInstance.delete(
+      `/student/deleteTertiaryEducation/${id}`
+    );
+
+    return resp?.data;
+  },
   addProfessionalSkill: async (formData: any) => {
     const resp = await axiosInstance.post(
       "/student/addProfessionalSkill",
@@ -102,6 +109,12 @@ const StudentQuery = {
     return resp?.data;
   },
 
+  deleteCertification: async (id: string) => {
+    const resp = await axiosInstance.delete(`/student/deleteCertificate/${id}`);
+
+    return resp?.data;
+  },
+
   addDocument: async (formData: any) => {
     // const token = SecureStore.getItem("userToken");
     const resp = await axios.post(
@@ -119,7 +132,7 @@ const StudentQuery = {
   },
 
   getAllProgrammes: async () => {
-    const resp = await axiosInstance.get(`/student/getAllProgrammes`);
+    const resp = await axiosInstance.get(`/student/getAllProgrammes`, {});
 
     return resp?.data;
   },
