@@ -1,14 +1,15 @@
 import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
-import React, { useContext } from "react";
+import React from "react";
 import { Card, Icon } from "@rneui/themed";
 import themeLight from "../../Theme";
 import AddEditBasicEducationOverlay from "../../components/AddEditBasicEducationOverlay";
-import { AuthContext } from "../../components/AuthContext";
 import Alert from "../../components/Alert";
 import AddEditTertiaryEducationOverlay from "../../components/AddEditTertiaryEducationOverlay";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
 import { useFocusEffect } from "expo-router";
+import DeleteTertiaryEducationModal from "../../components/DeleteTertiaryEduactionModal";
+import Toast from "react-native-toast-message";
 
 const Education = () => {
   const queryClient: any = useQueryClient();
@@ -31,25 +32,6 @@ const Education = () => {
       grade: "12",
       city: "Pretoria",
       province: "Gauteng"
-    }
-  ];
-
-  const tertiaryEducationList: any = [
-    {
-      educationLevel: "BSc Degree",
-      fieldOfStufy: "Mathematical Science",
-      institution: "Sefako Makgatho Health Sciences University",
-      startYear: 2017,
-      endYear: 2019,
-      status: "Completed"
-    },
-    {
-      educationLevel: "Honours Degree",
-      fieldOfStufy: "Computer Science & Information Technology",
-      institution: "Sefako Makgatho Health Sciences University",
-      startYear: 2020,
-      endYear: 2021,
-      status: "Completed"
     }
   ];
 
@@ -133,21 +115,8 @@ const Education = () => {
               Tertiary Education
             </Text>
           </View>
-          <View
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: 20,
-              borderWidth: 1,
-              borderColor: "lightgray",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: themeLight.lightColors?.primary
-            }}
-          >
-            <AddEditTertiaryEducationOverlay userId={userInfo?.id} />
-          </View>
+
+          <AddEditTertiaryEducationOverlay userId={userInfo?.id} />
         </View>
 
         {userInfo?.tertiaryEducation ? (
@@ -170,6 +139,9 @@ const Education = () => {
                     education={userInfo?.tertiaryEducation[index]}
                     userId={userInfo?.id}
                   />
+                  <DeleteTertiaryEducationModal
+                    id={userInfo?.tertiaryEducation[index]?.id}
+                  />
                 </View>
               );
             }}
@@ -179,6 +151,7 @@ const Education = () => {
           <Alert message="Tertiary education is optional" type="info" />
         )}
       </Card>
+      <Toast />
     </SafeAreaView>
   );
 };
@@ -211,7 +184,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10
+    marginBottom: 10,
+    columnGap: 10
     // borderWidth: 1
   },
   cardHeader: {
