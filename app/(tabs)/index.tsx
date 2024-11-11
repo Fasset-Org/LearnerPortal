@@ -8,15 +8,12 @@ import { AuthContext } from "../../components/AuthContext";
 import { Icon } from "@rneui/base";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { Redirect, useFocusEffect, useLocalSearchParams } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 const TabRootLayout = () => {
-  const route = useRoute();
-
-  console.log(route);
-
   const queryClient: any = useQueryClient();
 
   const userInfoQuery: any = useQuery({
@@ -31,6 +28,10 @@ const TabRootLayout = () => {
   };
 
   (async () => console.log(await getToken()))();
+
+  if (!userInfo) {
+    return <Redirect href="/(auth)/login" />;
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -276,6 +277,7 @@ const TabRootLayout = () => {
           </View>
         </Card>
       </View>
+      <Toast />
     </SafeAreaView>
   );
 };
