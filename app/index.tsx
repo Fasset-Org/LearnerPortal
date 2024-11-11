@@ -1,4 +1,6 @@
 import {
+  Alert,
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -7,19 +9,46 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { Button, Icon, useTheme } from "@rneui/themed";
-import { useRouter } from "expo-router";
+import { Redirect, useFocusEffect, useRouter } from "expo-router";
 import { AuthContext } from "../components/AuthContext";
 import SplashScreen from "../components/SplashScreen";
 import { Image } from "react-native";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import StudentQuery from "./xhr/student";
 
 const Home = () => {
   const { theme } = useTheme();
   const router = useRouter();
+  const queryClient: any = useQueryClient();
 
-  const { isPending } = useContext(AuthContext);
+  const userInfoQuery: any = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => StudentQuery.getUserInfo()
+  });
 
-  if (isPending) {
-    return <SplashScreen loading={isPending} />;
+  const userInfo = userInfoQuery?.data?.user;
+
+  const openURL = async (url: string) => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Unable to open this URL: ${url}`);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      queryClient.invalidateQueries(["userInfo"]);
+    }, [])
+  );
+
+  if (userInfo) {
+    return <Redirect href="/(tabs)" />;
+  }
+
+  if (userInfoQuery.isPending) {
+    return <SplashScreen loading={userInfoQuery.isPending} />;
   }
 
   // const list = [
@@ -33,7 +62,7 @@ const Home = () => {
   // ];
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
       <View style={styles.mainContainer}>
         <Text style={styles.headerTitle}>Introduction</Text>
         <Text>
@@ -65,10 +94,11 @@ const Home = () => {
       /> */}
 
         <Image
-          source={require(`../assets/images/Poster.jpg`)}
+          source={require(`../assets/images/400px.jpg`)}
           style={{
             width: "100%",
-            objectFit: "contain"
+            maxHeight: "40%",
+            objectFit: "fill"
           }}
         />
 
@@ -138,6 +168,9 @@ const Home = () => {
             // color="warning"
             buttonStyle={{ borderColor: theme.colors.warning, borderWidth: 1 }}
             titleStyle={{ color: theme.colors.warning }}
+            onPress={() =>
+              openURL("https://mogulcollective.com/next-big-thing-language/")
+            }
           />
         </View>
       </View>
@@ -150,7 +183,9 @@ export default Home;
 const styles = StyleSheet.create({
   mainContainer: {
     padding: 10,
-    rowGap: 10
+    rowGap: 10,
+    backgroundColor: "#FFFFFF",
+    flex: 1
   },
   headerTitle: {
     fontSize: 20,
