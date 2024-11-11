@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import {
+  Alert,
   Image,
+  Linking,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -14,7 +16,6 @@ import themeLight from "../../Theme";
 import SelectInputWrapper from "../../components/FormComponents/SelectInputWrapper";
 import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
-import { AxiosError } from "axios";
 import { Redirect, useRouter } from "expo-router";
 import LoadingPopup from "../../components/LoadingComponent";
 import { ActivityIndicator } from "react-native-paper";
@@ -49,10 +50,19 @@ const Register = () => {
         router.push(`/(auth)/login`);
       }, 2000);
     },
-    onError: (err: AxiosError) => {
+    onError: (err: any) => {
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
+
+  const openURL = async (url: string) => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Unable to open this URL: ${url}`);
+    }
+  };
 
   // if (isAuth) {
   //   return <Redirect href="/(tabs)" />;
@@ -60,7 +70,7 @@ const Register = () => {
 
   return (
     <>
-      <ScrollView>
+      <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <Image
@@ -244,6 +254,34 @@ const Register = () => {
                       />
                     </TouchableOpacity>
                   )}
+
+                  <View style={{ padding: 10 }}>
+                    <Text style={{ fontSize: 14, flexWrap: "nowrap" }}>
+                      By registering and completing your profile, you agree that
+                      you have read, understood, and accepted that you will be
+                      bound by the terms of use of the
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: "blue",
+                        textDecorationLine: "underline",
+                        flexWrap: "nowrap"
+                      }}
+                      onPress={() =>
+                        openURL(
+                          "https://www.learner-portal.fasset.org.za/static/media/FASSET%20POPIA%20POLICY.d44535ef675cac491a34.pdf"
+                        )
+                      }
+                    >
+                      POPI Act No.4 2013
+                    </Text>
+                    <Text style={{ fontSize: 14, flexWrap: "nowrap" }}>
+                      . FASSET endeavors to take all reasonable precautions to
+                      ensure that any information provided is only used for the
+                      purposes for which it has been provided.
+                    </Text>
+                  </View>
                 </View>
               );
             }}
