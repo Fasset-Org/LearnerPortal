@@ -63,12 +63,12 @@ const Login = () => {
     onSuccess: async (data: any) => {
       SecureStore.setItem("userToken", data?.user?.token);
       await AsyncStorage.setItem("token", data?.user?.token);
-      console.log("token from API", data?.user?.token);
       showToast("success", "Success", data?.message);
       await queryClient.invalidateQueries(["userInfo"]);
       router.replace(`/(tabs)`);
     },
     onError: (err: any) => {
+      console.log(err);
       showToast("error", "Error", err?.response?.data?.message);
     }
   });
