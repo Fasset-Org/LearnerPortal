@@ -19,6 +19,7 @@ const SignoutModal = () => {
   const handleSignout = async () => {
     try {
       await AsyncStorage.removeItem("token");
+      queryClient.setQueryData(["userInfo"], null);
       queryClient.invalidateQueries(["userInfo"]);
       router.replace(`/(auth)/login`);
     } catch (error) {
