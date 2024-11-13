@@ -23,7 +23,8 @@ const Home = () => {
 
   const userInfoQuery: any = useQuery({
     queryKey: ["userInfo"],
-    queryFn: () => StudentQuery.getUserInfo()
+    queryFn: () => StudentQuery.getUserInfo(),
+    retry: 2
   });
 
   const userInfo = userInfoQuery?.data?.user;
