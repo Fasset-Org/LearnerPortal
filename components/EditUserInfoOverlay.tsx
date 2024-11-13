@@ -16,7 +16,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
-import Toast from "react-native-toast-message";
 
 type EditUserInfoOverlay = {
   userInfo: any;
@@ -50,6 +49,10 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
     {
       value: "",
       label: "None"
+    },
+    {
+      value: "I am a high school learner” for career status",
+      label: "I am a high school learner” for career status"
     },
     {
       value: "I obtained a matric certificate",
@@ -247,6 +250,7 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                       name="identificationNumber"
                       label="Identification Number"
                       secureTextEntry={false}
+                      disable={true}
                     />
                   )}
 
