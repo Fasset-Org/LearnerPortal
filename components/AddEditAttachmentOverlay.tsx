@@ -64,8 +64,8 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
       label: "Qualification"
     },
     {
-      value: "Id Document",
-      label: "Id Document"
+      value: "ID Document",
+      label: "ID Document"
     },
     {
       value: "Other",
