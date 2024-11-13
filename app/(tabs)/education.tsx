@@ -129,7 +129,7 @@ const Education = () => {
                     <Text style={styles.bullet}>{"\u2022"}</Text>
                     <Text style={styles.itemText}>
                       {item.institution} {"\u2022"} {item.educationLevel}
-                      {" in "} {item.fieldOfStufy}
+                      {" in "} {item.fieldOfStudy}
                       {"  \u2022"} {item.startYear}
                       {" - "} {item.endYear}
                       {"  \u2022"} {item.status}
