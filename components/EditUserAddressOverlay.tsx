@@ -16,6 +16,7 @@ import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
 import Toast from "react-native-toast-message";
+import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 
 type EditUserAddressOverlay = {
   studentAddress: any;
@@ -57,6 +58,18 @@ const EditUserAddressOverlay: React.FunctionComponent<
       setVisible(!visible);
     }
   });
+
+  const provinces = [
+    { label: "Gauteng", value: "Gauteng" },
+    { label: "KwaZulu-Natal", value: "KwaZulu-Natal" },
+    { label: "Western Cape", value: "Western Cape" },
+    { label: "Eastern Cape", value: "Eastern Cape" },
+    { label: "Free State", value: "Free State" },
+    { label: "Limpopo", value: "Limpopo" },
+    { label: "Mpumalanga", value: "Mpumalanga" },
+    { label: "North West", value: "North West" },
+    { label: "Northern Cape", value: "Northern Cape" }
+  ];
 
   return (
     <View>
@@ -149,7 +162,7 @@ const EditUserAddressOverlay: React.FunctionComponent<
 
                   <TextInputWrapper
                     name="manicipality"
-                    label="Manicipality"
+                    label="Municipality"
                     secureTextEntry={false}
                   />
 
@@ -158,10 +171,10 @@ const EditUserAddressOverlay: React.FunctionComponent<
                     label="City"
                     secureTextEntry={false}
                   />
-                  <TextInputWrapper
+                  <SelectInputWrapper
                     name="province"
                     label="Province"
-                    secureTextEntry={false}
+                    options={provinces}
                   />
                   <TextInputWrapper
                     name="country"
