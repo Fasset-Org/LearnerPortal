@@ -53,6 +53,18 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
     }
   ];
 
+  const provinces = [
+    { label: "Gauteng", value: "Gauteng" },
+    { label: "KwaZulu-Natal", value: "KwaZulu-Natal" },
+    { label: "Western Cape", value: "Western Cape" },
+    { label: "Eastern Cape", value: "Eastern Cape" },
+    { label: "Free State", value: "Free State" },
+    { label: "Limpopo", value: "Limpopo" },
+    { label: "Mpumalanga", value: "Mpumalanga" },
+    { label: "North West", value: "North West" },
+    { label: "Northern Cape", value: "Northern Cape" }
+  ];
+
   const addBasicEducationMutation = useMutation({
     mutationFn: (formData: any) => StudentQuery.addBasicEducation(formData),
     onSuccess: (data: any) => {
@@ -165,10 +177,10 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
                   secureTextEntry={false}
                 />
 
-                <TextInputWrapper
+                <SelectInputWrapper
                   name="province"
                   label="High School Province"
-                  secureTextEntry={false}
+                  options={provinces}
                 />
                 {education ? (
                   <>
