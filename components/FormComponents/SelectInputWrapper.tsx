@@ -8,6 +8,7 @@ type PropType = {
   name: string;
   label: string;
   options: { label: string; value: string }[];
+  disable?: boolean;
 };
 
 const SelectInputWrapper = ({ name, label, options }: PropType) => {
