@@ -8,9 +8,15 @@ type PropType = {
   name: string;
   label: string;
   secureTextEntry: boolean;
+  disable?: boolean;
 };
 
-const TextInputWrapper = ({ name, label, secureTextEntry }: PropType) => {
+const TextInputWrapper = ({
+  name,
+  label,
+  secureTextEntry,
+  disable
+}: PropType) => {
   const [field, meta] = useField(name);
   const { theme } = useTheme();
 
@@ -29,6 +35,7 @@ const TextInputWrapper = ({ name, label, secureTextEntry }: PropType) => {
         borderBottomWidth: 0,
         marginTop: 5
       }}
+      disabled={disable || false}
       labelStyle={{ fontSize: 13 }}
       placeholderTextColor={"#aeb6bf"}
       inputStyle={{ fontSize: 13, fontWeight: "bold" }}
