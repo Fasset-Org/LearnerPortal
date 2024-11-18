@@ -76,21 +76,8 @@ const TabRootLayout = () => {
                 Personal Information
               </Text>
             </View>
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 20,
-                borderWidth: 1,
-                borderColor: "lightgray",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: themeLight.lightColors?.primary
-              }}
-            >
-              <EditUserInfoOverlay userInfo={userInfo} />
-            </View>
+
+            <EditUserInfoOverlay userInfo={userInfo} />
           </View>
 
           <View
@@ -186,23 +173,8 @@ const TabRootLayout = () => {
                 Address Information
               </Text>
             </View>
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 20,
-                borderWidth: 1,
-                borderColor: "lightgray",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: themeLight.lightColors?.primary
-              }}
-            >
-              <EditUserAddressOverlay
-                studentAddress={userInfo?.studentAddress}
-              />
-            </View>
+
+            <EditUserAddressOverlay studentAddress={userInfo?.studentAddress} />
           </View>
 
           <View style={styles.cardDetail}>
