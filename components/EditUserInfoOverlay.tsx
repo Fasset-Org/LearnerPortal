@@ -104,15 +104,43 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
   ];
 
   return (
-    <View>
-      <Icon
-        name="pencil-square-o"
-        size={20}
-        type="font-awesome"
-        style={styles.iconStyle}
-        color="#FFFFFF"
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderColor: "lightgray",
+        // backgroundColor: themeLight.lightColors?.primary,
+        // paddingHorizontal: 10,
+        height: 40,
+        borderRadius: 29
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          height: 40,
+          width: 40,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: "lightgray",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: themeLight.lightColors?.primary
+        }}
         onPress={toggleOverlay}
-      />
+      >
+        <Icon
+          name="pencil-square-o"
+          size={20}
+          type="font-awesome"
+          style={styles.iconStyle}
+          color="#FFFFFF"
+        />
+      </TouchableOpacity>
+
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
@@ -219,7 +247,7 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
               }}
             >
               {({ handleSubmit, values }) => (
-                <View style={styles.innerContainer}>
+                <View>
                   <TextInputWrapper
                     name="firstName"
                     label="First Name"
@@ -292,10 +320,7 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                   {editBadicInfoMutation.isPending ? (
                     <ActivityIndicator animating={true} size="large" />
                   ) : (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => handleSubmit()}
-                    >
+                    <TouchableOpacity onPress={() => handleSubmit()}>
                       <Button
                         title="UPDATE"
                         icon={
@@ -332,7 +357,7 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
 
 const styles = StyleSheet.create({
   button: {
-    margin: 10
+    // margin: 10
   },
   overlayHeader: {
     display: "flex",
@@ -342,24 +367,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "lightgray",
     backgroundColor: themeLight.lightColors?.primary,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     height: 60
   },
   textPrimary: {
     fontSize: 17,
     color: "#FFFFFF"
   },
-  textSecondary: {
-    marginBottom: 10,
-    textAlign: "center",
-    fontSize: 17
-  },
   iconStyle: {
     color: "#FFFFFF"
   },
   fullScreenOverlay: {
     width: "100%", // Full width
-    height: "100%", // Full height
+    height: "90%", // Full height
     marginTop: 0, // No margin
     padding: 0 // No padding
   },
