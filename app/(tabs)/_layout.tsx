@@ -15,16 +15,23 @@ const DashBoardTabs = () => {
           screenOptions={{
             tabBarStyle: {
               borderWidth: 1,
-              borderColor: theme.colors.primary
+              borderColor: theme.colors.primary,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center"
             },
+            tabBarActiveBackgroundColor: "lightgray",
+            // tabBarActiveTintColor: "red",
             tabBarLabelStyle: {
               color: theme.colors.primary,
               fontWeight: "bold",
-              textAlign: "center"
+              textAlign: "center",
+              marginBottom: 5
             },
             tabBarIconStyle: {
               color: theme.colors.primary,
-              backgroundColor: theme.colors.primary
+              backgroundColor: theme.colors.primary,
+              marginBottom: -5
             },
             headerStyle: {
               borderWidth: 3
