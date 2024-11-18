@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import { Checkbox, List } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -76,7 +82,7 @@ const LearnerProgramme = () => {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF", padding: 20 }}>
       <Formik
         initialValues={{
           userId: userData?.id || "",
@@ -92,14 +98,14 @@ const LearnerProgramme = () => {
         enableReinitialize
       >
         {({ setFieldValue, values, errors, handleSubmit }) => (
-          <View style={{ padding: 16 }}>
+          <View>
             <Text
               style={{ fontWeight: "bold", fontSize: 20, marginBottom: 10 }}
             >
               Select your interest(s):
             </Text>
 
-            <View style={{ rowGap: 10 }}>
+            <View style={{ rowGap: 20 }}>
               {data?.programmes.map((option: Programme) => (
                 <List.AccordionGroup key={option?.id}>
                   <List.Accordion
@@ -111,13 +117,24 @@ const LearnerProgramme = () => {
                     titleStyle={{ color: "#FFFFFF" }}
                   >
                     <View>
-                      <View
+                      <TouchableOpacity
                         key={option?.id}
                         style={{
                           flexDirection: "row",
                           alignItems: "center",
                           columnGap: 10,
                           padding: 5
+                        }}
+                        onPress={() => {
+                          const isSelected = values.programmes.some(
+                            (p: any) => p?.id === option?.id
+                          );
+                          const updatedProgrammes = isSelected
+                            ? values.programmes.filter(
+                                (p: any) => p?.id !== option?.id
+                              )
+                            : [...values.programmes, option];
+                          setFieldValue("programmes", updatedProgrammes);
                         }}
                       >
                         <Checkbox
@@ -128,23 +145,12 @@ const LearnerProgramme = () => {
                               ? "checked"
                               : "unchecked"
                           }
-                          onPress={() => {
-                            const isSelected = values.programmes.some(
-                              (p: any) => p?.id === option?.id
-                            );
-                            const updatedProgrammes = isSelected
-                              ? values.programmes.filter(
-                                  (p: any) => p?.id !== option?.id
-                                )
-                              : [...values.programmes, option];
-                            setFieldValue("programmes", updatedProgrammes);
-                          }}
                         />
                         <Text style={{ flexShrink: 1 }}>
                           {option.description}
                         </Text>
-                      </View>
-                      <View
+                      </TouchableOpacity>
+                      {/* <View
                         style={{
                           flexDirection: "row",
                           columnGap: 10,
@@ -153,7 +159,7 @@ const LearnerProgramme = () => {
                       >
                         <Text style={{ fontWeight: "bold" }}>Duration</Text>
                         <Text>{option.duration}</Text>
-                      </View>
+                      </View> */}
                     </View>
                   </List.Accordion>
                 </List.AccordionGroup>
@@ -174,7 +180,7 @@ const LearnerProgramme = () => {
                 onPress={handleSubmit as any}
                 disabled={loading}
                 color="primary"
-                containerStyle={{ marginTop: 10 }}
+                containerStyle={{ marginTop: 20, marginBottom: 40 }}
               />
             )}
           </View>
