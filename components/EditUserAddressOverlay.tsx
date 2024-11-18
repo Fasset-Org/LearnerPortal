@@ -72,27 +72,52 @@ const EditUserAddressOverlay: React.FunctionComponent<
   ];
 
   return (
-    <View>
-      {!studentAddress ? (
-        <Icon
-          name="add"
-          type="material"
-          size={20}
-          style={styles.iconStyle}
-          color="#FFFFFF"
-          onPress={toggleOverlay}
-        />
-      ) : (
-        <Icon
-          name="pencil-square-o"
-          size={20}
-          type="font-awesome"
-          style={styles.iconStyle}
-          color="#FFFFFF"
-          onPress={toggleOverlay}
-        />
-      )}
-
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderColor: "lightgray",
+        // backgroundColor: themeLight.lightColors?.primary,
+        // paddingHorizontal: 10,
+        height: 40,
+        borderRadius: 29
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          height: 40,
+          width: 40,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: "lightgray",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: themeLight.lightColors?.primary
+        }}
+        onPress={toggleOverlay}
+      >
+        {!studentAddress ? (
+          <Icon
+            name="add"
+            type="material"
+            size={20}
+            style={styles.iconStyle}
+            color="#FFFFFF"
+          />
+        ) : (
+          <Icon
+            name="pencil-square-o"
+            size={20}
+            type="font-awesome"
+            style={styles.iconStyle}
+            color="#FFFFFF"
+          />
+        )}
+      </TouchableOpacity>
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
@@ -294,7 +319,7 @@ const styles = StyleSheet.create({
   },
   fullScreenOverlay: {
     width: "100%", // Full width
-    height: "100%", // Full height
+    height: "90%", // Full height
     marginTop: 0, // No margin
     padding: 0 // No padding
   },
