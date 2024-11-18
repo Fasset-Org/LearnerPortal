@@ -94,10 +94,10 @@ const StudentQuery = {
   },
 
   addCertification: async (formData: any) => {
-    // console.log(formData);
-    // const token = SecureStore.getItem("userToken");
     const resp = await axios.post(
-      `http://172.16.248.128:8000/api/v1/student/addCertification`,
+      `http://102.37.220.209:8000/api/v1/student/addCertification`,
+      // `https://career-portal-api.fasset.org.za/api/v1/student/addCertification`,
+
       formData,
       {
         headers: {
@@ -118,7 +118,8 @@ const StudentQuery = {
   addDocument: async (formData: any) => {
     // const token = SecureStore.getItem("userToken");
     const resp = await axios.post(
-      `http://172.16.248.128:8000/api/v1/student/addDocument`,
+      `http://102.37.220.209:8000/api/v1/student/addDocument`,
+      // `https://career-portal-api.fasset.org.za/api/v1/student/addDocument`,
       formData,
       {
         headers: {
@@ -139,8 +140,7 @@ const StudentQuery = {
   saveLearnerProgrammes: async (formData: any) => {
     const resp = await axiosInstance.post(
       `/student/saveLearnerProgrammes`,
-      formData,
-      {}
+      formData
     );
 
     return resp?.data;
