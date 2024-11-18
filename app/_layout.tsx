@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
 import CustomHeaderTitle from "../components/CustomHeaderTitle";
@@ -14,30 +14,35 @@ const RootLayout = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={themeLight}>
         <AuthProvider>
-          <Stack>
-            <Stack.Screen
-              name="index"
-              options={{
-                headerStyle: {
-                  backgroundColor: themeLight.lightColors?.primary
-                },
-                headerTitleStyle: { color: "#FFFFFF" },
-                headerTitle: () => <CustomHeaderTitle />
-              }}
-            />
-            <Stack.Screen
-              name="(tabs)"
-              options={{
-                headerShown: false
-              }}
-            />
-            <Stack.Screen
-              name="(auth)"
-              options={{
-                headerShown: false
-              }}
-            />
-          </Stack>
+          <View style={{ flex: 1 }}>
+            <Stack>
+              <Stack.Screen
+                name="index"
+                options={{
+                  headerStyle: {
+                    backgroundColor: themeLight.lightColors?.primary
+                  },
+                  headerTitleAlign: "left",
+                  headerTitleStyle: { color: "#FFFFFF" },
+                  headerTitle: () => <CustomHeaderTitle />
+                }}
+              />
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                  headerTitleAlign: "left"
+                }}
+              />
+              <Stack.Screen
+                name="(auth)"
+                options={{
+                  headerShown: false,
+                  headerTitleAlign: "left"
+                }}
+              />
+            </Stack>
+          </View>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
