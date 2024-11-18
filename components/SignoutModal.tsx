@@ -20,7 +20,6 @@ const SignoutModal = () => {
     try {
       await AsyncStorage.removeItem("token");
       queryClient.setQueryData(["userInfo"], null);
-      queryClient.invalidateQueries(["userInfo"]);
       router.replace(`/(auth)/login`);
     } catch (error) {
       console.error("Error signing out:", error);
@@ -52,7 +51,7 @@ const SignoutModal = () => {
         }}
       > */}
       <Dialog isVisible={visible} onBackdropPress={toggleModal}>
-        <Dialog.Title title="Confirm Delete" />
+        <Dialog.Title title={"Confirm Signout"} />
         <Text>Are you sure you want to signout?</Text>
         <Dialog.Actions>
           <Dialog.Button
