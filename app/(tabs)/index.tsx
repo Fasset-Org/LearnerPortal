@@ -1,16 +1,14 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import React, { useContext } from "react";
+import React from "react";
 import { Card } from "@rneui/themed";
 import themeLight from "../../Theme";
 import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
-import { AuthContext } from "../../components/AuthContext";
 import { Icon } from "@rneui/base";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
-import { Redirect, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { Redirect, useFocusEffect } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRoute } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 
 const TabRootLayout = () => {
@@ -41,10 +39,10 @@ const TabRootLayout = () => {
 
   return (
     <SafeAreaView
-      style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 10, padding: 10 }}
+      style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 20, padding: 20 }}
     >
       <View
-        style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 10, padding: 10 }}
+        style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 20, padding: 10 }}
       >
         <Card containerStyle={{ borderRadius: 10, margin: 0 }}>
           <View
