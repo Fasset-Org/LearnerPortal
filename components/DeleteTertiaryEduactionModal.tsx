@@ -69,7 +69,7 @@ const DeleteTertiaryEducationModal = ({ id }: { id: string }) => {
         }}
       > */}
       <Dialog isVisible={visible} onBackdropPress={toggleModal}>
-        <Dialog.Title title="Confirm Delete" />
+        <Dialog.Title title={"Confirm Delete"} />
         <Text>Are you sure you want to delete this item?</Text>
         <Dialog.Actions>
           <Dialog.Button title="Cancel" onPress={toggleModal} />
