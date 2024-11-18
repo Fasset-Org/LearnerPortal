@@ -210,22 +210,9 @@ const Certificate = () => {
                     {item.title}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 20,
-                    borderWidth: 1,
-                    borderColor: "lightgray",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: themeLight.lightColors?.primary
-                  }}
-                >
-                  {item.Overlay}
-                  {/* <EditUserInfoOverlay userInfo={userInfo} /> */}
-                </View>
+
+                {item.Overlay}
+                {/* <EditUserInfoOverlay userInfo={userInfo} /> */}
               </View>
 
               <FlatList
