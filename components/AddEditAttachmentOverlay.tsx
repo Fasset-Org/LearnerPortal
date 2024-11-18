@@ -115,25 +115,41 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
         borderRadius: 29
       }}
     >
-      {attachment ? (
-        <Icon
-          name="pencil-square-o"
-          size={20}
-          type="font-awesome"
-          // style={styles.iconStyle}
-          color={themeLight.lightColors?.primary}
-          onPress={toggleOverlay}
-        />
-      ) : (
-        <Icon
-          name="add"
-          size={20}
-          type="material"
-          // style={styles.iconStyle}
-          color={themeLight.lightColors?.white}
-          onPress={toggleOverlay}
-        />
-      )}
+      <TouchableOpacity
+        style={{
+          height: 40,
+          width: 40,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: "lightgray",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: themeLight.lightColors?.primary
+        }}
+        onPress={toggleOverlay}
+      >
+        {attachment ? (
+          <Icon
+            name="pencil-square-o"
+            size={20}
+            type="font-awesome"
+            // style={styles.iconStyle}
+            color={themeLight.lightColors?.primary}
+            onPress={toggleOverlay}
+          />
+        ) : (
+          <Icon
+            name="add"
+            size={20}
+            type="material"
+            // style={styles.iconStyle}
+            color={themeLight.lightColors?.white}
+            onPress={toggleOverlay}
+          />
+        )}
+      </TouchableOpacity>
+
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
