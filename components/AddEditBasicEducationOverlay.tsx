@@ -98,7 +98,20 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
   };
 
   return (
-    <View>
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderColor: "lightgray",
+        // backgroundColor: themeLight.lightColors?.primary,
+        // paddingHorizontal: 10,
+        height: 40,
+        borderRadius: 29
+      }}
+    >
       {education ? (
         <Icon
           name="pencil-square-o"
@@ -266,7 +279,7 @@ const styles = StyleSheet.create({
   },
   fullScreenOverlay: {
     width: "100%", // Full width
-    height: "100%", // Full height
+    height: "90%", // Full height
     marginTop: 0, // No margin
     padding: 0 // No padding
   },
