@@ -238,7 +238,7 @@ export default Certificate;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 20,
     backgroundColor: "#FFFFFF",
     overflow: "scroll"
   },
