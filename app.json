@@ -8,7 +8,7 @@
     "icon": "./assets/logo-sm.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo-sm.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,14 +16,19 @@
       "appVersionSource": "local"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kamzen.LearnerPortal"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kamzen.LearnerPortal"
+      "platforms": ["ios", "android"],
+      "package": "com.kamzen.LearnerPortal",
+      "useNextNotificationsApi": true,
+      "networkSecurityConfig": "./network_security_config.xml",
+      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -44,6 +49,10 @@
       },
       "eas": {
         "projectId": "f7f3537d-4b0d-4c83-81d5-ec2bbc0e4337"
+      },
+      "apiUrl": {
+        "development": "http://102.37.220.209:8000/api/v1",
+        "production": "https://career-portal-api.fasset.org.za/api/v1"
       }
     },
     "owner": "kamzen1998"
