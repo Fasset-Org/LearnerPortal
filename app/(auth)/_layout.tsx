@@ -13,30 +13,30 @@ const RootLayout = () => {
           name="login"
           options={{
             headerStyle: { backgroundColor: themeLight.lightColors?.white },
-
             headerBackVisible: false,
-            headerTitle: (props: any) => (
-              <View
-                style={{
-                  flexDirection: "column"
-                }}
-              >
-                <Text
-                  style={{ color: "#000", fontSize: 19, fontWeight: "bold" }}
-                >
-                  Login
-                </Text>
-              </View>
-            ),
             headerTitleAlign: "left",
+            title: "Login",
+            // headerTitle: (props: any) => (
+            //   <View
+            //     style={{
+            //       flexDirection: "column",
+            //       flex: 1
+            //     }}
+            //   >
+            //     <Text
+            //       style={{ color: "#000", fontSize: 19, fontWeight: "bold" }}
+            //     >
+            //       Login
+            //     </Text>
+            //   </View>
+            // ),
             headerLeft: () => (
               <Icon
                 name="arrow-back"
                 type="material"
                 color="#000"
                 onPress={() => router.back()} // Go back to the previous screen
-                size={30}
-                containerStyle={{ marginRight: 5 }}
+                // containerStyle={{ marginRight: 5 }}
               />
             )
           }}
@@ -46,28 +46,29 @@ const RootLayout = () => {
           options={{
             headerStyle: { backgroundColor: themeLight.lightColors?.white },
             headerBackVisible: false,
-            headerTitle: (props: any) => (
-              <View
-                style={{
-                  flexDirection: "column"
-                }}
-              >
-                <Text
-                  style={{ color: "#000", fontSize: 19, fontWeight: "bold" }}
-                >
-                  Register
-                </Text>
-              </View>
-            ),
             headerTitleAlign: "left",
+            title: "Register",
+            // headerTitle: (props: any) => (
+            //   <View
+            //     style={{
+            //       flexDirection: "column",
+            //       flex: 1
+            //     }}
+            //   >
+            //     <Text
+            //       style={{ color: "#000", fontSize: 19, fontWeight: "bold" }}
+            //     >
+            //       Register
+            //     </Text>
+            //   </View>
+            // ),
             headerLeft: () => (
               <Icon
                 name="arrow-back"
                 type="material"
                 color="#000"
                 onPress={() => router.back()} // Go back to the previous screen
-                size={30}
-                containerStyle={{ marginRight: 5 }}
+                // containerStyle={{ marginRight: 5 }}
               />
             )
           }}
