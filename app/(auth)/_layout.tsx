@@ -14,19 +14,30 @@ const RootLayout = () => {
           options={{
             headerStyle: { backgroundColor: themeLight.lightColors?.primary },
             headerTitleStyle: { color: "#FFFFFF" },
-            headerTitle: "Login",
-            headerTintColor: "#FFFFFF",
-            headerTitleAlign: "left",
-            headerLeft: () => (
-              <Icon
-                name="arrow-back"
-                type="material"
-                color="#fff"
-                onPress={() => router.back()} // Go back to the previous screen
-                size={30}
-                containerStyle={{ marginRight: 5 }}
-              />
-            )
+            headerTitle: (props: any) => (
+              <View
+                style={{
+                  // flex: 1,
+                  flexDirection: "column",
+                  borderWidth: 1,
+                  borderColor: "red"
+                }}
+              >
+                <Text>Login</Text>
+              </View>
+            ),
+            headerTintColor: "#FFFFFF"
+            // headerTitleAlign: "left"
+            // headerLeft: () => (
+            //   <Icon
+            //     name="arrow-back"
+            //     type="material"
+            //     color="#fff"
+            //     onPress={() => router.back()} // Go back to the previous screen
+            //     size={30}
+            //     containerStyle={{ marginRight: 5 }}
+            //   />
+            // )
           }}
         />
         <Stack.Screen
