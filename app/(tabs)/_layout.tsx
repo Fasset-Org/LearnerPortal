@@ -4,175 +4,82 @@ import { Tabs } from "expo-router";
 import { Icon, Text, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
 import SignoutModal from "../../components/SignoutModal";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
 
 const DashBoardTabs = () => {
   const { theme } = useTheme();
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <Tabs
-          screenOptions={{
-            tabBarStyle: {
-              borderWidth: 1,
-              borderColor: theme.colors.primary
-            },
-            tabBarActiveBackgroundColor: "lightgray",
-            // tabBarActiveTintColor: "red",
-            tabBarLabelStyle: {
-              color: theme.colors.primary,
-              fontWeight: "bold",
-              textAlign: "center"
-            },
-            tabBarIconStyle: {
-              color: theme.colors.primary,
-              backgroundColor: theme.colors.primary
-            },
-            headerStyle: {
-              borderWidth: 3
-            },
-            headerTitleStyle: {
-              color: theme.colors.primary
-            },
-            tabBarInactiveTintColor: theme.colors.primary,
-            headerRight: () => <SignoutModal />
-          }}
-        >
-          <Tabs.Screen
-            name="index"
-            options={{
-              tabBarIcon: (colors) => (
-                <Icon
-                  name="user"
-                  // size={20}
-                  type="font-awesome"
-                  color={theme.colors.primary}
-                />
-              ),
-              title: "Profile",
-              headerTitle: (props: any) => (
-                <View
-                  style={{
-                    flexDirection: "column"
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.colors.primary,
-                      fontSize: 19,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Profile
-                  </Text>
-                </View>
-              ),
+    <Tabs
+      screenOptions={{
+        tabBarStyle: {
+          borderColor: theme.colors.primary,
+          borderWidth: 1
+        },
 
-              headerStyle: { borderBottomWidth: 1 }
-            }}
-          />
-          <Tabs.Screen
-            name="education"
-            options={{
-              tabBarIcon: (colors) => (
-                <Icon
-                  name="graduation-cap"
-                  // size={20}
-                  type="font-awesome"
-                  color={theme.colors.primary}
-                />
-              ),
-              title: "Education",
-              headerTitleAlign: "left",
-              headerTitle: (props: any) => (
-                <View
-                  style={{
-                    flexDirection: "column"
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.colors.primary,
-                      fontSize: 19,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Education
-                  </Text>
-                </View>
-              ),
-              headerStyle: { borderBottomWidth: 1 }
-            }}
-          />
-          <Tabs.Screen
-            name="certification"
-            options={{
-              tabBarIcon: (colors) => (
-                <Icon
-                  name="pencil-square-o"
-                  // size={20}
-                  type="font-awesome"
-                  color={theme.colors.primary}
-                />
-              ),
-              title: "Skills & Attachments",
-              headerTitleAlign: "left",
-              headerTitle: (props: any) => (
-                <View
-                  style={{
-                    flexDirection: "column"
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.colors.primary,
-                      fontSize: 19,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Skills & Attachments
-                  </Text>
-                </View>
-              ),
-              headerStyle: { borderBottomWidth: 1 }
-            }}
-          />
-          <Tabs.Screen
-            name="learnerprogramme"
-            options={{
-              tabBarIcon: (colors) => (
-                <Icon
-                  name="profile"
-                  // size={20}
-                  type="antdesign"
-                  color={theme.colors.primary}
-                />
-              ),
-              title: "Programmes",
-              headerTitleAlign: "left",
-              headerStyle: { borderBottomWidth: 1 },
-              headerTitle: (props: any) => (
-                <View
-                  style={{
-                    flexDirection: "column"
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.colors.primary,
-                      fontSize: 19,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Learner Interventions
-                  </Text>
-                </View>
-              )
-            }}
-          />
-        </Tabs>
-      </View>
-    </SafeAreaView>
+        tabBarLabelStyle: {
+          color: theme.colors.primary
+        },
+
+        headerTitleStyle: {
+          color: theme.colors.primary
+        },
+        headerRight: () => <SignoutModal />
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          tabBarIcon: (colors) => (
+            <FontAwesome name="user" size={28} color={theme.colors.primary} />
+          ),
+          title: "Profile",
+          headerTitleAlign: "left",
+          headerStyle: { borderBottomWidth: 1 }
+        }}
+      />
+      <Tabs.Screen
+        name="education"
+        options={{
+          tabBarIcon: (colors) => (
+            <FontAwesome
+              name="graduation-cap"
+              size={28}
+              color={theme.colors.primary}
+            />
+          ),
+          title: "Education",
+          headerTitleAlign: "left",
+          headerStyle: { borderBottomWidth: 1 }
+        }}
+      />
+      <Tabs.Screen
+        name="certification"
+        options={{
+          tabBarIcon: (colors) => (
+            <FontAwesome
+              name="pencil-square-o"
+              size={28}
+              color={theme.colors.primary}
+            />
+          ),
+          title: "Attachments",
+          headerTitleAlign: "left",
+          headerStyle: { borderBottomWidth: 1 }
+        }}
+      />
+      <Tabs.Screen
+        name="learnerprogramme"
+        options={{
+          tabBarIcon: (colors) => (
+            <AntDesign name="profile" size={28} color={theme.colors.primary} />
+          ),
+          title: "Programmes",
+          headerTitleAlign: "left",
+          headerStyle: { borderBottomWidth: 1 }
+        }}
+      />
+    </Tabs>
   );
 };
 
