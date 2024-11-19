@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Icon, useTheme } from "@rneui/themed";
 import { Redirect, useFocusEffect, useRouter } from "expo-router";
 import { AuthContext } from "../components/AuthContext";
@@ -15,6 +15,7 @@ import SplashScreen from "../components/SplashScreen";
 import { Image } from "react-native";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "./xhr/student";
+import { ReloadInstructions } from "react-native/Libraries/NewAppScreen";
 
 const Home = () => {
   const { theme } = useTheme();
@@ -24,7 +25,7 @@ const Home = () => {
   const userInfoQuery: any = useQuery({
     queryKey: ["userInfo"],
     queryFn: () => StudentQuery.getUserInfo(),
-    retry: 2
+    retry: 0
   });
 
   const userInfo = userInfoQuery?.data?.user;
@@ -48,20 +49,6 @@ const Home = () => {
     return <Redirect href="/(tabs)" />;
   }
 
-  if (userInfoQuery.isPending) {
-    return <SplashScreen loading={userInfoQuery.isPending} />;
-  }
-
-  // const list = [
-  //   "Investment entities and trusts and company secretary services",
-  //   "Stockbroking and financial markets.",
-  //   "Financial development organisations.",
-  //   "Accounting, bookkeeping, auditing and tax services.",
-  //   "Business and management consulting services.",
-  //   "The South African Revenue Service; the national and provincial treasuries",
-  //   "And other activities auxiliary to financial intermediation, such as debt collection."
-  // ];
-
   return (
     <ScrollView style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
       <View style={styles.mainContainer}>
@@ -71,35 +58,14 @@ const Home = () => {
           opportunities in the Finance and Accounting Sector. The purpose of
           this portal is to assist young people with information of career paths
           that are available in the financial sector.
-          {/* This portal also serves as a
-        platform for learners to join a database and for training providers and
-        employers to access information on potential learners seeking to join
-        education and training in the financial sector and / or seek placement. */}
         </Text>
-        {/* <Text>
-        The finance and accounting services sector is particularly important
-        because it is the largest employer of people with financial management,
-        accounting, and auditing skills. This sector includes:
-      </Text> */}
-        {/* <FlatList
-        data={list}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.listItem}>
-              <Text style={styles.bullet}>{"\u2022"}</Text>
-              <Text style={styles.itemText}>{item}</Text>
-            </View>
-          );
-        }}
-        // keyExtractor={(item) => item}
-      /> */}
 
         <Image
           source={require(`../assets/images/400px.jpg`)}
           style={{
             width: "100%",
             maxHeight: "40%",
-            objectFit: "fill"
+            objectFit: "contain"
           }}
         />
 
