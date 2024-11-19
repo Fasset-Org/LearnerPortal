@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 const BASE_API_URL: string = "http://102.37.220.209:8000/api/v1";
-// const BASE_API_URL: string = "http://172.16.248.128:8000/api/v1";
+// const BASE_API_URL: string = "https://career-portal-api.fasset.org.za/api/v1";
 // import * as SecureStore from "expo-secure-store";
 
 // const token = SecureStore.getItem("userToken");
