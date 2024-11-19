@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   Alert,
   Image,
@@ -11,17 +11,15 @@ import {
 import { Formik } from "formik";
 import TextInputWrapper from "../../components/FormComponents/TextInputWrapper";
 import * as Yup from "yup";
-import { Button, Dialog, Icon, Text, useTheme } from "@rneui/themed";
+import { Button, Icon, Text, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
-import SelectInputWrapper from "../../components/FormComponents/SelectInputWrapper";
 import { useMutation } from "@tanstack/react-query";
 import AuthQuery from "../xhr/auth";
-import { Redirect, useRouter } from "expo-router";
-import LoadingPopup from "../../components/LoadingComponent";
+import { useRouter } from "expo-router";
 import { ActivityIndicator } from "react-native-paper";
 import { showToast } from "../../utils/showToast";
 import Toast from "react-native-toast-message";
-import { AuthContext } from "../../components/AuthContext";
+import Dropdown from "../../components/FormComponents/DropDown";
 
 interface FormData {
   email: string;
@@ -37,8 +35,6 @@ interface FormData {
 const Register = () => {
   const { theme } = useTheme();
   const router = useRouter();
-
-  const { isAuth } = useContext(AuthContext);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
@@ -63,10 +59,6 @@ const Register = () => {
       Alert.alert(`Unable to open this URL: ${url}`);
     }
   };
-
-  // if (isAuth) {
-  //   return <Redirect href="/(tabs)" />;
-  // }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -183,10 +175,10 @@ const Register = () => {
                   label="Email"
                   secureTextEntry={false}
                 />
-                <SelectInputWrapper
+                <Dropdown
                   name="rsaId"
-                  label="Do you have RSA ID?"
-                  options={[
+                  placeholder="Do you have RSA ID?"
+                  data={[
                     { value: "", label: "Do you have RSA ID?" },
                     { value: "Yes", label: "Yes" },
                     { value: "No", label: "No" }
