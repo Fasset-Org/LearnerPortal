@@ -27,7 +27,7 @@ const TextInputWrapper = ({
       value={field.value}
       onChangeText={field.onChange(name)}
       onBlur={field.onBlur(name)}
-      errorStyle={{ color: theme.colors.error }}
+      errorStyle={{ color: theme.colors.error, marginBottom: 5 }}
       errorMessage={meta.touched && meta.error ? meta.error : ""}
       secureTextEntry={secureTextEntry}
       style={styles.input}
@@ -43,7 +43,7 @@ const TextInputWrapper = ({
       labelStyle={{ fontSize: 13, marginBottom: 5, marginTop: 0, padding: 0 }}
       placeholderTextColor={"#aeb6bf"}
       inputStyle={{ fontSize: 13, fontWeight: "bold", margin: 0, padding: 0 }}
-      containerStyle={{ margin: 0, padding: 0, height: 60, marginBottom: 30 }}
+      containerStyle={{ margin: 0, padding: 0, height: 70, marginBottom: 30 }}
     />
   );
 };
