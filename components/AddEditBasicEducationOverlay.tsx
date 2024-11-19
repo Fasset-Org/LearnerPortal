@@ -11,12 +11,12 @@ import themeLight from "../Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
+import Dropdown from "./FormComponents/DropDown";
 
 type AddEditBasicEducationOverlay = {
   education?: any;
@@ -174,10 +174,10 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
           >
             {({ handleSubmit }) => (
               <View style={styles.innerContainer}>
-                <SelectInputWrapper
+                <Dropdown
                   name="grade"
-                  label="Highest Grade Passed"
-                  options={grades}
+                  placeholder="Highest Grade Passed"
+                  data={grades}
                 />
                 <TextInputWrapper
                   name="school"
@@ -190,10 +190,10 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
                   secureTextEntry={false}
                 />
 
-                <SelectInputWrapper
+                <Dropdown
                   name="province"
-                  label="High School Province"
-                  options={provinces}
+                  placeholder="High School Province"
+                  data={provinces}
                 />
                 {education ? (
                   <>
