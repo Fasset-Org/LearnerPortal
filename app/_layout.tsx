@@ -14,39 +14,39 @@ const RootLayout = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={themeLight}>
         <AuthProvider>
-          <View style={{ flex: 1 }}>
-            <Stack>
-              <Stack.Screen
-                name="index"
-                options={{
-                  headerStyle: {
-                    backgroundColor: themeLight.lightColors?.white
-                  },
-
-                  headerTitle: () => (
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{
+                headerStyle: {
+                  backgroundColor: themeLight.lightColors?.white
+                },
+                headerTitleAlign: "left",
+                headerTitle: () => (
+                  <View style={{ flex: 1, flexDirection: "row" }}>
                     <Image
                       source={require("../assets/images/fasset_horizontal_logo_rgb.jpg")}
-                      style={{ width: 200, height: 50 }}
+                      style={{ width: 180, height: 40 }}
                     />
-                  )
-                }}
-              />
-              <Stack.Screen
-                name="(tabs)"
-                options={{
-                  headerShown: false,
-                  headerTitleAlign: "left"
-                }}
-              />
-              <Stack.Screen
-                name="(auth)"
-                options={{
-                  headerShown: false,
-                  headerTitleAlign: "left"
-                }}
-              />
-            </Stack>
-          </View>
+                  </View>
+                )
+              }}
+            />
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+                headerTitleAlign: "left"
+              }}
+            />
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerShown: false,
+                headerTitleAlign: "left"
+              }}
+            />
+          </Stack>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
