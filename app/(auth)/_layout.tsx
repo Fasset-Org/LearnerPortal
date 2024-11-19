@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Stack, useRouter } from "expo-router";
 import themeLight from "../../Theme";
@@ -12,47 +12,59 @@ const RootLayout = () => {
         <Stack.Screen
           name="login"
           options={{
-            headerStyle: { backgroundColor: themeLight.lightColors?.primary },
-            headerTitleStyle: { color: "#FFFFFF" },
+            headerStyle: { backgroundColor: themeLight.lightColors?.white },
+
+            headerBackVisible: false,
             headerTitle: (props: any) => (
               <View
                 style={{
-                  // flex: 1,
-                  flexDirection: "column",
-                  borderWidth: 1,
-                  borderColor: "red"
+                  flexDirection: "column"
                 }}
               >
-                <Text>Login</Text>
+                <Text
+                  style={{ color: "#000", fontSize: 19, fontWeight: "bold" }}
+                >
+                  Login
+                </Text>
               </View>
             ),
-            headerTintColor: "#FFFFFF"
-            // headerTitleAlign: "left"
-            // headerLeft: () => (
-            //   <Icon
-            //     name="arrow-back"
-            //     type="material"
-            //     color="#fff"
-            //     onPress={() => router.back()} // Go back to the previous screen
-            //     size={30}
-            //     containerStyle={{ marginRight: 5 }}
-            //   />
-            // )
-          }}
-        />
-        <Stack.Screen
-          name="register"
-          options={{
-            headerStyle: { backgroundColor: themeLight.lightColors?.primary },
-            headerTitleStyle: { color: "#FFFFFF" },
-            headerTitle: "Register",
-            headerTintColor: "#FFFFFF",
             headerTitleAlign: "left",
             headerLeft: () => (
               <Icon
                 name="arrow-back"
                 type="material"
-                color="#fff"
+                color="#000"
+                onPress={() => router.back()} // Go back to the previous screen
+                size={30}
+                containerStyle={{ marginRight: 5 }}
+              />
+            )
+          }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+            headerStyle: { backgroundColor: themeLight.lightColors?.white },
+            headerBackVisible: false,
+            headerTitle: (props: any) => (
+              <View
+                style={{
+                  flexDirection: "column"
+                }}
+              >
+                <Text
+                  style={{ color: "#000", fontSize: 19, fontWeight: "bold" }}
+                >
+                  Register
+                </Text>
+              </View>
+            ),
+            headerTitleAlign: "left",
+            headerLeft: () => (
+              <Icon
+                name="arrow-back"
+                type="material"
+                color="#000"
                 onPress={() => router.back()} // Go back to the previous screen
                 size={30}
                 containerStyle={{ marginRight: 5 }}
