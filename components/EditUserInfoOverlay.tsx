@@ -16,6 +16,7 @@ import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
 import Dropdown from "./FormComponents/DropDown";
+import Toast from "react-native-toast-message";
 
 type EditUserInfoOverlay = {
   userInfo: any;
@@ -37,11 +38,15 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
-      setVisible(!visible);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     },
     onError: (err: any) => {
       showToast("success", "Success", err?.response?.data?.message);
-      setVisible(!visible);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     }
   });
 
@@ -346,6 +351,7 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
             </Formik>
           </View>
         </ScrollView>
+        <Toast />
       </Overlay>
     </View>
   );
