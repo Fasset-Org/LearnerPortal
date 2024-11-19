@@ -15,8 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
-import Toast from "react-native-toast-message";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
+import Dropdown from "./FormComponents/DropDown";
 
 type EditUserAddressOverlay = {
   studentAddress: any;
@@ -196,10 +195,10 @@ const EditUserAddressOverlay: React.FunctionComponent<
                     label="City"
                     secureTextEntry={false}
                   />
-                  <SelectInputWrapper
+                  <Dropdown
                     name="province"
-                    label="Province"
-                    options={provinces}
+                    placeholder="Province"
+                    data={provinces}
                   />
                   <TextInputWrapper
                     name="country"
