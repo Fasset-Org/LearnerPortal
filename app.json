@@ -24,11 +24,17 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "platforms": ["ios", "android"],
+      "platforms": [
+        "ios",
+        "android"
+      ],
       "package": "com.kamzen.LearnerPortal",
       "useNextNotificationsApi": true,
       "networkSecurityConfig": "./network_security_config.xml",
-      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"]
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -55,6 +61,12 @@
         "production": "https://career-portal-api.fasset.org.za/api/v1"
       }
     },
-    "owner": "kamzen1998"
+    "owner": "kamzen1998",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f7f3537d-4b0d-4c83-81d5-ec2bbc0e4337"
+    }
   }
 }
