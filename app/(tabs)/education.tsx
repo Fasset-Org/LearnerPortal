@@ -9,7 +9,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
 import { useFocusEffect } from "expo-router";
 import DeleteTertiaryEducationModal from "../../components/DeleteTertiaryEduactionModal";
-import Toast from "react-native-toast-message";
 
 const Education = () => {
   const queryClient: any = useQueryClient();
@@ -151,7 +150,6 @@ const Education = () => {
           <Alert message="Tertiary education is optional" type="info" />
         )}
       </Card>
-      <Toast />
     </SafeAreaView>
   );
 };
