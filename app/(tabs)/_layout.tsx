@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
-import { Icon, useTheme } from "@rneui/themed";
+import { Icon, Text, useTheme } from "@rneui/themed";
 import themeLight from "../../Theme";
 import SignoutModal from "../../components/SignoutModal";
 
@@ -50,8 +50,24 @@ const DashBoardTabs = () => {
                 />
               ),
               title: "Profile",
-              headerTitle: "Profile",
-              headerTitleAlign: "left",
+              headerTitle: (props: any) => (
+                <View
+                  style={{
+                    flexDirection: "column"
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 19,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Profile
+                  </Text>
+                </View>
+              ),
+
               headerStyle: { borderBottomWidth: 1 }
             }}
           />
@@ -68,6 +84,23 @@ const DashBoardTabs = () => {
               ),
               title: "Education",
               headerTitleAlign: "left",
+              headerTitle: (props: any) => (
+                <View
+                  style={{
+                    flexDirection: "column"
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 19,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Education
+                  </Text>
+                </View>
+              ),
               headerStyle: { borderBottomWidth: 1 }
             }}
           />
@@ -84,6 +117,23 @@ const DashBoardTabs = () => {
               ),
               title: "Skills & Attachments",
               headerTitleAlign: "left",
+              headerTitle: (props: any) => (
+                <View
+                  style={{
+                    flexDirection: "column"
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 19,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Skills & Attachments
+                  </Text>
+                </View>
+              ),
               headerStyle: { borderBottomWidth: 1 }
             }}
           />
@@ -101,7 +151,23 @@ const DashBoardTabs = () => {
               title: "Programmes",
               headerTitleAlign: "left",
               headerStyle: { borderBottomWidth: 1 },
-              headerTitle: "Learner Interventions"
+              headerTitle: (props: any) => (
+                <View
+                  style={{
+                    flexDirection: "column"
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 19,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Learner Interventions
+                  </Text>
+                </View>
+              )
             }}
           />
         </Tabs>
