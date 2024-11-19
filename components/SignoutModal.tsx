@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Dialog, useTheme } from "@rneui/themed";
+import { Button, Dialog, useTheme } from "@rneui/themed";
 import { Icon } from "@rneui/base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
@@ -19,6 +19,7 @@ const SignoutModal = () => {
   const handleSignout = async () => {
     try {
       await AsyncStorage.removeItem("token");
+      queryClient.invalidateQueries(["userInfo"]);
       queryClient.setQueryData(["userInfo"], null);
       router.replace(`/(auth)/login`);
     } catch (error) {
@@ -54,12 +55,8 @@ const SignoutModal = () => {
         <Dialog.Title title={"Confirm Signout"} />
         <Text>Are you sure you want to signout?</Text>
         <Dialog.Actions>
-          <Dialog.Button
-            title="Signout"
-            onPress={() => handleSignout()}
-            color="red"
-          />
-          <Dialog.Button title="Cancel" onPress={toggleModal} />
+          <Button title="Signout" type="clear" onPress={handleSignout} />
+          <Button title="Cancel" type="clear" onPress={toggleModal} />
         </Dialog.Actions>
       </Dialog>
       {/* </View> */}
