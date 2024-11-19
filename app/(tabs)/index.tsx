@@ -9,7 +9,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
 import { Redirect, useFocusEffect } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
 
 const TabRootLayout = () => {
   const queryClient: any = useQueryClient();
@@ -247,7 +246,6 @@ const TabRootLayout = () => {
           </View>
         </Card>
       </View>
-      <Toast />
     </SafeAreaView>
   );
 };
