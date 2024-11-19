@@ -15,23 +15,18 @@ const DashBoardTabs = () => {
           screenOptions={{
             tabBarStyle: {
               borderWidth: 1,
-              borderColor: theme.colors.primary,
-              height: 60,
-              alignItems: "center",
-              justifyContent: "center"
+              borderColor: theme.colors.primary
             },
             tabBarActiveBackgroundColor: "lightgray",
             // tabBarActiveTintColor: "red",
             tabBarLabelStyle: {
               color: theme.colors.primary,
               fontWeight: "bold",
-              textAlign: "center",
-              marginBottom: 5
+              textAlign: "center"
             },
             tabBarIconStyle: {
               color: theme.colors.primary,
-              backgroundColor: theme.colors.primary,
-              marginBottom: -5
+              backgroundColor: theme.colors.primary
             },
             headerStyle: {
               borderWidth: 3
@@ -49,7 +44,7 @@ const DashBoardTabs = () => {
               tabBarIcon: (colors) => (
                 <Icon
                   name="user"
-                  size={20}
+                  // size={20}
                   type="font-awesome"
                   color={theme.colors.primary}
                 />
@@ -66,7 +61,7 @@ const DashBoardTabs = () => {
               tabBarIcon: (colors) => (
                 <Icon
                   name="graduation-cap"
-                  size={20}
+                  // size={20}
                   type="font-awesome"
                   color={theme.colors.primary}
                 />
@@ -82,7 +77,7 @@ const DashBoardTabs = () => {
               tabBarIcon: (colors) => (
                 <Icon
                   name="pencil-square-o"
-                  size={20}
+                  // size={20}
                   type="font-awesome"
                   color={theme.colors.primary}
                 />
@@ -98,7 +93,7 @@ const DashBoardTabs = () => {
               tabBarIcon: (colors) => (
                 <Icon
                   name="profile"
-                  size={20}
+                  // size={20}
                   type="antdesign"
                   color={theme.colors.primary}
                 />
