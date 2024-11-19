@@ -14,8 +14,8 @@ import TextInputWrapper from "./FormComponents/TextInputWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 import Toast from "react-native-toast-message";
+import Dropdown from "./FormComponents/DropDown";
 
 type AddEditProfessionalSkillOverlay = {
   professionlSkill?: any;
@@ -136,10 +136,10 @@ const AddEditProfessionalSkillOverlay: React.FunctionComponent<
                   label="Skill"
                   secureTextEntry={false}
                 />
-                <SelectInputWrapper
+                <Dropdown
                   name="skillLevel"
-                  label="Skill Level"
-                  options={[
+                  placeholder="Skill Level"
+                  data={[
                     {
                       value: "",
                       label: "Select level"
