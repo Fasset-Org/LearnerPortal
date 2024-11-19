@@ -70,6 +70,9 @@ const AddEditBasicEducationOverlay: React.FunctionComponent<
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     },
     onError: (err: any) => {
       showToast("error", "Error", err?.response?.data?.message);
