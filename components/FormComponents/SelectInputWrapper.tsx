@@ -37,10 +37,7 @@ const SelectInputWrapper = ({ name, label, options }: PropType) => {
               key={option.value}
               label={option.label}
               value={option.value}
-              style={[
-                i === 0 && { color: "#aeb6bf", fontWeight: "bold" },
-                { flexShrink: 1 }
-              ]}
+              style={{ height: "auto", width: "auto" }}
             />
           ))}
         </Picker>
