@@ -11,11 +11,11 @@ import themeLight from "../Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import { ActivityIndicator } from "react-native-paper";
+import Dropdown from "./FormComponents/DropDown";
 
 type EditUserInfoOverlay = {
   userInfo: any;
@@ -263,10 +263,10 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                     label="Last Name"
                     secureTextEntry={false}
                   />
-                  <SelectInputWrapper
+                  <Dropdown
                     name="rsaId"
-                    label="Do you have RSA ID?"
-                    options={[
+                    placeholder="Do you have RSA ID?"
+                    data={[
                       { value: "", label: "Do you have RSA ID?" },
                       { value: "Yes", label: "Yes" },
                       { value: "No", label: "No" }
@@ -290,27 +290,23 @@ const EditUserInfoOverlay: React.FunctionComponent<EditUserInfoOverlay> = ({
                     />
                   )}
 
-                  <SelectInputWrapper
+                  <Dropdown
                     name="disbility"
-                    label="Disability"
-                    options={[
+                    placeholder="Disability"
+                    data={[
                       { value: "", label: "Disability?" },
                       { value: "None", label: "None" },
                       { value: "Yes", label: "Yes" }
                     ]}
                   />
 
-                  <SelectInputWrapper
+                  <Dropdown
                     name="careerStatus"
-                    label="Career Status"
-                    options={careerStatusOptions}
+                    placeholder="Career Status"
+                    data={careerStatusOptions}
                   />
 
-                  <SelectInputWrapper
-                    name="race"
-                    label="Race"
-                    options={raceOptions}
-                  />
+                  <Dropdown name="race" placeholder="Race" data={raceOptions} />
 
                   <TextInputWrapper
                     name="mobileNumber"
