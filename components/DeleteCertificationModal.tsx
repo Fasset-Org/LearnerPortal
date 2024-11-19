@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Dialog } from "@rneui/themed";
+import { Button, Dialog } from "@rneui/themed";
 import { Icon } from "@rneui/base";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
@@ -71,16 +71,16 @@ const DeleteCertificationModal = ({ id }: { id: string }) => {
         <Dialog.Title title="Confirm Delete" />
         <Text>Are you sure you want to delete this item?</Text>
         <Dialog.Actions>
-          <Dialog.Button title="Cancel" onPress={toggleModal} />
           {deleteMutatuon.isPending ? (
             <ActivityIndicator animating={true} />
           ) : (
-            <Dialog.Button
+            <Button
               title="Delete"
+              type="clear"
               onPress={() => handleDelete(id)}
-              color="red"
             />
           )}
+          <Dialog.Button title="Cancel" onPress={toggleModal} />
         </Dialog.Actions>
       </Dialog>
       {/* </View> */}
