@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
 import CustomHeaderTitle from "../components/CustomHeaderTitle";
@@ -20,11 +20,15 @@ const RootLayout = () => {
                 name="index"
                 options={{
                   headerStyle: {
-                    backgroundColor: themeLight.lightColors?.primary
+                    backgroundColor: themeLight.lightColors?.white
                   },
-                  headerTitleAlign: "left",
-                  headerTitleStyle: { color: "#FFFFFF" },
-                  headerTitle: () => <CustomHeaderTitle />
+
+                  headerTitle: () => (
+                    <Image
+                      source={require("../assets/images/fasset_horizontal_logo_rgb.jpg")}
+                      style={{ width: 200, height: 50 }}
+                    />
+                  )
                 }}
               />
               <Stack.Screen
