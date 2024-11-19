@@ -36,9 +36,15 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     },
     onError: (err: any) => {
       showToast("error", "Error", err?.response?.data?.message);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     }
   });
 
@@ -47,9 +53,15 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     },
     onError: (err: any) => {
       showToast("success", "Success", err?.response?.data?.message);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     }
   });
 
