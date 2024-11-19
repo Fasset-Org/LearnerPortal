@@ -15,8 +15,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import YearPicker from "./FormComponents/YearPicker";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
 import Toast from "react-native-toast-message";
+import Dropdown from "./FormComponents/DropDown";
 
 type AddEditTertiaryEducationOverlay = {
   education?: any;
@@ -66,101 +66,24 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
       value: "National Diploma",
       label: "National Diploma"
     },
+
     {
-      value: "National First Degree (Min 360",
-      label: "National First Degree (Min 360"
+      value: "Bachelors Degree",
+      label: "Bachelors Degree"
     },
+
     {
-      value: "Post-doctoral Degree",
-      label: "Post-doctoral Degree"
+      value: "Honours Degree",
+      label: "Honours Degree"
     },
-    {
-      value: "Doctoral Degree",
-      label: "Doctoral Degree"
-    },
+
     {
       value: "Masters Degree",
       label: "Masters Degree"
     },
     {
-      value: "Professional Qualification",
-      label: "Professional Qualification"
-    },
-    {
-      value: "Honours Degree",
-      label: "Honours Degree"
-    },
-    {
-      value: "National Higher Diploma",
-      label: "National Higher Diploma"
-    },
-    {
-      value: "National Masters Diploma",
-      label: "National Masters Diploma"
-    },
-    {
-      value: "National Higher Certificate",
-      label: "National Higher Certificate"
-    },
-    {
-      value: "Further Diploma",
-      label: "Further Diploma"
-    },
-    {
-      value: "Post Graduate Diploma",
-      label: "Post Graduate Diploma"
-    },
-    {
-      value: "Senior Certificate",
-      label: "Senior Certificate"
-    },
-    {
-      value: "Qual at Nat Sen Cert level",
-      label: "Qual at Nat Sen Cert level"
-    },
-    {
-      value: "Apprenticeship / Trade Cert",
-      label: "Apprenticeship / Trade Cert"
-    },
-    {
-      value: "Post Grad B Degree (phasing out) e.g. B Ed",
-      label: "Post Grad B Degree (phasing out) e.g. B Ed"
-    },
-    {
-      value: "Post Diploma Diploma (phasing out)",
-      label: "Post Diploma Diploma (phasing out)"
-    },
-    {
-      value: "Post-basic Diploma [mainly applies to Nursing]",
-      label: "Post-basic Diploma [mainly applies to Nursing]"
-    },
-    {
-      value: "Further Ed and Training Cert (FETC)",
-      label: "Further Ed and Training Cert (FETC)"
-    },
-    {
-      value: "National First Degree (Min 480)",
-      label: "National First Degree (Min 480)"
-    },
-    {
-      value: "Schl below SenC: (not full qualification)",
-      label: "Schl below SenC: (not full qualification)"
-    },
-    {
-      value: "Advanced Certificate",
-      label: "Advanced Certificate"
-    },
-    {
-      value: "Advanced Diploma",
-      label: "Advanced Diploma"
-    },
-    {
-      value: "Higher Certificate",
-      label: "Higher Certificate"
-    },
-    {
-      value: "Occupational Certificate",
-      label: "Occupational Certificate"
+      value: "Certificate",
+      label: "Certificate"
     }
   ];
 
@@ -253,6 +176,7 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
             onPress={toggleOverlay}
           />
         </View>
+
         <View style={{ padding: 10 }}>
           <Formik
             initialValues={{
@@ -289,98 +213,102 @@ const AddEditTertiaryEducationOverlay: React.FunctionComponent<
               }
             }}
           >
-            {({ handleSubmit, setFieldValue, values }) => (
-              <View style={styles.innerContainer}>
-                {/* <YearPicker
-                  selectedYear={selectedYear}
-                  onSelectYear={(year) => {
-                    setSelectedYear(year);
-                    setFieldValue("year", year);
-                  }}
-                /> */}
-                <SelectInputWrapper
-                  name="educationLevel"
-                  label="Education Level"
-                  options={qualificationLevelOptions}
-                />
-                <TextInputWrapper
-                  name="fieldOfStudy"
-                  label="FIeld Of Study"
-                  secureTextEntry={false}
-                />
-                <TextInputWrapper
-                  name="institution"
-                  label="Institution"
-                  secureTextEntry={false}
-                />
+            {({ handleSubmit, setFieldValue, values }) => {
+              // console.log(values);
+              return (
+                <View style={styles.innerContainer}>
+                  {/* <YearPicker
+                    selectedYear={selectedYear}
+                    onSelectYear={(year) => {
+                      setSelectedYear(year);
+                      setFieldValue("year", year);
+                    }}
+                  /> */}
 
-                <TextInputWrapper
-                  name="startYear"
-                  label="Start Year"
-                  secureTextEntry={false}
-                />
-
-                <SelectInputWrapper
-                  name="status"
-                  label="Status"
-                  options={completionStatus}
-                />
-
-                {values.status === "Completed" && (
+                  <Dropdown
+                    name="educationLevel"
+                    data={qualificationLevelOptions}
+                    placeholder={"Qualification Level"}
+                  />
                   <TextInputWrapper
-                    name="endYear"
-                    label="End Year"
+                    name="fieldOfStudy"
+                    label="FIeld Of Study"
                     secureTextEntry={false}
                   />
-                )}
+                  <TextInputWrapper
+                    name="institution"
+                    label="Institution"
+                    secureTextEntry={false}
+                  />
 
-                {education ? (
-                  <>
-                    {editTertiaryEducationMutation.isPending ? (
-                      <ActivityIndicator size="large" animating={true} />
-                    ) : (
-                      <TouchableOpacity style={styles.button}>
-                        <Button
-                          title="UPDATE"
-                          type="outline"
-                          buttonStyle={{
-                            borderColor: theme.colors.secondary,
-                            borderWidth: 1
-                          }}
-                          titleStyle={{
-                            color: theme.colors.secondary,
-                            marginRight: 10
-                          }}
-                          onPress={() => handleSubmit()}
-                        />
-                      </TouchableOpacity>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {addTertiaryEducationMutation.isPending ? (
-                      <ActivityIndicator size="large" animating={true} />
-                    ) : (
-                      <TouchableOpacity style={styles.button}>
-                        <Button
-                          title="SAVE"
-                          type="outline"
-                          buttonStyle={{
-                            borderColor: theme.colors.secondary,
-                            borderWidth: 1
-                          }}
-                          titleStyle={{
-                            color: theme.colors.secondary,
-                            marginRight: 10
-                          }}
-                          onPress={() => handleSubmit()}
-                        />
-                      </TouchableOpacity>
-                    )}
-                  </>
-                )}
-              </View>
-            )}
+                  <TextInputWrapper
+                    name="startYear"
+                    label="Start Year"
+                    secureTextEntry={false}
+                  />
+
+                  <Dropdown
+                    name="status"
+                    placeholder="Status"
+                    data={completionStatus}
+                  />
+
+                  {values.status === "Completed" && (
+                    <TextInputWrapper
+                      name="endYear"
+                      label="End Year"
+                      secureTextEntry={false}
+                    />
+                  )}
+
+                  {education ? (
+                    <>
+                      {editTertiaryEducationMutation.isPending ? (
+                        <ActivityIndicator size="large" animating={true} />
+                      ) : (
+                        <TouchableOpacity style={styles.button}>
+                          <Button
+                            title="UPDATE"
+                            type="outline"
+                            buttonStyle={{
+                              borderColor: theme.colors.secondary,
+                              borderWidth: 1
+                            }}
+                            titleStyle={{
+                              color: theme.colors.secondary,
+                              marginRight: 10
+                            }}
+                            onPress={() => handleSubmit()}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {addTertiaryEducationMutation.isPending ? (
+                        <ActivityIndicator size="large" animating={true} />
+                      ) : (
+                        <TouchableOpacity style={styles.button}>
+                          <Button
+                            title="SAVE"
+                            type="outline"
+                            buttonStyle={{
+                              borderColor: theme.colors.secondary,
+                              borderWidth: 1
+                            }}
+                            titleStyle={{
+                              color: theme.colors.secondary,
+                              marginRight: 10
+                            }}
+                            onPress={() => handleSubmit()}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  )}
+                </View>
+              );
+            }}
           </Formik>
         </View>
         <Toast />
