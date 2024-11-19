@@ -8,7 +8,7 @@ import {
   ActivityIndicator
 } from "react-native";
 import themeLight from "../Theme";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import TextInputWrapper from "./FormComponents/TextInputWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,13 +22,6 @@ type AddEditAttachmentOverlay = {
   attachment?: any;
   userId?: string | any;
 };
-
-interface DocumentPickerResult {
-  uri?: string;
-  name?: string;
-  mimeType?: string;
-  size?: number;
-}
 
 const AddEditAttachmentOverlay: React.FunctionComponent<
   AddEditAttachmentOverlay
@@ -44,9 +37,15 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
     onSuccess: (data: any) => {
       showToast("success", "Success", data?.message);
       queryClient.invalidateQueries(["userInfo"]);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     },
     onError: (err: any) => {
       showToast("error", "Error", err?.response?.data?.message);
+      setTimeout(() => {
+        setVisible(!visible);
+      }, 2000);
     }
   });
 
