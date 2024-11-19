@@ -16,7 +16,7 @@ import StudentQuery from "../app/xhr/student";
 import { showToast } from "../utils/showToast";
 import Toast from "react-native-toast-message";
 import * as DocumentPicker from "expo-document-picker";
-import SelectInputWrapper from "./FormComponents/SelectInputWrapper";
+import Dropdown from "./FormComponents/DropDown";
 
 type AddEditAttachmentOverlay = {
   attachment?: any;
@@ -217,10 +217,10 @@ const AddEditAttachmentOverlay: React.FunctionComponent<
                     secureTextEntry={false}
                   />
                 ) : (
-                  <SelectInputWrapper
+                  <Dropdown
                     name="documentName"
-                    label="Document Name"
-                    options={documentOptionsTemplate}
+                    placeholder="Document Name"
+                    data={documentOptionsTemplate}
                   />
                 )}
 
