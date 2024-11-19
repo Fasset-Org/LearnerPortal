@@ -5,15 +5,9 @@ const CustomHeaderTitle = () => {
   return (
     <View style={styles.headerContainer}>
       <Image
-        source={require("../assets/images/square-logo.jpeg")}
+        source={require("../assets/images/fasset_horizontal_logo_rgb.jpg")}
         style={styles.headerImage}
       />
-      <View>
-        <Text style={[styles.titleText, styles.bigText]}>FASSET</Text>
-        <Text style={[styles.titleText, styles.smallText]}>
-          Make the future count
-        </Text>
-      </View>
     </View>
   );
 };
@@ -25,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   headerImage: {
-    width: 40,
+    width: 190,
     height: 40,
     marginRight: 10
   },
