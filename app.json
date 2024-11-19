@@ -24,17 +24,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "platforms": [
-        "ios",
-        "android"
-      ],
+      "platforms": ["ios", "android"],
       "package": "com.kamzen.LearnerPortal",
       "useNextNotificationsApi": true,
       "networkSecurityConfig": "./network_security_config.xml",
-      "permissions": [
-        "INTERNET",
-        "ACCESS_NETWORK_STATE"
-      ]
+      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
