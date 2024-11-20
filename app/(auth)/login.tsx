@@ -65,7 +65,7 @@ const Login = () => {
       await AsyncStorage.setItem("token", data?.user?.token);
       showToast("success", "Success", data?.message);
       await queryClient.invalidateQueries(["userInfo"]);
-      router.replace(`/(tabs)`);
+      router.push(`/(tabs)`);
     },
     onError: (err: any) => {
       console.log(JSON.stringify(err as any));
