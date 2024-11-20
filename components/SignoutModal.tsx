@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { Button, Dialog, useTheme } from "@rneui/themed";
 import { Icon } from "@rneui/base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,7 +22,7 @@ const SignoutModal = () => {
       queryClient.invalidateQueries(["userInfo"]);
       queryClient.setQueryData(["userInfo"], null);
       setTimeout(() => {
-        router.replace(`/(auth)/login`);
+        router.push(`/(auth)/login`);
       }, 2000);
     } catch (error) {
       console.error("Error signing out:", error);
