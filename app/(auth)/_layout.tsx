@@ -36,7 +36,7 @@ const RootLayout = () => {
                 type="material"
                 color="#000"
                 onPress={() => router.back()} // Go back to the previous screen
-                // containerStyle={{ marginRight: 5 }}
+                containerStyle={{ marginRight: 5 }}
               />
             )
           }}
@@ -68,7 +68,7 @@ const RootLayout = () => {
                 type="material"
                 color="#000"
                 onPress={() => router.back()} // Go back to the previous screen
-                // containerStyle={{ marginRight: 5 }}
+                containerStyle={{ marginRight: 5 }}
               />
             )
           }}
