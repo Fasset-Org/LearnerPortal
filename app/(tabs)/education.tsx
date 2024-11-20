@@ -35,7 +35,7 @@ const Education = () => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* Basic Education */}
       <Card containerStyle={styles.cardContainer}>
         <View style={styles.cardHead}>
@@ -150,7 +150,7 @@ const Education = () => {
           <Alert message="Tertiary education is optional" type="info" />
         )}
       </Card>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -159,7 +159,7 @@ export default Education;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: "#FFFFFF"
   },
 
