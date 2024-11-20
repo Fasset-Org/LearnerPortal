@@ -176,7 +176,7 @@ const Certificate = () => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={data}
         renderItem={({ item }) => {
@@ -229,7 +229,7 @@ const Certificate = () => {
           );
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -238,7 +238,7 @@ export default Certificate;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: "#FFFFFF",
     overflow: "scroll"
   },
