@@ -82,7 +82,7 @@ const LearnerProgramme = () => {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF", padding: 20 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#FFFFFF", padding: 10 }}>
       <Formik
         initialValues={{
           userId: userData?.id || "",
