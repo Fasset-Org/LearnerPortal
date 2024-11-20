@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import React from "react";
 import { Card } from "@rneui/themed";
 import themeLight from "../../Theme";
@@ -37,11 +37,11 @@ const TabRootLayout = () => {
   );
 
   return (
-    <SafeAreaView
-      style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 20, padding: 20 }}
+    <ScrollView
+      style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 10, padding: 10 }}
     >
       <View
-        style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 20, padding: 10 }}
+        style={{ backgroundColor: "#FFFFFF", flex: 1, rowGap: 10, padding: 10 }}
       >
         <Card containerStyle={{ borderRadius: 10, margin: 0 }}>
           <View
@@ -246,7 +246,7 @@ const TabRootLayout = () => {
           </View>
         </Card>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
