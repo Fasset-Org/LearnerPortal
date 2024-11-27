@@ -4,7 +4,7 @@
     "slug": "learnerportal",
     "scheme": "LearnerPortal",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/logo-sm.png",
     "userInterfaceStyle": "light",
     "splash": {
