@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Alert,
   Image,
@@ -51,21 +51,22 @@ const Login = () => {
     }
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      queryClient.invalidateQueries(["userInfo"]);
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     queryClient.invalidateQueries(["userInfo"]);
+  //   }, [])
+  // );
+
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: FormData) => {
       return AuthQuery.loginUser(formData);
     },
     onSuccess: async (data: any) => {
-      SecureStore.setItem("userToken", data?.user?.token);
+      // SecureStore.setItem("userToken", data?.user?.token);
       await AsyncStorage.setItem("token", data?.user?.token);
       showToast("success", "Success", data?.message);
       await queryClient.invalidateQueries(["userInfo"]);
-      router.push(`/(tabs)`);
+      router.replace(`/(tabs)`);
     },
     onError: (err: any) => {
       console.log(JSON.stringify(err as any));
@@ -73,9 +74,11 @@ const Login = () => {
     }
   });
 
-  if (userInfo) {
-    return <Redirect href="/(tabs)" />;
-  }
+  // useEffect(() => {
+  //   if (userInfoQuery?.data?.user) {
+  //     router.push(`/(tabs)`);
+  //   }
+  // }, [userInfoQuery?.data?.user]);
 
   return (
     <ScrollView
