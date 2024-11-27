@@ -95,8 +95,9 @@ const StudentQuery = {
 
   addCertification: async (formData: any) => {
     const resp = await axios.post(
-      `http://102.37.220.209:8000/api/v1/student/addCertification`,
-      // `https://career-portal-api.fasset.org.za/api/v1/student/addCertification`,
+      // `http://192.168.0.112:8000/api/v1/student/addCertification`,
+      // `http://102.37.220.209:8000/api/v1/student/addCertification`,
+      `https://career-portal-api.fasset.org.za/api/v1/student/addCertification`,
 
       formData,
       {
@@ -118,8 +119,9 @@ const StudentQuery = {
   addDocument: async (formData: any) => {
     // const token = SecureStore.getItem("userToken");
     const resp = await axios.post(
-      `http://102.37.220.209:8000/api/v1/student/addDocument`,
-      // `https://career-portal-api.fasset.org.za/api/v1/student/addDocument`,
+      // `http://192.168.0.112:8000/api/v1/student/addDocument`,
+      // `http://102.37.220.209:8000/api/v1/student/addDocument`,
+      `https://career-portal-api.fasset.org.za/api/v1/student/addDocument`,
       formData,
       {
         headers: {
@@ -133,7 +135,7 @@ const StudentQuery = {
   },
 
   getAllProgrammes: async () => {
-    const resp = await axiosInstance.get(`/student/getAllProgrammes`, {});
+    const resp = await axiosInstance.get(`/student/getAllProgrammes`);
 
     return resp?.data;
   },
