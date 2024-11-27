@@ -28,7 +28,7 @@ const Home = () => {
     retry: 0
   });
 
-  const userInfo = userInfoQuery?.data?.user;
+  // const userInfo = userInfoQuery?.data?.user;
 
   const openURL = async (url: string) => {
     const supported = await Linking.canOpenURL(url);
@@ -45,9 +45,9 @@ const Home = () => {
     }, [])
   );
 
-  if (userInfo) {
-    return <Redirect href="/(tabs)" />;
-  }
+  // if (userInfo) {
+  //   return <Redirect href="/(tabs)" />;
+  // }
 
   return (
     <ScrollView style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
