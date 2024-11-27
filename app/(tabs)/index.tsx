@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import React from "react";
-import { Card } from "@rneui/themed";
+import { Button, Card } from "@rneui/themed";
 import themeLight from "../../Theme";
 import EditUserAddressOverlay from "../../components/EditUserAddressOverlay";
 import EditUserInfoOverlay from "../../components/EditUserInfoOverlay";
@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StudentQuery from "../xhr/student";
 import { Redirect, useFocusEffect } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import DeleteAccountConfirmModal from "../../components/DeleteAccountConfirmModal";
 
 const TabRootLayout = () => {
   const queryClient: any = useQueryClient();
@@ -245,6 +246,7 @@ const TabRootLayout = () => {
             </Text>
           </View>
         </Card>
+        <DeleteAccountConfirmModal userId={userInfo.id} />
       </View>
     </ScrollView>
   );
